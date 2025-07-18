@@ -122,7 +122,54 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Floating Particles */}
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-primary/20 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${3 + Math.random() * 4}s`,
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-20 left-10 w-32 h-32 border border-primary/10 rounded-full animate-spin opacity-30"
+             style={{ animationDuration: '20s' }} />
+        <div className="absolute top-40 right-20 w-24 h-24 border border-accent/20 rotate-45 animate-pulse opacity-20"
+             style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-40 left-20 w-16 h-16 bg-gradient-to-br from-neon/10 to-primary/10 rounded-lg animate-bounce opacity-40"
+             style={{ animationDuration: '6s' }} />
+        <div className="absolute bottom-20 right-10 w-20 h-20 border-2 border-primary/15 rounded-full animate-pulse opacity-30"
+             style={{ animationDuration: '5s' }} />
+        
+        {/* Gradient Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl animate-pulse opacity-60"
+             style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-neon/3 to-primary/3 rounded-full blur-3xl animate-pulse opacity-40"
+             style={{ animationDuration: '12s' }} />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="w-full h-full"
+               style={{
+                 backgroundImage: `
+                   linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+                   linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+                 `,
+                 backgroundSize: '50px 50px',
+                 animation: 'grid-shift 20s linear infinite'
+               }} />
+        </div>
+      </div>
       {/* Sticky Header */}
       <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
