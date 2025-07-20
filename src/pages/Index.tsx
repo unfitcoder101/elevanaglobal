@@ -40,9 +40,9 @@ const Index = () => {
 
   // Contact Information
   const contactInfo = {
-    email: 'hello@growthlab.com',
+    email: 'hello@agencyx.com',
     phone: '+1 (555) 123-4567',
-    instagram: '@growthlab_agency'
+    instagram: '@agencyx_digital'
   };
 
   // Scroll animations
@@ -136,6 +136,20 @@ const Index = () => {
       description: 'Build trust and credibility with review management and online reputation optimization.',
       features: ['Review Monitoring', 'Response Management', 'Rating Improvement', 'Crisis Prevention'],
       gradient: 'from-yellow-500 to-orange-600'
+    },
+    {
+      icon: <Zap className="w-12 h-12" />,
+      title: 'Business Automation',
+      description: 'Streamline your operations with intelligent automation that handles bookings, follow-ups, and customer communication.',
+      features: ['Booking Automation', 'Follow-up Sequences', 'Customer Support Bots', 'Workflow Optimization'],
+      gradient: 'from-purple-500 to-indigo-600'
+    },
+    {
+      icon: <BarChart3 className="w-12 h-12" />,
+      title: 'Performance Analytics',
+      description: 'Data-driven insights that show exactly what\'s working and how to maximize your ROI across all channels.',
+      features: ['Real-time Dashboards', 'Conversion Tracking', 'ROI Analysis', 'Growth Forecasting'],
+      gradient: 'from-cyan-500 to-blue-600'
     }
   ];
 
@@ -198,7 +212,7 @@ const Index = () => {
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-              GrowthLab
+              AgencyX
             </div>
             
             {/* Desktop Navigation */}
@@ -262,7 +276,7 @@ const Index = () => {
                  style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
           </div>
           
-          <div className="relative container mx-auto px-4 text-center reveal-up">
+          <div className="relative container mx-auto px-4 text-center reveal-up pt-20">
             <div className="mb-8 inline-flex items-center px-4 py-2 bg-gradient-to-r from-neon/10 to-primary/10 rounded-full border border-neon/20 backdrop-blur-sm animate-pulse">
               <div className="w-2 h-2 bg-neon rounded-full mr-3 animate-ping"></div>
               <span className="text-sm font-medium text-neon">⚡ Only 3 free audits left this month</span>
@@ -374,7 +388,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service, index) => (
                 <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative">
                   <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
@@ -611,7 +625,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center">
               <div className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-4">
-                GrowthLab
+                AgencyX
               </div>
               <p className="text-muted-foreground mb-6">
                 Helping businesses grow their online presence and scale profits
@@ -688,17 +702,18 @@ const Index = () => {
           </TooltipContent>
         </Tooltip>
 
-        {/* Sticky Footer Banner */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary via-accent to-neon text-white p-4 shadow-elegant z-40 animate-pulse">
+        {/* Bottom CTA Banner - Not Sticky */}
+        <section className="py-12 bg-gradient-to-r from-primary via-accent to-neon text-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left">
-              <div className="mb-2 md:mb-0">
-                <p className="font-bold">You'll either build a system that works for you — or stay stuck working for your system.</p>
+              <div className="mb-4 md:mb-0">
+                <p className="font-bold text-lg mb-2">You'll either build a system that works for you — or stay stuck working for your system.</p>
                 <p className="text-sm opacity-90">Book your free business audit now. The smartest owners already have.</p>
               </div>
               <Button 
                 variant="outline" 
-                className="bg-white text-primary hover:bg-white/90 border-white"
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 border-white flex-shrink-0"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Book Free Audit
@@ -706,7 +721,7 @@ const Index = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </TooltipProvider>
   );
