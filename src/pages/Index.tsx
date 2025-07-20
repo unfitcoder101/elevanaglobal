@@ -269,18 +269,19 @@ const Index = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Turn Your Business Into a
+              <span className="gradient-primary bg-clip-text text-transparent animate-text-shimmer">
+                What's the point of running a business…
+              </span>
               <div className="relative mt-2">
-                <span className="gradient-primary bg-clip-text text-transparent animate-text-shimmer">
-                  Revenue-Generating Machine
+                <span className="text-foreground">
+                  if you're the one running after clients?
                 </span>
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-neon/20 to-accent/20 rounded-lg blur-lg opacity-50 animate-pulse" />
               </div>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              We help service businesses get more customers and scale profits through strategic 
-              Instagram optimization, local SEO, and automated sales systems.
+              You opened a café, salon, or gym to live free — not chase bookings, reply to DMs, or post content daily.
             </p>
             
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
@@ -404,6 +405,39 @@ const Index = () => {
           </div>
         </section>
 
+        {/* FOMO Box Section */}
+        <section className="py-20 bg-gradient-to-br from-destructive/5 to-orange-500/5 border-y border-destructive/10">
+          <div className="container mx-auto px-4">
+            <Card className="max-w-4xl mx-auto shadow-elegant border-destructive/20 bg-gradient-to-br from-card to-destructive/5 reveal-up">
+              <CardContent className="p-12 text-center">
+                <div className="inline-flex items-center px-4 py-2 bg-destructive/10 rounded-full mb-8 animate-pulse">
+                  <div className="w-3 h-3 bg-destructive rounded-full mr-3 animate-ping"></div>
+                  <span className="text-destructive font-semibold text-lg">🔴 URGENT REALITY CHECK</span>
+                </div>
+                
+                <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                  <span className="text-destructive">85%</span> of local businesses lose{" "}
+                  <span className="text-destructive">60%</span> of potential clients
+                </h3>
+                
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                  — just because they reply late or don't look premium online.
+                </p>
+                
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg border border-primary/20">
+                  <p className="text-lg font-medium mb-4">
+                    Don't let that be you. Our system books clients, answers DMs, and boosts your brand while you focus on doing what you love.
+                  </p>
+                  <div className="flex items-center justify-center text-sm text-muted-foreground">
+                    <TrendingUp className="w-4 h-4 text-neon mr-2" />
+                    Others are winning, you're being left behind
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         {/* Testimonials Section */}
         <section id="testimonials" className="py-24">
           <div className="container mx-auto px-4">
@@ -443,6 +477,60 @@ const Index = () => {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Imagine This Section */}
+        <section className="py-24 bg-gradient-to-br from-primary/5 to-accent/5">
+          <div className="container mx-auto px-4">
+            <Card className="max-w-4xl mx-auto shadow-elegant bg-gradient-to-br from-card to-primary/5 reveal-up border-primary/20">
+              <CardContent className="p-12 text-center">
+                <h3 className="text-3xl md:text-4xl font-bold mb-8 gradient-primary bg-clip-text text-transparent">
+                  Imagine this:
+                </h3>
+                
+                <div className="space-y-6 mb-8">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-neon to-primary rounded-full flex items-center justify-center mr-4 animate-pulse">
+                      <Zap className="w-6 h-6 text-white" />
+                    </div>
+                    <p className="text-xl text-left">You wake up with <span className="font-bold text-neon">6 new bookings.</span></p>
+                  </div>
+                  
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center mr-4 animate-pulse">
+                      <Instagram className="w-6 h-6 text-white" />
+                    </div>
+                    <p className="text-xl text-left">Your <span className="font-bold text-accent">DMs reply instantly.</span></p>
+                  </div>
+                  
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mr-4 animate-pulse">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <p className="text-xl text-left">Clients are <span className="font-bold text-primary">rebooking themselves.</span></p>
+                  </div>
+                  
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-destructive to-orange-500 rounded-full flex items-center justify-center mr-4 animate-pulse">
+                      <Target className="w-6 h-6 text-white" />
+                    </div>
+                    <p className="text-xl text-left">And your competitors… <span className="font-bold text-destructive">are still posting reels at midnight.</span></p>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg border border-primary/20 mb-8">
+                  <p className="text-xl font-semibold mb-4">
+                    ➤ That's the unfair advantage we bring. Want it?
+                  </p>
+                </div>
+                
+                <Button variant="cta" size="xl" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                  Yes, I Want This Advantage
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
@@ -599,6 +687,26 @@ const Index = () => {
             <p>Call us at {contactInfo.phone}</p>
           </TooltipContent>
         </Tooltip>
+
+        {/* Sticky Footer Banner */}
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary via-accent to-neon text-white p-4 shadow-elegant z-40 animate-pulse">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+              <div className="mb-2 md:mb-0">
+                <p className="font-bold">You'll either build a system that works for you — or stay stuck working for your system.</p>
+                <p className="text-sm opacity-90">Book your free business audit now. The smartest owners already have.</p>
+              </div>
+              <Button 
+                variant="outline" 
+                className="bg-white text-primary hover:bg-white/90 border-white"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Book Free Audit
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </TooltipProvider>
   );
