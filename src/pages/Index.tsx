@@ -250,14 +250,32 @@ const Index = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
           
+          {/* Floating Elements Animation */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-neon rounded-full animate-bounce opacity-60" 
+                 style={{ animationDelay: '0s', animationDuration: '3s' }} />
+            <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-primary/40 rounded-full animate-pulse opacity-80" 
+                 style={{ animationDelay: '1s', animationDuration: '4s' }} />
+            <div className="absolute bottom-1/3 left-1/3 w-3 h-3 bg-accent rounded-full animate-bounce opacity-70" 
+                 style={{ animationDelay: '2s', animationDuration: '3.5s' }} />
+            <div className="absolute bottom-1/4 right-1/4 w-5 h-5 bg-neon/60 rounded-full animate-pulse opacity-50" 
+                 style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
+          </div>
+          
           <div className="relative container mx-auto px-4 text-center reveal-up">
-            <Badge variant="outline" className="mb-8 px-4 py-2 text-sm font-medium">
-              ⚡ Only 3 free audits left this month
-            </Badge>
+            <div className="mb-8 inline-flex items-center px-4 py-2 bg-gradient-to-r from-neon/10 to-primary/10 rounded-full border border-neon/20 backdrop-blur-sm animate-pulse">
+              <div className="w-2 h-2 bg-neon rounded-full mr-3 animate-ping"></div>
+              <span className="text-sm font-medium text-neon">⚡ Only 3 free audits left this month</span>
+            </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Turn Your Business Into a
-              <span className="gradient-primary bg-clip-text text-transparent block">Customer Magnet</span>
+              <div className="relative mt-2">
+                <span className="gradient-primary bg-clip-text text-transparent animate-text-shimmer">
+                  Revenue-Generating Machine
+                </span>
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-neon/20 to-accent/20 rounded-lg blur-lg opacity-50 animate-pulse" />
+              </div>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">

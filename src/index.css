@@ -196,4 +196,27 @@
     0% { transform: translate(0, 0); }
     100% { transform: translate(50px, 50px); }
   }
+
+  @keyframes text-shimmer {
+    0% { 
+      background-position: 200% center;
+    }
+    100% { 
+      background-position: -200% center;
+    }
+  }
+
+  .animate-text-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)),
+      hsl(var(--neon)),
+      hsl(var(--accent)),
+      hsl(var(--primary))
+    );
+    background-size: 400% 100%;
+    animation: text-shimmer 3s ease-in-out infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
