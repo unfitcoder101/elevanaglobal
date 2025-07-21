@@ -256,7 +256,7 @@ const Index = () => {
           )}
         </header>
 
-        {/* Hero Section */}
+        {/* 1. Hero Section - The Imagination Hook */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
@@ -282,25 +282,26 @@ const Index = () => {
               <span className="text-sm font-medium text-neon">⚡ Only 3 free audits left this month</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
               <span className="gradient-primary bg-clip-text text-transparent animate-text-shimmer">
-                What's the point of running a business…
+                Imagine this…
               </span>
-              <div className="relative mt-2">
-                <span className="text-foreground">
-                  if you're the one running after clients?
-                </span>
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-neon/20 to-accent/20 rounded-lg blur-lg opacity-50 animate-pulse" />
-              </div>
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              You opened a café, salon, or gym to live free — not chase bookings, reply to DMs, or post content daily.
+            <div className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto space-y-3">
+              <p>You wake up to booked appointments.</p>
+              <p>Your DMs are already answered.</p>
+              <p>Clients rebook themselves.</p>
+              <p className="text-base text-muted-foreground/80">And your competitors? Still stuck trying to figure out how to post Reels.</p>
+            </div>
+            
+            <p className="text-xl text-foreground font-semibold mb-12 max-w-2xl mx-auto">
+              That's the unfair advantage we give to local businesses — salons, cafés, gyms, and more.
             </p>
             
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
-              <Button variant="cta" size="xl" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                Get Your Free Growth Audit
+              <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                🔥 Book Your Free Demo Now
                 <ArrowRight className="w-5 h-5" />
               </Button>
               <Tooltip>
@@ -333,17 +334,60 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Trust Logos */}
-        <section className="py-16 bg-muted/30">
+        {/* 2. Pain Realization Section - "Why You're Stuck" */}
+        <section className="py-24 bg-muted/20">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8 reveal-up">
-              <p className="text-muted-foreground mb-4">Trusted by top brands and featured in</p>
-              <div className="flex flex-wrap items-center justify-center gap-8">
-                {trustLogos.map((logo, index) => (
-                  <Badge key={index} variant="outline" className="px-4 py-2 text-sm font-medium">
-                    {logo}
-                  </Badge>
+            <div className="text-center mb-16 reveal-up">
+              <h2 className="text-4xl md:text-5xl font-bold mb-12">
+                Let's be honest... this is how your business feels lately:
+              </h2>
+              
+              <div className="max-w-3xl mx-auto space-y-6 text-left">
+                {[
+                  "You post every day, but barely get engagement.",
+                  "DMs stay unread, or worse — you forget to reply.",
+                  "Walk-ins have slowed. Loyal clients haven't returned.",
+                  "You're great at your service, but marketing? Exhausting.",
+                  "You feel stuck doing everything alone."
+                ].map((pain, index) => (
+                  <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-card/50 border border-border/50">
+                    <div className="w-2 h-2 bg-destructive rounded-full mt-3 flex-shrink-0"></div>
+                    <p className="text-lg text-muted-foreground">{pain}</p>
+                  </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Transformation Section - "What Changes With Us" */}
+        <section className="py-24">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16 reveal-up">
+              <h2 className="text-4xl md:text-5xl font-bold mb-12">
+                Now imagine this instead…
+              </h2>
+              
+              <div className="max-w-3xl mx-auto space-y-6 text-left">
+                {[
+                  "Booked clients before you even open your shop",
+                  "Auto-replies to every DM — with booking links",
+                  "Your Instagram not only looks premium — it sells",
+                  "Clients rebook before leaving",
+                  "You're finally free to focus on what you love"
+                ].map((result, index) => (
+                  <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
+                    <CheckCircle className="w-6 h-6 text-neon mt-1 flex-shrink-0" />
+                    <p className="text-lg text-foreground font-medium">{result}</p>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-12">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
+                  ✨ Show Me How This Works
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
               </div>
             </div>
           </div>
@@ -452,16 +496,13 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Testimonials Section */}
+        {/* 4. Social Proof - Testimonials Section */}
         <section id="testimonials" className="py-24">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                What Our Clients Say
+                Real Businesses. Real Results.
               </h2>
-              <p className="text-xl text-muted-foreground">
-                Real stories from businesses that transformed their growth
-              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
@@ -494,57 +535,108 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Imagine This Section */}
+        {/* 5. Case Study / Project Video Section */}
+        <section className="py-24 bg-muted/20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16 reveal-up">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Proof in Action
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8">
+                See how we transformed other businesses — just like yours.
+              </p>
+              
+              <div className="max-w-3xl mx-auto bg-gradient-to-br from-card to-primary/5 rounded-xl p-8 border border-primary/20">
+                <div className="aspect-video bg-muted/50 rounded-lg flex items-center justify-center mb-6">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <ExternalLink className="w-8 h-8 text-primary" />
+                    </div>
+                    <p className="text-muted-foreground">Project walkthrough video coming soon</p>
+                  </div>
+                </div>
+                <p className="text-lg text-center text-muted-foreground">
+                  "Swipe through some of our done-for-you growth systems"
+                </p>
+              </div>
+              
+              <div className="mt-12">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
+                  🚀 I Want a System Like This
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Scarcity + Offer Block - FOMO Zone */}
         <section className="py-24 bg-gradient-to-br from-primary/5 to-accent/5">
           <div className="container mx-auto px-4">
             <Card className="max-w-4xl mx-auto shadow-elegant bg-gradient-to-br from-card to-primary/5 reveal-up border-primary/20">
               <CardContent className="p-12 text-center">
-                <h3 className="text-3xl md:text-4xl font-bold mb-8 gradient-primary bg-clip-text text-transparent">
-                  Imagine this:
+                <div className="inline-flex items-center px-4 py-2 bg-destructive/10 rounded-full mb-8 animate-pulse">
+                  <div className="w-3 h-3 bg-destructive rounded-full mr-3 animate-ping"></div>
+                  <span className="text-destructive font-semibold">⚠️ LIMITED AVAILABILITY</span>
+                </div>
+                
+                <h3 className="text-3xl md:text-4xl font-bold mb-8">
+                  We Only Take 5 New Businesses Per Month.
                 </h3>
                 
-                <div className="space-y-6 mb-8">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-neon to-primary rounded-full flex items-center justify-center mr-4 animate-pulse">
-                      <Zap className="w-6 h-6 text-white" />
-                    </div>
-                    <p className="text-xl text-left">You wake up with <span className="font-bold text-neon">6 new bookings.</span></p>
+                <p className="text-xl text-muted-foreground mb-8">
+                  Why? Because real results need real effort. We go deep with every client.
+                </p>
+                
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
+                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
+                    <span className="text-left">Early access = 1-on-1 setup</span>
                   </div>
-                  
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center mr-4 animate-pulse">
-                      <Instagram className="w-6 h-6 text-white" />
-                    </div>
-                    <p className="text-xl text-left">Your <span className="font-bold text-accent">DMs reply instantly.</span></p>
+                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
+                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
+                    <span className="text-left">DM templates, automation, and branded visuals</span>
                   </div>
-                  
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mr-4 animate-pulse">
-                      <Users className="w-6 h-6 text-white" />
-                    </div>
-                    <p className="text-xl text-left">Clients are <span className="font-bold text-primary">rebooking themselves.</span></p>
-                  </div>
-                  
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-destructive to-orange-500 rounded-full flex items-center justify-center mr-4 animate-pulse">
-                      <Target className="w-6 h-6 text-white" />
-                    </div>
-                    <p className="text-xl text-left">And your competitors… <span className="font-bold text-destructive">are still posting reels at midnight.</span></p>
+                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
+                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
+                    <span className="text-left">Instagram strategy and booking system included</span>
                   </div>
                 </div>
                 
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg border border-primary/20 mb-8">
-                  <p className="text-xl font-semibold mb-4">
-                    ➤ That's the unfair advantage we bring. Want it?
-                  </p>
-                </div>
-                
-                <Button variant="cta" size="xl" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Yes, I Want This Advantage
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
+                <Badge variant="outline" className="mb-6 px-4 py-2 text-base border-primary/30">
+                  Beta Offer – No Credit Card Needed
+                </Badge>
               </CardContent>
             </Card>
+          </div>
+        </section>
+
+        {/* 7. Final CTA Section */}
+        <section className="py-24 bg-gradient-to-br from-primary/10 to-accent/10">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16 reveal-up">
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                Don't wait another week to fix what's not working.
+              </h2>
+              <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto">
+                Let's build your automated growth engine — together.
+              </p>
+              
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                  🔥 Book a Free Demo Call Now
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+                
+                <div className="flex items-center text-muted-foreground">
+                  <span className="mr-2">or</span>
+                  <Button variant="outline" size="xl" onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}>
+                    📩 DM Us on Instagram
+                    <Instagram className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -702,23 +794,13 @@ const Index = () => {
           </TooltipContent>
         </Tooltip>
 
-        {/* Bottom CTA Banner - Not Sticky */}
-        <section className="py-12 bg-gradient-to-r from-primary via-accent to-neon text-white">
+        {/* Copyright Section */}
+        <section className="py-6 bg-muted/10 border-t border-border/20">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left">
-              <div className="mb-4 md:mb-0">
-                <p className="font-bold text-lg mb-2">You'll either build a system that works for you — or stay stuck working for your system.</p>
-                <p className="text-sm opacity-90">Book your free business audit now. The smartest owners already have.</p>
-              </div>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="bg-white text-primary hover:bg-white/90 border-white flex-shrink-0"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Book Free Audit
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                © 2024 AgencyX. All rights reserved.
+              </p>
             </div>
           </div>
         </section>
