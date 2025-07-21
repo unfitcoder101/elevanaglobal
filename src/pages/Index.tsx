@@ -212,7 +212,12 @@ const Index = () => {
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-              AgencyX
+              ClientLoom
+            </div>
+            
+            {/* Top right corner agency name */}
+            <div className="absolute top-4 right-4 text-sm font-medium text-muted-foreground">
+              ClientLoom
             </div>
             
             {/* Desktop Navigation */}
@@ -355,6 +360,13 @@ const Index = () => {
                     <p className="text-lg text-muted-foreground">{pain}</p>
                   </div>
                 ))}
+              </div>
+              
+              <div className="mt-12">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
+                  🔥 Book Your Free Demo Now
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
               </div>
             </div>
           </div>
@@ -603,9 +615,28 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <Badge variant="outline" className="mb-6 px-4 py-2 text-base border-primary/30">
-                  Beta Offer – No Credit Card Needed
-                </Badge>
+                 <Badge variant="outline" className="mb-8 px-4 py-2 text-base border-primary/30">
+                   Beta Offer – No Credit Card Needed
+                 </Badge>
+                 
+                 <p className="text-xl text-muted-foreground mb-8">
+                   Don't wait another week to fix what's not working. Let's build your automated growth engine — together.
+                 </p>
+                 
+                 <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                   <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                     🔥 Book a Free Demo Call Now
+                     <ArrowRight className="w-5 h-5" />
+                   </Button>
+                   
+                   <div className="flex items-center text-muted-foreground">
+                     <span className="mr-2">or</span>
+                     <Button variant="outline" size="xl" onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}>
+                       📩 DM Us on Instagram
+                       <Instagram className="w-5 h-5" />
+                     </Button>
+                   </div>
+                 </div>
               </CardContent>
             </Card>
           </div>
@@ -717,7 +748,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center">
               <div className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-4">
-                AgencyX
+                ClientLoom
               </div>
               <p className="text-muted-foreground mb-6">
                 Helping businesses grow their online presence and scale profits
@@ -799,7 +830,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                © 2024 AgencyX. All rights reserved.
+                © 2024 ClientLoom. All rights reserved.
               </p>
             </div>
           </div>
