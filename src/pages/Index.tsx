@@ -619,10 +619,6 @@ const Index = () => {
                    Beta Offer – No Credit Card Needed
                  </Badge>
                  
-                 <p className="text-xl text-muted-foreground mb-8">
-                   Don't wait another week to fix what's not working. Let's build your automated growth engine — together.
-                 </p>
-                 
                  <div className="flex flex-col md:flex-row items-center justify-center gap-6">
                    <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
                      🔥 Book a Free Demo Call Now
