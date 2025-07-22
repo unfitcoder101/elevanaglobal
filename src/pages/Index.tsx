@@ -147,8 +147,8 @@ const Index = () => {
     {
       icon: <BarChart3 className="w-12 h-12" />,
       title: 'Custom Plan',
-      description: 'Data-driven insights that show exactly what\'s working and how to maximize your ROI across all channels.',
-      features: ['Real-time Dashboards', 'Conversion Tracking', 'ROI Analysis', 'Growth Forecasting'],
+      description: '',
+      features: [],
       gradient: 'from-cyan-500 to-blue-600'
     }
   ];
