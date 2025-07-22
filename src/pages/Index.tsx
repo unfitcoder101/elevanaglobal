@@ -211,14 +211,9 @@ const Index = () => {
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
+            <a href="#hero" className="text-2xl font-bold font-inter pl-6 gradient-primary bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-smooth">
               ClientLoom
-            </div>
-            
-            {/* Top right corner agency name */}
-            <div className="absolute top-4 right-4 text-sm font-medium text-muted-foreground">
-              ClientLoom
-            </div>
+            </a>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -262,7 +257,7 @@ const Index = () => {
         </header>
 
         {/* 1. Hero Section - The Imagination Hook */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
             style={{ backgroundImage: `url(${heroBackground})` }}
@@ -628,34 +623,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 7. Final CTA Section */}
-        <section className="py-24 bg-gradient-to-br from-primary/10 to-accent/10">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-8">
-                Don't wait another week to fix what's not working.
-              </h2>
-              <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto">
-                Let's build your automated growth engine — together.
-              </p>
-              
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                  🔥 Book a Free Demo Call Now
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-                
-                <div className="flex items-center text-muted-foreground">
-                  <span className="mr-2">or</span>
-                  <Button variant="outline" size="xl" onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}>
-                    📩 DM Us on Instagram
-                    <Instagram className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Google Form Contact Section */}
         <section id="contact" className="py-24 bg-muted/20">

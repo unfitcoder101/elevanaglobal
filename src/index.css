@@ -6,46 +6,46 @@
 
 @layer base {
   :root {
-    /* Base colors - minimal black & white */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
+    /* Trust-building light theme colors */
+    --background: 0 0% 98%;  /* Soft White */
+    --foreground: 225 15% 20%;  /* Dark Navy */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card-foreground: 225 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 225 15% 20%;
 
-    /* Premium accent colors */
-    --primary: 213 94% 68%;  /* Electric blue */
+    /* Trust-building accent colors */
+    --primary: 172 38% 56%;  /* Teal */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 213 94% 78%;
+    --primary-glow: 145 63% 70%;  /* Sage Green hover */
 
-    --secondary: 0 0% 5%;    /* Deep black */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 225 15% 20%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 318 100% 70%;   /* Gradient pink */
-    --accent-foreground: 0 0% 100%;
+    --accent: 197 71% 73%;   /* Sky Blue */
+    --accent-foreground: 225 15% 20%;
 
-    --neon: 142 100% 65%;     /* Neon green */
-    --neon-foreground: 0 0% 8%;
+    --neon: 172 46% 55%;     /* Aqua */
+    --neon-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 91%;
-    --input: 0 0% 96%;
-    --ring: 213 94% 68%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 172 38% 56%;
 
     --radius: 0.5rem;
 
-    /* Premium gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-neon: linear-gradient(135deg, hsl(var(--neon)), hsl(var(--primary)));
+    /* Trust-building gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(172 38% 56%), hsl(145 63% 70%));
+    --gradient-accent: linear-gradient(135deg, hsl(172 38% 56%), hsl(197 71% 73%));
+    --gradient-neon: linear-gradient(135deg, hsl(172 46% 55%), hsl(197 71% 73%));
 
     /* Shadows with color */
     --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.3);
