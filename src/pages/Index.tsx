@@ -146,7 +146,7 @@ const Index = () => {
     },
     {
       icon: <BarChart3 className="w-12 h-12" />,
-      title: 'Performance Analytics',
+      title: 'Custom Plan',
       description: 'Data-driven insights that show exactly what\'s working and how to maximize your ROI across all channels.',
       features: ['Real-time Dashboards', 'Conversion Tracking', 'ROI Analysis', 'Growth Forecasting'],
       gradient: 'from-cyan-500 to-blue-600'
@@ -567,7 +567,7 @@ const Index = () => {
                     <p className="text-muted-foreground">Project walkthrough video coming soon</p>
                   </div>
                 </div>
-                <p className="text-lg text-center text-muted-foreground">
+                <p className="text-lg text-center text-foreground font-medium">
                   "Swipe through some of our done-for-you growth systems"
                 </p>
               </div>
@@ -619,20 +619,10 @@ const Index = () => {
                    Beta Offer – No Credit Card Needed
                  </Badge>
                  
-                 <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                   <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                     🔥 Book a Free Demo Call Now
-                     <ArrowRight className="w-5 h-5" />
-                   </Button>
-                   
-                   <div className="flex items-center text-muted-foreground">
-                     <span className="mr-2">or</span>
-                     <Button variant="outline" size="xl" onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}>
-                       📩 DM Us on Instagram
-                       <Instagram className="w-5 h-5" />
-                     </Button>
-                   </div>
-                 </div>
+                  <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                    🔥 Get Your Free Business Audit
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
               </CardContent>
             </Card>
           </div>
