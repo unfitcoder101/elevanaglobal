@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
+import AnimatedCounter from '@/components/AnimatedCounter';
 import { 
   ArrowRight, 
   Phone, 
@@ -211,7 +212,22 @@ const Index = () => {
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#hero" className="text-2xl font-bold font-inter pl-6 gradient-primary bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-smooth">
+            <a href="#hero" className="flex items-center text-2xl font-bold font-inter pl-6 gradient-primary bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-smooth">
+              <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                className="mr-2 flex-shrink-0"
+                style={{ filter: 'drop-shadow(0 0 8px rgba(102, 195, 255, 0.3))' }}
+              >
+                <path 
+                  d="M12 3L13.09 8.26L17 6L14.74 10.26L20 10L15.26 12L17 17L12 14.74L7 17L8.74 12L3 10L8.26 9.74L7 6L12 8.26L12 3Z" 
+                  fill="#66C3FF"
+                  stroke="#00B8A9"
+                  strokeWidth="0.5"
+                />
+              </svg>
               ClientLoom
             </a>
             
@@ -330,6 +346,41 @@ const Index = () => {
                 <CheckCircle className="w-4 h-4 text-neon mr-2" />
                 100% satisfaction guarantee
               </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Animated Social Proof Counters */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                Trusted by Growing Businesses
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Real numbers from real businesses we've helped transform
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <AnimatedCounter 
+                end={2300} 
+                duration={3000}
+                emoji="👥"
+                label="Monthly Visitors Gained"
+              />
+              <AnimatedCounter 
+                end={850} 
+                duration={2500}
+                emoji="📆"
+                label="New Bookings Created"
+              />
+              <AnimatedCounter 
+                end={156} 
+                duration={3500}
+                emoji="🛠️"
+                label="Automations Deployed"
+              />
             </div>
           </div>
         </section>
