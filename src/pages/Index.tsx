@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import AnimatedCounter from '@/components/AnimatedCounter';
-import LiveCounters from '@/components/LiveCounters';
 import { 
   ArrowRight, 
   Phone, 
@@ -545,8 +544,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Live Results Counter Section */}
-        <LiveCounters />
 
         {/* 4. Social Proof - Testimonials Section */}
         <section id="testimonials" className="py-24">
