@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import AnimatedCounter from '@/components/AnimatedCounter';
+import LiveCounters from '@/components/LiveCounters';
 import { 
   ArrowRight, 
   Phone, 
@@ -385,27 +386,17 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 2. Pain Realization Section - "Why You're Stuck" */}
+        {/* 2. Pain Realization Section - "Let's Be Honest" */}
         <section className="py-24 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-12">
-                Let's be honest... this is how your business feels lately:
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                <strong>Let's be honest — your business wasn't meant to run on burnout.</strong>
               </h2>
               
-              <div className="max-w-3xl mx-auto space-y-6 text-left">
-                {[
-                  "You post every day, but barely get engagement.",
-                  "DMs stay unread, or worse — you forget to reply.",
-                  "Walk-ins have slowed. Loyal clients haven't returned.",
-                  "You're great at your service, but marketing? Exhausting.",
-                  "You feel stuck doing everything alone."
-                ].map((pain, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-card/50 border border-border/50">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-3 flex-shrink-0"></div>
-                    <p className="text-lg text-muted-foreground">{pain}</p>
-                  </div>
-                ))}
+              <div className="max-w-2xl mx-auto space-y-4 text-center">
+                <p className="text-lg text-muted-foreground">Late DMs. No-shows. Empty chairs.</p>
+                <p className="text-lg text-muted-foreground">We fix that with systems — not stress.</p>
               </div>
               
               <div className="mt-12">
@@ -418,27 +409,27 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 3. Transformation Section - "What Changes With Us" */}
+        {/* 3. Transformation Section - "Now Imagine This Instead" */}
         <section className="py-24">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-12">
-                Now imagine this instead…
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                <strong>Imagine this.</strong>
               </h2>
               
-              <div className="max-w-3xl mx-auto space-y-6 text-left">
-                {[
-                  "Booked clients before you even open your shop",
-                  "Auto-replies to every DM — with booking links",
-                  "Your Instagram not only looks premium — it sells",
-                  "Clients rebook before leaving",
-                  "You're finally free to focus on what you love"
-                ].map((result, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
-                    <CheckCircle className="w-6 h-6 text-neon mt-1 flex-shrink-0" />
-                    <p className="text-lg text-foreground font-medium">{result}</p>
-                  </div>
-                ))}
+              <div className="max-w-2xl mx-auto space-y-6 text-center">
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-2xl">💬</span>
+                  <p className="text-lg text-foreground">Your DMs reply themselves.</p>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-2xl">📅</span>
+                  <p className="text-lg text-foreground">Clients book — and rebook — automatically.</p>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-2xl">🚀</span>
+                  <p className="text-lg text-foreground">Your business grows while you sleep.</p>
+                </div>
               </div>
               
               <div className="mt-12">
@@ -553,6 +544,9 @@ const Index = () => {
             </Card>
           </div>
         </section>
+
+        {/* Live Results Counter Section */}
+        <LiveCounters />
 
         {/* 4. Social Proof - Testimonials Section */}
         <section id="testimonials" className="py-24">
@@ -765,24 +759,6 @@ const Index = () => {
             </div>
           </div>
         </footer>
-
-        {/* Floating Limited Availability Badge */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="fixed bottom-6 left-6 z-50 animate-bounce">
-              <div className="flex items-center px-4 py-3 bg-destructive/90 backdrop-blur-sm rounded-full border border-destructive/20 shadow-elegant cursor-pointer hover:scale-105 transition-transform">
-                <div className="w-2 h-2 bg-white rounded-full mr-3 animate-ping"></div>
-                <span className="text-white font-semibold text-sm">⚠️ Only 5 spots left</span>
-              </div>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <div className="max-w-xs">
-              <p className="font-semibold mb-2">Limited Availability</p>
-              <p className="text-sm">We only take 5 new businesses per month for personalized results.</p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
 
         {/* Floating CTA Button */}
         <Tooltip>
