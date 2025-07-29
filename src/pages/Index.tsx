@@ -628,51 +628,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 6. Scarcity + Offer Block - FOMO Zone */}
-        <section className="py-24 bg-gradient-to-br from-primary/5 to-accent/5">
-          <div className="container mx-auto px-4">
-            <Card className="max-w-4xl mx-auto shadow-elegant bg-gradient-to-br from-card to-primary/5 reveal-up border-primary/20">
-              <CardContent className="p-12 text-center">
-                <div className="inline-flex items-center px-4 py-2 bg-destructive/10 rounded-full mb-8 animate-pulse">
-                  <div className="w-3 h-3 bg-destructive rounded-full mr-3 animate-ping"></div>
-                  <span className="text-destructive font-semibold">⚠️ LIMITED AVAILABILITY</span>
-                </div>
-                
-                <h3 className="text-3xl md:text-4xl font-bold mb-8">
-                  We Only Take 5 New Businesses Per Month.
-                </h3>
-                
-                <p className="text-xl text-muted-foreground mb-8">
-                  Why? Because real results need real effort. We go deep with every client.
-                </p>
-                
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
-                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
-                    <span className="text-left">Early access = 1-on-1 setup</span>
-                  </div>
-                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
-                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
-                    <span className="text-left">DM templates, automation, and branded visuals</span>
-                  </div>
-                  <div className="flex items-center space-x-3 p-4 rounded-lg bg-gradient-to-r from-neon/5 to-primary/5 border border-neon/20">
-                    <CheckCircle className="w-6 h-6 text-neon flex-shrink-0" />
-                    <span className="text-left">Instagram strategy and booking system included</span>
-                  </div>
-                </div>
-                
-                 <Badge variant="outline" className="mb-8 px-4 py-2 text-base border-primary/30">
-                   Beta Offer – No Credit Card Needed
-                 </Badge>
-                 
-                  <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                    🔥 Get Your Free Business Audit
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
 
 
         {/* Google Form Contact Section */}
@@ -810,6 +765,24 @@ const Index = () => {
             </div>
           </div>
         </footer>
+
+        {/* Floating Limited Availability Badge */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="fixed bottom-6 left-6 z-50 animate-bounce">
+              <div className="flex items-center px-4 py-3 bg-destructive/90 backdrop-blur-sm rounded-full border border-destructive/20 shadow-elegant cursor-pointer hover:scale-105 transition-transform">
+                <div className="w-2 h-2 bg-white rounded-full mr-3 animate-ping"></div>
+                <span className="text-white font-semibold text-sm">⚠️ Only 5 spots left</span>
+              </div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <div className="max-w-xs">
+              <p className="font-semibold mb-2">Limited Availability</p>
+              <p className="text-sm">We only take 5 new businesses per month for personalized results.</p>
+            </div>
+          </TooltipContent>
+        </Tooltip>
 
         {/* Floating CTA Button */}
         <Tooltip>
