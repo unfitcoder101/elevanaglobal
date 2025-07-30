@@ -364,19 +364,19 @@ const Index = () => {
             
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <AnimatedCounter 
-                end={2300} 
+                end={1500} 
                 duration={3000}
                 emoji="👥"
                 label="Monthly Visitors Gained"
               />
               <AnimatedCounter 
-                end={850} 
+                end={345} 
                 duration={2500}
                 emoji="📆"
                 label="New Bookings Created"
               />
               <AnimatedCounter 
-                end={156} 
+                end={52} 
                 duration={3500}
                 emoji="🛠️"
                 label="Automations Deployed"
