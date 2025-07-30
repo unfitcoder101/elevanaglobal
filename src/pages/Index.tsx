@@ -351,7 +351,7 @@ const Index = () => {
         </section>
 
         {/* Animated Social Proof Counters */}
-        <section className="py-16 bg-background">
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 reveal-up">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
@@ -387,7 +387,7 @@ const Index = () => {
 
 
         {/* 3. Transformation Section - "Now Imagine This Instead" */}
-        <section className="py-24">
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-8">
@@ -421,7 +421,7 @@ const Index = () => {
 
 
         {/* Enhanced Services Section */}
-        <section id="services" className="py-24 bg-muted/20">
+        <section id="services" className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -498,7 +498,7 @@ const Index = () => {
 
 
         {/* 4. Social Proof - Testimonials Section */}
-        <section id="testimonials" className="py-24">
+        <section id="testimonials" className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -537,7 +537,7 @@ const Index = () => {
         </section>
 
         {/* 5. Case Study / Project Video Section */}
-        <section className="py-24 bg-muted/20">
+        <section className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -574,7 +574,7 @@ const Index = () => {
 
 
         {/* Google Form Contact Section */}
-        <section id="contact" className="py-24 bg-muted/20">
+        <section id="contact" className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12 reveal-up">
@@ -727,16 +727,6 @@ const Index = () => {
           </TooltipContent>
         </Tooltip>
 
-        {/* Copyright Section */}
-        <section className="py-6 bg-muted/10 border-t border-border/20">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground">
-                © 2024 ClientLoom. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </section>
       </div>
     </TooltipProvider>
   );
