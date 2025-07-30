@@ -385,28 +385,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 2. Pain Realization Section - "Let's Be Honest" */}
-        <section className="py-24 bg-muted/20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-8">
-                <strong>Let's be honest — your business wasn't meant to run on burnout.</strong>
-              </h2>
-              
-              <div className="max-w-2xl mx-auto space-y-4 text-center">
-                <p className="text-lg text-muted-foreground">Late DMs. No-shows. Empty chairs.</p>
-                <p className="text-lg text-muted-foreground">We fix that with systems — not stress.</p>
-              </div>
-              
-              <div className="mt-12">
-                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
-                  🔥 Book Your Free Demo Now
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* 3. Transformation Section - "Now Imagine This Instead" */}
         <section className="py-24">
@@ -441,32 +419,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Results Section */}
-        <section id="results" className="py-24">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Real Results for Real Businesses
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Our proven strategies deliver measurable growth that transforms businesses
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {results.map((result, index) => (
-                <Card key={index} className="text-center hover-lift reveal-up shadow-elegant">
-                  <CardContent className="pt-8">
-                    <div className="text-4xl md:text-5xl font-bold gradient-accent bg-clip-text text-transparent mb-2">
-                      {result.metric}
-                    </div>
-                    <p className="text-muted-foreground">{result.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Enhanced Services Section */}
         <section id="services" className="py-24 bg-muted/20">
