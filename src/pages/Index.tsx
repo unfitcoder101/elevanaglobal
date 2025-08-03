@@ -212,7 +212,7 @@ const Index = () => {
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#hero" className="flex items-center text-2xl font-semibold pl-6 cursor-pointer hover:opacity-80 transition-smooth" style={{ color: '#222831' }}>
+            <a href="#hero" className="flex items-center text-3xl font-bold pl-6 cursor-pointer transition-all duration-300 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               ELEVANA
             </a>
             
