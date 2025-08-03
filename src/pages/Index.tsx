@@ -212,8 +212,10 @@ const Index = () => {
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#hero" className="flex items-center text-3xl font-bold pl-6 cursor-pointer transition-all duration-300 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              ELEVANA
+            <a href="#hero" 
+               className="flex items-center text-3xl font-extrabold pl-6 cursor-pointer transition-all duration-300 hover:opacity-80 font-poppins"
+               style={{ color: '#008C8C', letterSpacing: '0.5px' }}>
+              ELEVANA<span style={{ color: '#20C997' }}>.</span>
             </a>
             
             {/* Desktop Navigation */}
