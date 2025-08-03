@@ -33,6 +33,12 @@ import testimonial3 from '@/assets/testimonial-3.jpg';
 import testimonial4 from '@/assets/testimonial-4.jpg';
 import heroBackground from '@/assets/hero-background.jpg';
 
+// Import new testimonial images
+import testimonialRohit from '@/assets/testimonial-rohit.jpg';
+import testimonialClaire from '@/assets/testimonial-claire.jpg';
+import testimonialLiam from '@/assets/testimonial-liam.jpg';
+import testimonialJade from '@/assets/testimonial-jade.jpg';
+
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -74,6 +80,33 @@ const Index = () => {
       description: `${contactInfo.email} has been copied to your clipboard`,
     });
   };
+
+  const newTestimonials = [
+    {
+      name: 'Rohit S.',
+      title: 'Gym Owner (India)',
+      image: testimonialRohit,
+      content: 'These guys helped me turn random DMs into real clients. I\'ve already added two new trainers.'
+    },
+    {
+      name: 'Claire W.',
+      title: 'Salon Owner (London)',
+      image: testimonialClaire,
+      content: 'Our salon bookings shot up after their Insta revamp. Couldn\'t have done it alone.'
+    },
+    {
+      name: 'Liam J.',
+      title: 'Real Estate Agent (Los Angeles)',
+      image: testimonialLiam,
+      content: 'Got 3 new buyers from just one campaign. They really know how to sell.'
+    },
+    {
+      name: 'Jade K.',
+      title: 'Yoga Studio Owner (Sydney)',
+      image: testimonialJade,
+      content: 'The website and WhatsApp funnel they built made my life so easy.'
+    }
+  ];
 
   const testimonials = [
     {
@@ -483,6 +516,69 @@ const Index = () => {
           </div>
         </section>
 
+
+        {/* Premium Client Testimonials Section */}
+        <section id="client-testimonials" className="py-20" style={{ backgroundColor: '#f8f9fa' }}>
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16 reveal-up">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 font-poppins" style={{ color: '#008C8C' }}>
+                What Our Clients Say
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Real businesses achieving real growth with our proven systems
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {newTestimonials.map((testimonial, index) => (
+                <Card 
+                  key={index} 
+                  className="group hover:shadow-2xl transition-all duration-300 border-0 bg-white/90 backdrop-blur-sm overflow-hidden relative reveal-up"
+                  style={{
+                    boxShadow: '0 8px 32px rgba(0, 140, 140, 0.1)',
+                    transform: 'translateY(0)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 140, 140, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 140, 140, 0.1)';
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <CardContent className="p-8 relative z-10">
+                    <div className="flex items-start space-x-4 mb-6">
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg"
+                        style={{ 
+                          filter: 'blur(0.5px)',
+                          borderColor: '#20C997'
+                        }}
+                      />
+                      <div className="flex-1">
+                        <blockquote className="text-lg leading-relaxed text-gray-700 font-poppins mb-4">
+                          "{testimonial.content}"
+                        </blockquote>
+                        <div className="font-poppins">
+                          <div className="font-semibold italic text-base" style={{ color: '#008C8C' }}>
+                            {testimonial.name}
+                          </div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            {testimonial.title}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* 4. Social Proof - Testimonials Section */}
         <section id="testimonials" className="py-16">
