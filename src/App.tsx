@@ -24,7 +24,7 @@ const App = () => (
           </div>
           <footer className="bg-accent/5 py-3 md:py-4">
             <div className="text-center text-sm text-foreground/70">
-              🧠 Built with ❤️ by NIT Students | ClientLoom © 2025
+              🧠 Built with ❤️ by NIT Students | ELEVANA © 2025
             </div>
           </footer>
         </BrowserRouter>

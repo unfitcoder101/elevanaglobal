@@ -212,23 +212,8 @@ const Index = () => {
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#hero" className="flex items-center text-2xl font-bold font-inter pl-6 gradient-primary bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-smooth">
-              <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                className="mr-2 flex-shrink-0"
-                style={{ filter: 'drop-shadow(0 0 8px rgba(102, 195, 255, 0.3))' }}
-              >
-                <path 
-                  d="M12 3L13.09 8.26L17 6L14.74 10.26L20 10L15.26 12L17 17L12 14.74L7 17L8.74 12L3 10L8.26 9.74L7 6L12 8.26L12 3Z" 
-                  fill="#66C3FF"
-                  stroke="#00B8A9"
-                  strokeWidth="0.5"
-                />
-              </svg>
-              ClientLoom
+            <a href="#hero" className="flex items-center text-2xl font-semibold pl-6 cursor-pointer hover:opacity-80 transition-smooth" style={{ color: '#222831' }}>
+              ELEVANA
             </a>
             
             {/* Desktop Navigation */}
@@ -649,8 +634,8 @@ const Index = () => {
         <footer className="py-12 bg-secondary text-secondary-foreground">
           <div className="container mx-auto px-4">
             <div className="text-center">
-              <div className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-4">
-                ClientLoom
+              <div className="text-3xl font-semibold mb-4" style={{ color: '#222831' }}>
+                ELEVANA
               </div>
               <p className="text-muted-foreground mb-6">
                 Helping businesses grow their online presence and scale profits
