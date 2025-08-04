@@ -39,6 +39,13 @@ import testimonialClaire from '@/assets/testimonial-claire.jpg';
 import testimonialLiam from '@/assets/testimonial-liam.jpg';
 import testimonialJade from '@/assets/testimonial-jade.jpg';
 
+// Import proof screenshots
+import whatsappSalon from '@/assets/testimonial-whatsapp-salon.jpg';
+import calendarDashboard from '@/assets/testimonial-calendar-dashboard.jpg';
+import instagramGrowth from '@/assets/testimonial-instagram-growth.jpg';
+import instagramDms from '@/assets/testimonial-instagram-dms.jpg';
+import paymentNotifications from '@/assets/testimonial-payment-notifications.jpg';
+
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -589,26 +596,80 @@ const Index = () => {
                 Proof in Action
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                See how we transformed other businesses — just like yours.
+                Here's What Business Owners Are Saying Behind the Scenes 👇
               </p>
               
-              <div className="max-w-3xl mx-auto bg-gradient-to-br from-card to-primary/5 rounded-xl p-8 border border-primary/20">
-                <div className="aspect-video bg-muted/50 rounded-lg flex items-center justify-center mb-6">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <ExternalLink className="w-8 h-8 text-primary" />
-                    </div>
-                    <p className="text-muted-foreground">Project walkthrough video coming soon</p>
+              {/* Screenshot Grid */}
+              <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={whatsappSalon} 
+                      alt="WhatsApp conversation with salon client"
+                      className="w-full h-64 object-cover"
+                    />
                   </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Client rebookings doubled in 14 days"
+                  </p>
                 </div>
-                <p className="text-lg text-center text-foreground font-medium">
-                  "Swipe through some of our done-for-you growth systems"
-                </p>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={calendarDashboard} 
+                      alt="Calendar booking dashboard"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Calendar's filling fast, thanks to automation"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={instagramGrowth} 
+                      alt="Instagram growth analytics"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Instagram reach tripled in 3 weeks"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={instagramDms} 
+                      alt="Instagram automated DMs"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "DMs now work while they sleep"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={paymentNotifications} 
+                      alt="Payment notifications dashboard"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Online payments flowing 24/7"
+                  </p>
+                </div>
               </div>
               
               <div className="mt-12">
                 <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
-                  🚀 I Want a System Like This
+                  🚀 I Want Results Like This
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </div>
