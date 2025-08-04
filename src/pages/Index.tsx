@@ -580,44 +580,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 4. Social Proof - Testimonials Section */}
-        <section id="testimonials" className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Real Businesses. Real Results.
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="hover-lift reveal-up shadow-elegant">
-                  <CardContent className="p-8">
-                    <div className="flex items-center mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <p className="text-muted-foreground mb-6 italic text-lg leading-relaxed">
-                      "{testimonial.content}"
-                    </p>
-                    <div className="flex items-center">
-                      <img 
-                        src={testimonial.image} 
-                        alt={testimonial.name}
-                        className="w-12 h-12 rounded-full mr-4 object-cover"
-                      />
-                      <div>
-                        <div className="font-semibold">{testimonial.name}</div>
-                        <div className="text-sm text-muted-foreground">{testimonial.title}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* 5. Case Study / Project Video Section */}
         <section className="py-16 bg-muted/20">
