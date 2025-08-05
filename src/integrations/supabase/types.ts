@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      growth_audit_submissions: {
+        Row: {
+          biggest_challenge: string
+          created_at: string
+          desired_results: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          updated_at: string
+          website_instagram: string | null
+        }
+        Insert: {
+          biggest_challenge: string
+          created_at?: string
+          desired_results: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          updated_at?: string
+          website_instagram?: string | null
+        }
+        Update: {
+          biggest_challenge?: string
+          created_at?: string
+          desired_results?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          updated_at?: string
+          website_instagram?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
