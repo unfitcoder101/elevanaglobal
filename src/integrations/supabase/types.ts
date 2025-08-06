@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_customizations: {
+        Row: {
+          additional_requirements: string | null
+          admin_notes: string | null
+          budget_range: string | null
+          business_name: string
+          business_type: string
+          created_at: string
+          description: string
+          email: string
+          estimated_cost: number | null
+          id: string
+          name: string
+          status: string
+          timeline: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          additional_requirements?: string | null
+          admin_notes?: string | null
+          budget_range?: string | null
+          business_name: string
+          business_type: string
+          created_at?: string
+          description: string
+          email: string
+          estimated_cost?: number | null
+          id?: string
+          name: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          additional_requirements?: string | null
+          admin_notes?: string | null
+          budget_range?: string | null
+          business_name?: string
+          business_type?: string
+          created_at?: string
+          description?: string
+          email?: string
+          estimated_cost?: number | null
+          id?: string
+          name?: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       growth_audit_submissions: {
         Row: {
           biggest_challenge: string
@@ -47,6 +101,162 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           website_instagram?: string | null
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          business_type: string | null
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          problem_description: string | null
+          updated_at: string
+        }
+        Insert: {
+          business_type?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          problem_description?: string | null
+          updated_at?: string
+        }
+        Update: {
+          business_type?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          problem_description?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          due_date: string | null
+          id: string
+          order_id: string | null
+          paid_at: string | null
+          payment_method: string | null
+          reference_number: string | null
+          status: string
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          reference_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          reference_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          description: string
+          feedback: string | null
+          hours_worked: number | null
+          id: string
+          priority: string
+          progress_percentage: number | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          description: string
+          feedback?: string | null
+          hours_worked?: number | null
+          id?: string
+          priority?: string
+          progress_percentage?: number | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string
+          feedback?: string | null
+          hours_worked?: number | null
+          id?: string
+          priority?: string
+          progress_percentage?: number | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
