@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/components/AuthProvider';
+import ContactModal from '@/components/ContactModal';
+import CustomizationModal from '@/components/CustomizationModal';
+import ChatBot from '@/components/ChatBot';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -50,7 +55,11 @@ const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [customizationModalOpen, setCustomizationModalOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Contact Information
   const contactInfo = {
@@ -274,10 +283,22 @@ const Index = () => {
             </nav>
 
             <div className="flex items-center space-x-4">
-              <Button variant="gradient" size="lg" className="hidden md:inline-flex">
-                Book Free Audit Call
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              {user ? (
+                <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/dashboard')}>
+                  Dashboard
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/auth')}>
+                    Sign In
+                  </Button>
+                  <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => setContactModalOpen(true)}>
+                    Book Free Call
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </>
+              )}
               
               {/* Mobile Menu Button */}
               <button 
@@ -297,10 +318,22 @@ const Index = () => {
                 <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
                 <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
                 <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
-                <Button variant="gradient" size="lg" className="w-full">
-                  Book Free Audit Call
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
+                {user ? (
+                  <Button variant="gradient" size="lg" className="w-full" onClick={() => navigate('/dashboard')}>
+                    Dashboard
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="outline" size="lg" className="w-full mb-2" onClick={() => navigate('/auth')}>
+                      Sign In
+                    </Button>
+                    <Button variant="gradient" size="lg" className="w-full" onClick={() => setContactModalOpen(true)}>
+                      Book Free Call
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
               </nav>
             </div>
           )}
@@ -350,7 +383,7 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
-              <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+              <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => setContactModalOpen(true)}>
                 🔥 Book Your Free Demo Now
                 <ArrowRight className="w-5 h-5" />
               </Button>
