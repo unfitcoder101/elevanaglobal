@@ -187,10 +187,17 @@ const Index = () => {
     },
     {
       icon: <BarChart3 className="w-12 h-12" />,
-      title: 'Custom Plan',
-      description: '',
-      features: [],
-      gradient: 'from-cyan-500 to-blue-600'
+      title: '🛠️ Tailored Growth Solutions – Built Around Your Business',
+      description: 'Not every business needs the same blueprint. That\'s why we offer custom solutions designed exactly for your growth goals — whether you\'re starting from scratch or scaling fast.',
+      features: [
+        'Full Website Creation – Landing pages to full-stack builds',
+        'UI/UX Design – Clean, modern layouts that convert',
+        'Hosting & Deployment – Stress-free, fast, and secure',
+        'Automation Setup – From DMs to email flows',
+        'Business Strategy – Sales scripts, repeat client playbooks, and more'
+      ],
+      gradient: 'from-cyan-500 to-blue-600',
+      isCustomPlan: true
     }
   ];
 
@@ -460,32 +467,69 @@ const Index = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
-                  <CardContent className="p-8 relative z-10">
-                    <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.gradient} shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <div className="text-white">
-                        {service.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {service.description}
-                    </p>
-                    <div className="space-y-2">
-                      {service.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center text-sm">
-                          <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${service.gradient} mr-3`} />
-                          <span className="text-muted-foreground">{feature}</span>
+              {services.map((service, index) => {
+                if (service.isCustomPlan) {
+                  return (
+                    <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative md:col-span-2">
+                      <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
+                      <CardContent className="p-8 relative z-10">
+                        <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.gradient} shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                          <div className="text-white">
+                            {service.icon}
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                        <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
+                          {service.title}
+                        </h3>
+                        <div className="text-muted-foreground mb-6 leading-relaxed space-y-4">
+                          <p>{service.description}</p>
+                          <p className="font-medium">Here's what we can help you with:</p>
+                          <div className="space-y-2 pl-4">
+                            {service.features.map((feature, featureIndex) => (
+                              <div key={featureIndex} className="flex items-start text-sm">
+                                <span className="text-muted-foreground mr-2">•</span>
+                                <span className="text-muted-foreground">{feature}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="font-medium text-foreground">Just tell us what you need — we'll map out a solution.</p>
+                        </div>
+                        <Button variant="cta" size="lg" className="hover:scale-105 transition-transform">
+                          🔘 Get Your Custom Plan
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+                
+                return (
+                  <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
+                    <CardContent className="p-8 relative z-10">
+                      <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.gradient} shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                        <div className="text-white">
+                          {service.icon}
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-muted-foreground mb-4 leading-relaxed">
+                        {service.description}
+                      </p>
+                      <div className="space-y-2">
+                        {service.features.map((feature, featureIndex) => (
+                          <div key={featureIndex} className="flex items-center text-sm">
+                            <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${service.gradient} mr-3`} />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>
