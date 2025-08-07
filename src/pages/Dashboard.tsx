@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
@@ -325,6 +326,36 @@ const Dashboard = () => {
     setSelectedPayment(payment);
     setShowPaymentGateway(true);
   };
+  const handleProgressUpdate = async (projectId: string, newProgress: number) => {
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({ completion_percentage: newProgress })
+        .eq('id', projectId);
+
+      if (error) throw error;
+
+      // Update local state
+      setProjects(projects.map(project => 
+        project.id === projectId 
+          ? { ...project, completion_percentage: newProgress }
+          : project
+      ));
+
+      toast({
+        title: "Success",
+        description: "Project progress updated successfully!"
+      });
+    } catch (error) {
+      console.error('Error updating progress:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update project progress.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleProjectRequestResponse = async (requestId: string, response: 'accepted' | 'declined') => {
     try {
       if (response === 'accepted') {
@@ -638,7 +669,22 @@ const Dashboard = () => {
                           <span>Progress</span>
                           <span>{project.completion_percentage}%</span>
                         </div>
-                        <Progress value={project.completion_percentage} className="h-2" />
+                        {isAdmin ? (
+                          <div className="space-y-2">
+                            <Slider
+                              value={[project.completion_percentage]}
+                              onValueChange={(value) => handleProgressUpdate(project.id, value[0])}
+                              max={100}
+                              step={1}
+                              className="w-full"
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Admin: Drag to update progress
+                            </p>
+                          </div>
+                        ) : (
+                          <Progress value={project.completion_percentage} className="h-2" />
+                        )}
                       </div>
                       
                       <div className="grid grid-cols-2 gap-4 mt-3 text-sm text-muted-foreground">
