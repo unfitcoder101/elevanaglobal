@@ -334,6 +334,57 @@ export type Database = {
           },
         ]
       }
+      project_requests: {
+        Row: {
+          admin_id: string
+          admin_notes: string | null
+          created_at: string
+          description: string | null
+          estimated_cost: number | null
+          estimated_hours: number | null
+          id: string
+          project_type: string
+          responded_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+          user_response_message: string | null
+        }
+        Insert: {
+          admin_id: string
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          id?: string
+          project_type: string
+          responded_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+          user_response_message?: string | null
+        }
+        Update: {
+          admin_id?: string
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          id?: string
+          project_type?: string
+          responded_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          user_response_message?: string | null
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           admin_id: string | null
