@@ -12,30 +12,13 @@ import { Label } from '@/components/ui/label';
 import ProjectRequestModal from '@/components/ProjectRequestModal';
 import PaymentRequestModal from '@/components/PaymentRequestModal';
 import PaymentGateway from '@/components/PaymentGateway';
-import { 
-  LogOut, 
-  User, 
-  Plus, 
-  Clock, 
-  IndianRupee, 
-  CheckCircle, 
-  AlertCircle,
-  Settings,
-  BarChart3,
-  CreditCard,
-  Send,
-  Users,
-  Home,
-  Search
-} from 'lucide-react';
+import { LogOut, User, Plus, Clock, IndianRupee, CheckCircle, AlertCircle, Settings, BarChart3, CreditCard, Send, Users, Home, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-
 interface UserProfile {
   id: string;
   full_name: string | null;
   avatar_url: string | null;
 }
-
 interface Project {
   id: string;
   user_id: string;
@@ -52,7 +35,6 @@ interface Project {
   admin_id: string | null;
   notes: string | null;
 }
-
 interface ProjectPayment {
   id: string;
   project_id: string;
@@ -64,12 +46,16 @@ interface ProjectPayment {
   created_at: string;
   reference_number: string | null;
 }
-
 const Dashboard = () => {
-  const { user, signOut, loading } = useAuth();
-  const { toast } = useToast();
+  const {
+    user,
+    signOut,
+    loading
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const navigate = useNavigate();
-  
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [payments, setPayments] = useState<ProjectPayment[]>([]);
@@ -86,43 +72,36 @@ const Dashboard = () => {
   const [userSearchTerm, setUserSearchTerm] = useState<string>('');
 
   // Filter users based on search term
-  const filteredUsers = allUsers.filter(user => 
-    user.full_name?.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
-    user.user_id.toLowerCase().includes(userSearchTerm.toLowerCase())
-  );
-
+  const filteredUsers = allUsers.filter(user => user.full_name?.toLowerCase().includes(userSearchTerm.toLowerCase()) || user.user_id.toLowerCase().includes(userSearchTerm.toLowerCase()));
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
-
   useEffect(() => {
     if (user) {
       loadUserData();
     }
   }, [user]);
-
   const loadUserData = async () => {
     if (!user) return;
-
     try {
       setLoadingData(true);
-      
+
       // Check if user is admin using the has_role function
-      const { data: adminCheck } = await supabase.rpc('has_role', {
+      const {
+        data: adminCheck
+      } = await supabase.rpc('has_role', {
         _user_id: user.id,
         _role: 'admin'
       });
       setIsAdmin(adminCheck || false);
-      
-      // Load profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
 
+      // Load profile
+      const {
+        data: profileData,
+        error: profileError
+      } = await supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle();
       if (profileError && profileError.code !== 'PGRST116') {
         console.error('Error loading profile:', profileError);
       } else if (profileData) {
@@ -130,12 +109,12 @@ const Dashboard = () => {
       }
 
       // Load projects
-      const { data: projectsData, error: projectsError } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
+      const {
+        data: projectsData,
+        error: projectsError
+      } = await supabase.from('projects').select('*').eq('user_id', user.id).order('created_at', {
+        ascending: false
+      });
       if (projectsError) {
         console.error('Error loading projects:', projectsError);
       } else {
@@ -143,12 +122,12 @@ const Dashboard = () => {
       }
 
       // Load project payments
-      const { data: paymentsData, error: paymentsError } = await supabase
-        .from('project_payments')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
+      const {
+        data: paymentsData,
+        error: paymentsError
+      } = await supabase.from('project_payments').select('*').eq('user_id', user.id).order('created_at', {
+        ascending: false
+      });
       if (paymentsError) {
         console.error('Error loading payments:', paymentsError);
       } else {
@@ -156,12 +135,12 @@ const Dashboard = () => {
       }
 
       // Load project requests
-      const { data: requestsData, error: requestsError } = await supabase
-        .from('project_requests')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
+      const {
+        data: requestsData,
+        error: requestsError
+      } = await supabase.from('project_requests').select('*').eq('user_id', user.id).order('created_at', {
+        ascending: false
+      });
       if (requestsError) {
         console.error('Error loading project requests:', requestsError);
       } else {
@@ -170,11 +149,10 @@ const Dashboard = () => {
 
       // Load all users (including current admin) if admin
       if (adminCheck) {
-        const { data: usersData, error: usersError } = await supabase
-          .from('profiles')
-          .select('user_id, full_name')
-          .order('full_name');
-        
+        const {
+          data: usersData,
+          error: usersError
+        } = await supabase.from('profiles').select('user_id, full_name').order('full_name');
         if (usersError) {
           console.error('Error loading users:', usersError);
         } else {
@@ -182,61 +160,56 @@ const Dashboard = () => {
           setAllUsers(usersData || []);
         }
       }
-
     } catch (error) {
       console.error('Error loading user data:', error);
       toast({
         title: "Error",
         description: "Failed to load dashboard data. Please refresh the page.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoadingData(false);
     }
   };
-
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-500';
-      case 'in_progress': return 'bg-yellow-500';
-      case 'pending': return 'bg-gray-500';
-      case 'cancelled': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'completed':
+        return 'bg-green-500';
+      case 'in_progress':
+        return 'bg-yellow-500';
+      case 'pending':
+        return 'bg-gray-500';
+      case 'cancelled':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
     }
   };
-
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'text-green-600 bg-green-50';
-      case 'pending': return 'text-yellow-600 bg-yellow-50';
-      case 'failed': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'paid':
+        return 'text-green-600 bg-green-50';
+      case 'pending':
+        return 'text-yellow-600 bg-yellow-50';
+      case 'failed':
+        return 'text-red-600 bg-red-50';
+      default:
+        return 'text-gray-600 bg-gray-50';
     }
   };
-
   const getPaidAmount = () => {
-    return payments
-      .filter(p => p.status === 'paid')
-      .reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'paid').reduce((sum, p) => sum + Number(p.amount), 0);
   };
-
   const getDueAmount = () => {
-    return payments
-      .filter(p => p.status === 'pending' && p.due_date && new Date(p.due_date) < new Date())
-      .reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'pending' && p.due_date && new Date(p.due_date) < new Date()).reduce((sum, p) => sum + Number(p.amount), 0);
   };
-
   const getPendingAmount = () => {
-    return payments
-      .filter(p => p.status === 'pending')
-      .reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + Number(p.amount), 0);
   };
-
   const handlePaymentRequest = (project: Project) => {
     setSelectedProject(project);
     setShowPaymentRequest(true);
   };
-
   const handleCreateProjectRequest = () => {
     if (selectedUserId) {
       setShowProjectRequest(true);
@@ -244,16 +217,14 @@ const Dashboard = () => {
       toast({
         title: "Select a user",
         description: "Please select a user to send a project request to.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   const handlePayNow = (payment: ProjectPayment) => {
     setSelectedPayment(payment);
     setShowPaymentGateway(true);
   };
-
   const handleProjectRequestResponse = async (requestId: string, response: 'accepted' | 'declined') => {
     try {
       if (response === 'accepted') {
@@ -262,65 +233,55 @@ const Dashboard = () => {
         if (!request) return;
 
         // Create a new project
-        const { error: projectError } = await supabase
-          .from('projects')
-          .insert([{
-            user_id: user!.id,
-            admin_id: request.admin_id,
-            title: request.title,
-            description: request.description,
-            project_type: request.project_type,
-            estimated_cost: request.estimated_cost,
-            estimated_hours: request.estimated_hours,
-            status: 'pending'
-          }]);
-
+        const {
+          error: projectError
+        } = await supabase.from('projects').insert([{
+          user_id: user!.id,
+          admin_id: request.admin_id,
+          title: request.title,
+          description: request.description,
+          project_type: request.project_type,
+          estimated_cost: request.estimated_cost,
+          estimated_hours: request.estimated_hours,
+          status: 'pending'
+        }]);
         if (projectError) throw projectError;
       }
 
       // Update the project request status
-      const { error } = await supabase
-        .from('project_requests')
-        .update({ 
-          status: response,
-          responded_at: new Date().toISOString(),
-          user_response_message: response === 'accepted' ? 'Project accepted and added to portfolio' : 'Project declined'
-        })
-        .eq('id', requestId);
-
+      const {
+        error
+      } = await supabase.from('project_requests').update({
+        status: response,
+        responded_at: new Date().toISOString(),
+        user_response_message: response === 'accepted' ? 'Project accepted and added to portfolio' : 'Project declined'
+      }).eq('id', requestId);
       if (error) throw error;
-
       toast({
         title: "Success",
-        description: `Project request ${response} successfully!`,
+        description: `Project request ${response} successfully!`
       });
 
       // Reload data
       loadUserData();
-
     } catch (error) {
       console.error('Error responding to project request:', error);
       toast({
         title: "Error",
         description: "Failed to respond to project request.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   if (loading || loadingData) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+    return <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading your dashboard...</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -381,20 +342,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Due</CardTitle>
-              <AlertCircle className="h-4 w-4 text-red-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                ₹{getDueAmount().toFixed(2)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Overdue payments
-              </p>
-            </CardContent>
-          </Card>
+          
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -413,8 +361,7 @@ const Dashboard = () => {
         </div>
 
         {/* Admin Section */}
-        {isAdmin && (
-          <Card className="mb-8">
+        {isAdmin && <Card className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-5 h-5" />
@@ -428,41 +375,25 @@ const Dashboard = () => {
                   <Label>Search Users</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search by name or email..."
-                      value={userSearchTerm}
-                      onChange={(e) => setUserSearchTerm(e.target.value)}
-                      className="pl-9"
-                    />
+                    <Input placeholder="Search by name or email..." value={userSearchTerm} onChange={e => setUserSearchTerm(e.target.value)} className="pl-9" />
                   </div>
                 </div>
                 <div className="flex-1">
                   <Label>Select User to Create Project For</Label>
-                  <select 
-                    className="w-full p-2 border rounded-md"
-                    value={selectedUserId}
-                    onChange={(e) => setSelectedUserId(e.target.value)}
-                  >
+                  <select className="w-full p-2 border rounded-md" value={selectedUserId} onChange={e => setSelectedUserId(e.target.value)}>
                     <option value="">Choose a user...</option>
-                    {filteredUsers.map((user) => (
-                      <option key={user.user_id} value={user.user_id}>
+                    {filteredUsers.map(user => <option key={user.user_id} value={user.user_id}>
                         {user.full_name || 'No name'} ({user.user_id.slice(0, 8)}...)
-                      </option>
-                    ))}
+                      </option>)}
                   </select>
                 </div>
-                <Button 
-                  onClick={handleCreateProjectRequest}
-                  variant="gradient"
-                  disabled={!selectedUserId}
-                >
+                <Button onClick={handleCreateProjectRequest} variant="gradient" disabled={!selectedUserId}>
                   <Plus className="w-4 h-4 mr-2" />
                   Send Project Request
                 </Button>
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Recent Activity */}
         <Card className="mb-8">
@@ -471,14 +402,10 @@ const Dashboard = () => {
             <CardDescription>Your latest project updates</CardDescription>
           </CardHeader>
           <CardContent>
-            {projects.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">
+            {projects.length === 0 ? <p className="text-muted-foreground text-center py-4">
                 No recent activity. Your projects will appear here once they're created.
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {projects.slice(0, 3).map((project) => (
-                  <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
+              </p> : <div className="space-y-3">
+                {projects.slice(0, 3).map(project => <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex-1">
                       <p className="font-medium text-sm">{project.title}</p>
                       <p className="text-xs text-muted-foreground">
@@ -489,69 +416,51 @@ const Dashboard = () => {
                     <Badge className={getStatusColor(project.status)}>
                       {project.status}
                     </Badge>
-                  </div>
-                ))}
-              </div>
-            )}
+                  </div>)}
+              </div>}
           </CardContent>
         </Card>
 
         {/* Project Requests Section */}
-        {projectRequests.filter(req => req.status === 'pending').length > 0 && (
-          <Card className="mb-8">
+        {projectRequests.filter(req => req.status === 'pending').length > 0 && <Card className="mb-8">
             <CardHeader>
               <CardTitle>Pending Project Requests</CardTitle>
               <CardDescription>Review and respond to project requests from admin</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {projectRequests.filter(req => req.status === 'pending').map((request) => (
-                  <div key={request.id} className="border rounded-lg p-4">
+                {projectRequests.filter(req => req.status === 'pending').map(request => <div key={request.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-medium">{request.title}</h3>
                       <Badge className="bg-blue-500">New Request</Badge>
                     </div>
-                    {request.description && (
-                      <p className="text-sm text-muted-foreground mb-3">{request.description}</p>
-                    )}
+                    {request.description && <p className="text-sm text-muted-foreground mb-3">{request.description}</p>}
                     <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-3">
                       <div>Hours: {request.estimated_hours}</div>
                       <div>Cost: ₹{Number(request.estimated_cost).toLocaleString()}</div>
                     </div>
                     <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant="default"
-                        onClick={() => handleProjectRequestResponse(request.id, 'accepted')}
-                      >
+                      <Button size="sm" variant="default" onClick={() => handleProjectRequestResponse(request.id, 'accepted')}>
                         Accept
                       </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleProjectRequestResponse(request.id, 'declined')}
-                      >
+                      <Button size="sm" variant="outline" onClick={() => handleProjectRequestResponse(request.id, 'declined')}>
                         Decline
                       </Button>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Payment History Section */}
-        {payments.filter(p => p.status === 'paid').length > 0 && (
-          <Card className="mb-8">
+        {payments.filter(p => p.status === 'paid').length > 0 && <Card className="mb-8">
             <CardHeader>
               <CardTitle>Payment History</CardTitle>
               <CardDescription>Your completed payment transactions</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {payments.filter(p => p.status === 'paid').map((payment) => (
-                  <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                {payments.filter(p => p.status === 'paid').map(payment => <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex-1">
                       <p className="font-medium text-sm">
                         {payment.description || 'Payment'}
@@ -565,12 +474,10 @@ const Dashboard = () => {
                       <p className="font-medium text-green-600">₹{Number(payment.amount).toLocaleString()}</p>
                       <Badge className="text-xs bg-green-100 text-green-800">Paid</Badge>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Projects Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -578,49 +485,35 @@ const Dashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 Your Projects
-                {isAdmin && (
-                  <Badge variant="outline">Admin View</Badge>
-                )}
+                {isAdmin && <Badge variant="outline">Admin View</Badge>}
               </CardTitle>
               <CardDescription>Track the progress of your ongoing projects</CardDescription>
             </CardHeader>
             <CardContent>
-              {projects.length === 0 ? (
-                <div className="text-center py-8">
+              {projects.length === 0 ? <div className="text-center py-8">
                   <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-medium mb-2">No projects yet</h3>
                   <p className="text-muted-foreground mb-4">
                     Projects created by admin will appear here
                   </p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {projects.map((project) => (
-                    <div key={project.id} className="border rounded-lg p-4">
+                </div> : <div className="space-y-4">
+                  {projects.map(project => <div key={project.id} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-medium">{project.title}</h3>
                         <div className="flex items-center gap-2">
                           <Badge className={getStatusColor(project.status)}>
                             {project.status}
                           </Badge>
-                          {isAdmin && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handlePaymentRequest(project)}
-                            >
+                          {isAdmin && <Button size="sm" variant="outline" onClick={() => handlePaymentRequest(project)}>
                               <Send className="w-3 h-3 mr-1" />
                               Payment
-                            </Button>
-                          )}
+                            </Button>}
                         </div>
                       </div>
                       
-                      {project.description && (
-                        <p className="text-sm text-muted-foreground mb-3">
+                      {project.description && <p className="text-sm text-muted-foreground mb-3">
                           {project.description}
-                        </p>
-                      )}
+                        </p>}
                       
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
@@ -633,14 +526,10 @@ const Dashboard = () => {
                       <div className="grid grid-cols-2 gap-4 mt-3 text-sm text-muted-foreground">
                         <div>
                           <span>Hours: {project.hours_worked}</span>
-                          {project.estimated_hours && (
-                            <span> / {project.estimated_hours}</span>
-                          )}
+                          {project.estimated_hours && <span> / {project.estimated_hours}</span>}
                         </div>
                         <div>
-                          {project.estimated_cost && (
-                            <span>Cost: ₹{Number(project.estimated_cost).toLocaleString()}</span>
-                          )}
+                          {project.estimated_cost && <span>Cost: ₹{Number(project.estimated_cost).toLocaleString()}</span>}
                         </div>
                       </div>
                       
@@ -648,111 +537,27 @@ const Dashboard = () => {
                         <span>Created: {new Date(project.created_at).toLocaleDateString()}</span>
                         <span>Type: {project.project_type.replace('-', ' ')}</span>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    </div>)}
+                </div>}
             </CardContent>
           </Card>
 
           {/* Payment History */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
-                Payment History
-              </CardTitle>
-              <CardDescription>Track your payment requests and transactions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {payments.length === 0 ? (
-                <div className="text-center py-8">
-                  <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No payments yet</h3>
-                  <p className="text-muted-foreground">
-                    Payment requests will appear here
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {payments.map((payment) => (
-                    <div key={payment.id} className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium">₹{Number(payment.amount).toLocaleString()}</span>
-                        <Badge className={getPaymentStatusColor(payment.status)}>
-                          {payment.status}
-                        </Badge>
-                      </div>
-                      
-                      {payment.description && (
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {payment.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Ref: {payment.reference_number}</span>
-                        <span>{new Date(payment.created_at).toLocaleDateString()}</span>
-                      </div>
-                      
-                      {payment.due_date && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Due: {new Date(payment.due_date).toLocaleDateString()}
-                        </p>
-                      )}
-                      
-                      {payment.status === 'pending' && (
-                        <Button
-                          size="sm"
-                          variant="gradient"
-                          onClick={() => handlePayNow(payment)}
-                          className="mt-2 w-full"
-                        >
-                          <CreditCard className="w-3 h-3 mr-1" />
-                          Pay Now
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          
         </div>
         
         {/* Modals */}
-        <ProjectRequestModal
-          isOpen={showProjectRequest}
-          onClose={() => setShowProjectRequest(false)}
-          targetUserId={selectedUserId}
-          onSuccess={loadUserData}
-        />
+        <ProjectRequestModal isOpen={showProjectRequest} onClose={() => setShowProjectRequest(false)} targetUserId={selectedUserId} onSuccess={loadUserData} />
         
-        {selectedProject && (
-          <PaymentRequestModal
-            isOpen={showPaymentRequest}
-            onClose={() => setShowPaymentRequest(false)}
-            projectId={selectedProject.id}
-            userId={selectedProject.user_id}
-            projectTitle={selectedProject.title}
-          />
-        )}
+        {selectedProject && <PaymentRequestModal isOpen={showPaymentRequest} onClose={() => setShowPaymentRequest(false)} projectId={selectedProject.id} userId={selectedProject.user_id} projectTitle={selectedProject.title} />}
         
-        {selectedPayment && (
-          <PaymentGateway
-            isOpen={showPaymentGateway}
-            onClose={() => setShowPaymentGateway(false)}
-            payment={{
-              id: selectedPayment.id,
-              amount: Number(selectedPayment.amount),
-              description: selectedPayment.description || 'Project payment',
-              reference_number: selectedPayment.reference_number || 'N/A'
-            }}
-          />
-        )}
+        {selectedPayment && <PaymentGateway isOpen={showPaymentGateway} onClose={() => setShowPaymentGateway(false)} payment={{
+        id: selectedPayment.id,
+        amount: Number(selectedPayment.amount),
+        description: selectedPayment.description || 'Project payment',
+        reference_number: selectedPayment.reference_number || 'N/A'
+      }} />}
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Dashboard;
