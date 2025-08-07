@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, Upload, User, Camera, Link, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Upload, User, Camera, Link, AlertTriangle, X } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -267,6 +267,39 @@ const Profile = () => {
     }
   };
 
+  const removeAvatar = async () => {
+    try {
+      setUploading(true);
+
+      // Update profile to remove avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null })
+        .eq('user_id', user?.id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      setProfile(prev => prev ? { ...prev, avatar_url: null } : null);
+      setPreviewUrl(null);
+      setAvatarUrl('');
+      toast({
+        title: "Avatar removed",
+        description: "Your profile picture has been removed successfully.",
+      });
+    } catch (error) {
+      console.error('Error removing avatar:', error);
+      toast({
+        title: "Remove failed",
+        description: "Failed to remove avatar. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handlePreviewUrl = async (url: string) => {
     setAvatarUrl(url);
     if (url.trim()) {
@@ -405,6 +438,21 @@ const Profile = () => {
                       </div>
                     </TabsContent>
                   </Tabs>
+                  
+                  {(profile?.avatar_url || previewUrl) && (
+                    <div className="mt-4">
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        onClick={removeAvatar}
+                        disabled={uploading}
+                        className="w-full"
+                      >
+                        <X className="w-4 h-4 mr-2" />
+                        Remove Profile Picture
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
