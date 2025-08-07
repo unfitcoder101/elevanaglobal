@@ -364,10 +364,6 @@ const Dashboard = () => {
   };
 
   const handleDeleteProject = async (projectId: string) => {
-    if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
-      return;
-    }
-
     try {
       const { error } = await supabase
         .from('projects')
@@ -392,10 +388,6 @@ const Dashboard = () => {
   };
 
   const handleDeletePayment = async (paymentId: string) => {
-    if (!confirm('Are you sure you want to delete this payment? This action cannot be undone.')) {
-      return;
-    }
-
     try {
       const { error } = await supabase
         .from('project_payments')
