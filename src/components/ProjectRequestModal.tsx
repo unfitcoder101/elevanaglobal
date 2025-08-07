@@ -1,79 +1,83 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/components/AuthProvider';
 
 interface ProjectRequestModalProps {
   isOpen: boolean;
   onClose: () => void;
   targetUserId: string;
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
 }
 
-interface ProjectRequestForm {
-  title: string;
-  description: string;
-  project_type: string;
-  estimated_hours: number;
-  estimated_cost: number;
-  admin_notes: string;
-}
+const projectTypes = [
+  { id: 'web-development', name: 'Web Development', estimatedHours: 40, cost: 25000 },
+  { id: 'mobile-app', name: 'Mobile App Development', estimatedHours: 60, cost: 40000 },
+  { id: 'ui-ux-design', name: 'UI/UX Design', estimatedHours: 20, cost: 15000 },
+  { id: 'seo-optimization', name: 'SEO Optimization', estimatedHours: 15, cost: 10000 },
+  { id: 'custom', name: 'Custom Project', estimatedHours: 30, cost: 20000 },
+];
 
-const ProjectRequestModal: React.FC<ProjectRequestModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  targetUserId,
-  onSuccess 
-}) => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<ProjectRequestForm>({
+const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: ProjectRequestModalProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
     title: '',
     description: '',
     project_type: '',
-    estimated_hours: 0,
-    estimated_cost: 0,
     admin_notes: ''
   });
+  const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ 
-      ...prev, 
-      [name]: name.includes('estimated') ? Number(value) : value 
-    }));
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, project_type: value }));
+  const handleProjectTypeChange = (value: string) => {
+    const selectedType = projectTypes.find(type => type.id === value);
+    setFormData(prev => ({
+      ...prev,
+      project_type: value,
+      title: selectedType ? selectedType.name : ''
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    
+    if (!formData.project_type) {
+      toast({
+        title: "Error",
+        description: "Please select a project type",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    setLoading(true);
+    setIsLoading(true);
     try {
+      const selectedType = projectTypes.find(type => type.id === formData.project_type);
+      
+      // Get current admin user id
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      
       const { error } = await supabase
         .from('project_requests')
-        .insert({
+        .insert([{
           admin_id: user.id,
           user_id: targetUserId,
           title: formData.title,
           description: formData.description,
           project_type: formData.project_type,
-          estimated_hours: formData.estimated_hours,
-          estimated_cost: formData.estimated_cost,
-          admin_notes: formData.admin_notes,
-          status: 'pending'
-        });
+          estimated_hours: selectedType?.estimatedHours,
+          estimated_cost: selectedType?.cost,
+          admin_notes: formData.admin_notes
+        }]);
 
       if (error) throw error;
 
@@ -81,34 +85,34 @@ const ProjectRequestModal: React.FC<ProjectRequestModalProps> = ({
         title: "Project request sent!",
         description: "The user will be notified and can accept or decline the project.",
       });
-
+      
+      await onSuccess();
+      onClose();
+      
       // Reset form
       setFormData({
         title: '',
         description: '',
         project_type: '',
-        estimated_hours: 0,
-        estimated_cost: 0,
         admin_notes: ''
       });
-      
-      onSuccess();
-      onClose();
     } catch (error) {
       console.error('Error creating project request:', error);
       toast({
         title: "Error",
-        description: "Failed to send project request. Please try again.",
+        description: "Failed to create project request. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
+  const selectedType = projectTypes.find(type => type.id === formData.project_type);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Send Project Request</DialogTitle>
           <DialogDescription>
@@ -117,94 +121,80 @@ const ProjectRequestModal: React.FC<ProjectRequestModalProps> = ({
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="title">Project Title *</Label>
-            <Input
-              id="title"
-              name="title"
-              placeholder="Enter project title"
-              value={formData.title}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="description">Project Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              placeholder="Describe the project scope and requirements"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows={3}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="project_type">Project Type *</Label>
-            <Select onValueChange={handleSelectChange} required>
+          <div className="space-y-2">
+            <Label htmlFor="project-type">Project Type</Label>
+            <Select value={formData.project_type} onValueChange={handleProjectTypeChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Select project type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="web-development">Web Development</SelectItem>
-                <SelectItem value="mobile-app">Mobile App</SelectItem>
-                <SelectItem value="e-commerce">E-commerce</SelectItem>
-                <SelectItem value="digital-marketing">Digital Marketing</SelectItem>
-                <SelectItem value="branding">Branding & Design</SelectItem>
-                <SelectItem value="consultation">Consultation</SelectItem>
-                <SelectItem value="maintenance">Maintenance & Support</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                {projectTypes.map((type) => (
+                  <SelectItem key={type.id} value={type.id}>
+                    {type.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="estimated_hours">Estimated Hours</Label>
-              <Input
-                id="estimated_hours"
-                name="estimated_hours"
-                type="number"
-                placeholder="0"
-                value={formData.estimated_hours || ''}
-                onChange={handleInputChange}
-                min="0"
-              />
-            </div>
-            <div>
-              <Label htmlFor="estimated_cost">Estimated Cost (₹)</Label>
-              <Input
-                id="estimated_cost"
-                name="estimated_cost"
-                type="number"
-                placeholder="0"
-                value={formData.estimated_cost || ''}
-                onChange={handleInputChange}
-                min="0"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">Project Title</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              placeholder="Enter project title"
+              required
+            />
           </div>
 
-          <div>
-            <Label htmlFor="admin_notes">Admin Notes</Label>
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
             <Textarea
-              id="admin_notes"
-              name="admin_notes"
-              placeholder="Internal notes for this project request"
+              id="description"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="Describe the project requirements..."
+              rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="admin-notes">Admin Notes (Internal)</Label>
+            <Textarea
+              id="admin-notes"
               value={formData.admin_notes}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange('admin_notes', e.target.value)}
+              placeholder="Internal notes for admin reference..."
               rows={2}
             />
           </div>
 
-          <div className="flex gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          {selectedType && (
+            <div className="p-4 bg-muted rounded-lg">
+              <h4 className="font-medium mb-2">Project Estimate</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground">Estimated Hours:</span>
+                  <p className="font-medium">{selectedType.estimatedHours} hours</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Estimated Cost:</span>
+                  <p className="font-medium">₹{selectedType.cost.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading} className="flex-1">
-              {loading ? "Sending..." : "Send Request"}
+            <Button 
+              type="submit" 
+              disabled={isLoading || !formData.project_type}
+            >
+              {isLoading ? "Sending..." : "Send Request"}
             </Button>
           </div>
         </form>

@@ -302,7 +302,7 @@ www.elevana.com | support@elevana.com
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
-              Business Requests ({customizations.length})
+              Quote Requests ({customizations.length})
             </TabsTrigger>
             <TabsTrigger value="project-requests" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />

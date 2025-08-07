@@ -80,6 +80,7 @@ const Dashboard = () => {
   const [selectedUserId, setSelectedUserId] = useState<string>('');
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<ProjectPayment | null>(null);
+  const [projectRequests, setProjectRequests] = useState<any[]>([]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -143,6 +144,19 @@ const Dashboard = () => {
         console.error('Error loading payments:', paymentsError);
       } else {
         setPayments(paymentsData || []);
+      }
+
+      // Load project requests
+      const { data: requestsData, error: requestsError } = await supabase
+        .from('project_requests')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (requestsError) {
+        console.error('Error loading project requests:', requestsError);
+      } else {
+        setProjectRequests(requestsData || []);
       }
 
       // Load all users if admin
@@ -403,6 +417,39 @@ const Dashboard = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Project Requests Section */}
+        {projectRequests.filter(req => req.status === 'pending').length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Pending Project Requests</CardTitle>
+              <CardDescription>Review and respond to project requests from admin</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {projectRequests.filter(req => req.status === 'pending').map((request) => (
+                  <div key={request.id} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-medium">{request.title}</h3>
+                      <Badge className="bg-blue-500">New Request</Badge>
+                    </div>
+                    {request.description && (
+                      <p className="text-sm text-muted-foreground mb-3">{request.description}</p>
+                    )}
+                    <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-3">
+                      <div>Hours: {request.estimated_hours}</div>
+                      <div>Cost: ₹{Number(request.estimated_cost).toLocaleString()}</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="default">Accept</Button>
+                      <Button size="sm" variant="outline">Decline</Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Projects Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
