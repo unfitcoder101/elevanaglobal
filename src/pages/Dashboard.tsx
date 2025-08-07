@@ -254,6 +254,60 @@ const Dashboard = () => {
     setShowPaymentGateway(true);
   };
 
+  const handleProjectRequestResponse = async (requestId: string, response: 'accepted' | 'declined') => {
+    try {
+      if (response === 'accepted') {
+        // Get the project request details
+        const request = projectRequests.find(r => r.id === requestId);
+        if (!request) return;
+
+        // Create a new project
+        const { error: projectError } = await supabase
+          .from('projects')
+          .insert([{
+            user_id: user!.id,
+            admin_id: request.admin_id,
+            title: request.title,
+            description: request.description,
+            project_type: request.project_type,
+            estimated_cost: request.estimated_cost,
+            estimated_hours: request.estimated_hours,
+            status: 'pending'
+          }]);
+
+        if (projectError) throw projectError;
+      }
+
+      // Update the project request status
+      const { error } = await supabase
+        .from('project_requests')
+        .update({ 
+          status: response,
+          responded_at: new Date().toISOString(),
+          user_response_message: response === 'accepted' ? 'Project accepted and added to portfolio' : 'Project declined'
+        })
+        .eq('id', requestId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Project request ${response} successfully!`,
+      });
+
+      // Reload data
+      loadUserData();
+
+    } catch (error) {
+      console.error('Error responding to project request:', error);
+      toast({
+        title: "Error",
+        description: "Failed to respond to project request.",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading || loadingData) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -465,8 +519,51 @@ const Dashboard = () => {
                       <div>Cost: ₹{Number(request.estimated_cost).toLocaleString()}</div>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="default">Accept</Button>
-                      <Button size="sm" variant="outline">Decline</Button>
+                      <Button 
+                        size="sm" 
+                        variant="default"
+                        onClick={() => handleProjectRequestResponse(request.id, 'accepted')}
+                      >
+                        Accept
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleProjectRequestResponse(request.id, 'declined')}
+                      >
+                        Decline
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Payment History Section */}
+        {payments.filter(p => p.status === 'paid').length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Payment History</CardTitle>
+              <CardDescription>Your completed payment transactions</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {payments.filter(p => p.status === 'paid').map((payment) => (
+                  <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">
+                        {payment.description || 'Payment'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Paid: {new Date(payment.created_at).toLocaleDateString()} • 
+                        Transaction ID: {payment.reference_number || 'N/A'}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium text-green-600">₹{Number(payment.amount).toLocaleString()}</p>
+                      <Badge className="text-xs bg-green-100 text-green-800">Paid</Badge>
                     </div>
                   </div>
                 ))}

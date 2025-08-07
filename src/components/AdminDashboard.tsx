@@ -69,6 +69,7 @@ const AdminDashboard = () => {
     description: '',
     due_date: ''
   });
+  const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -121,6 +122,22 @@ const AdminDashboard = () => {
 
       if (projectRequestsError) throw projectRequestsError;
       setProjectRequests(projectRequestsData || []);
+
+      // Load all payment history for admin view
+      const { data: paymentsData, error: paymentsError } = await supabase
+        .from('project_payments')
+        .select(`
+          *,
+          profiles!project_payments_user_id_fkey(full_name),
+          projects!project_payments_project_id_fkey(title)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (paymentsError) {
+        console.error('Error loading payments:', paymentsError);
+      } else {
+        setPaymentHistory(paymentsData || []);
+      }
 
     } catch (error) {
       console.error('Error loading data:', error);
@@ -312,7 +329,7 @@ www.elevana.com | support@elevana.com
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="customizations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               Quote Requests ({customizations.length})
@@ -320,6 +337,10 @@ www.elevana.com | support@elevana.com
             <TabsTrigger value="project-requests" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
               Project Requests ({projectRequests.length})
+            </TabsTrigger>
+            <TabsTrigger value="payments" className="flex items-center gap-2">
+              <IndianRupee className="w-4 h-4" />
+              Payment History ({paymentHistory.length})
             </TabsTrigger>
             <TabsTrigger value="contacts" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
@@ -619,6 +640,62 @@ www.elevana.com | support@elevana.com
                       {request.user_response_message && (
                         <div className="mt-2 p-2 bg-muted rounded text-sm">
                           <strong>User Response:</strong> {request.user_response_message}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="payments">
+            {/* Payment History Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Payment History</CardTitle>
+                <CardDescription>All payment transactions across all users</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {paymentHistory.map((payment) => (
+                    <div key={payment.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">
+                          {payment.projects?.title || payment.description || 'Payment'}
+                        </h3>
+                        <Badge 
+                          className={
+                            payment.status === 'paid' ? 'bg-green-500' :
+                            payment.status === 'pending' ? 'bg-yellow-500' :
+                            'bg-red-500'
+                          }
+                        >
+                          {payment.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          {payment.profiles?.full_name || 'Unknown User'}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(payment.created_at).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <IndianRupee className="w-3 h-3" />
+                          ₹{Number(payment.amount).toLocaleString()}
+                        </div>
+                      </div>
+                      {payment.reference_number && (
+                        <div className="text-sm text-muted-foreground">
+                          Transaction ID: {payment.reference_number}
+                        </div>
+                      )}
+                      {payment.description && (
+                        <div className="text-sm mt-2">
+                          {payment.description}
                         </div>
                       )}
                     </div>
