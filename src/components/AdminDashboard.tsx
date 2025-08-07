@@ -705,6 +705,33 @@ www.elevana.com | support@elevana.com
                           <strong>User Response:</strong> {request.user_response_message}
                         </div>
                       )}
+                      <div className="flex justify-end mt-3">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={async () => {
+                            const { error } = await supabase
+                              .from('project_requests')
+                              .delete()
+                              .eq('id', request.id);
+                            if (error) {
+                              toast({
+                                title: "Error",
+                                description: "Failed to remove request.",
+                                variant: "destructive",
+                              });
+                            } else {
+                              setProjectRequests((prev) => prev.filter((r) => r.id !== request.id));
+                              toast({
+                                title: "Removed",
+                                description: "Request deleted.",
+                              });
+                            }
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>

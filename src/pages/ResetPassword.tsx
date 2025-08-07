@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
 import { Eye, EyeOff, Lock } from 'lucide-react';
 
 const ResetPassword = () => {
@@ -23,7 +24,15 @@ const ResetPassword = () => {
     const accessToken = searchParams.get('access_token');
     const refreshToken = searchParams.get('refresh_token');
     
-    if (!accessToken || !refreshToken) {
+    if (accessToken && refreshToken) {
+      // Establish a session from the reset link tokens so updatePassword works
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      }).catch(() => {
+        // Ignore errors here; update on submit will surface issues
+      });
+    } else {
       toast({
         title: "Invalid reset link",
         description: "This password reset link is invalid or has expired.",
