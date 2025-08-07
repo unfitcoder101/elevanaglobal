@@ -282,10 +282,10 @@ const Index = () => {
             </a>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-12">
               <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
-              <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
-              <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
+              <a href="#proof-in-action" className="text-foreground hover:text-primary transition-smooth">Results</a>
+              <a href="#what-our-clients-say" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
             </nav>
 
@@ -322,8 +322,8 @@ const Index = () => {
             <div className="md:hidden bg-background border-t">
               <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
                 <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
-                <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
-                <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
+                <a href="#proof-in-action" className="text-foreground hover:text-primary transition-smooth">Results</a>
+                <a href="#what-our-clients-say" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
                 <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
                 {user ? (
                   <Button variant="gradient" size="lg" className="w-full" onClick={() => navigate('/dashboard')}>
@@ -614,7 +614,7 @@ const Index = () => {
 
 
         {/* Premium Client Testimonials Section */}
-        <section id="client-testimonials" className="py-20" style={{ backgroundColor: '#f8f9fa' }}>
+        <section id="what-our-clients-say" className="py-20" style={{ backgroundColor: '#f8f9fa' }}>
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 font-poppins" style={{ color: '#008C8C' }}>
@@ -678,7 +678,7 @@ const Index = () => {
 
 
         {/* 5. Case Study / Project Video Section */}
-        <section className="py-16 bg-muted/20">
+        <section id="proof-in-action" className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">

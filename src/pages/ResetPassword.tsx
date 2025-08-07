@@ -29,8 +29,14 @@ const ResetPassword = () => {
       supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
-      }).catch(() => {
-        // Ignore errors here; update on submit will surface issues
+      }).catch((error) => {
+        console.error('Session error:', error);
+        toast({
+          title: "Session Error",
+          description: "Failed to establish session. Please try requesting a new reset link.",
+          variant: "destructive",
+        });
+        navigate('/forgot-password');
       });
     } else {
       toast({
