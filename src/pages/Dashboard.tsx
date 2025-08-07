@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import ProjectRequestModal from '@/components/ProjectRequestModal';
 import PaymentRequestModal from '@/components/PaymentRequestModal';
 import PaymentGateway from '@/components/PaymentGateway';
-import { LogOut, User, Plus, Clock, IndianRupee, CheckCircle, AlertCircle, Settings, BarChart3, CreditCard, Send, Users, Home, Search, MessageSquare } from 'lucide-react';
+import { LogOut, User, Plus, Clock, IndianRupee, CheckCircle, AlertCircle, Settings, BarChart3, CreditCard, Send, Users, Home, Search, MessageSquare, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 interface UserProfile {
   id: string;
@@ -363,6 +363,62 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteProject = async (projectId: string) => {
+    if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', projectId);
+
+      if (error) throw error;
+
+      setProjects(projects.filter(p => p.id !== projectId));
+      toast({
+        title: "Success",
+        description: "Project deleted successfully"
+      });
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeletePayment = async (paymentId: string) => {
+    if (!confirm('Are you sure you want to delete this payment? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('project_payments')
+        .delete()
+        .eq('id', paymentId);
+
+      if (error) throw error;
+
+      setPayments(payments.filter(p => p.id !== paymentId));
+      toast({
+        title: "Success",
+        description: "Payment deleted successfully"
+      });
+    } catch (error) {
+      console.error('Error deleting payment:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete payment",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleProjectRequestResponse = async (requestId: string, response: 'accepted' | 'declined') => {
     try {
       if (response === 'accepted') {
@@ -619,9 +675,20 @@ const Dashboard = () => {
                         Transaction ID: {payment.reference_number || 'N/A'}
                       </p>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium text-green-600">₹{Number(payment.amount).toLocaleString()}</p>
-                      <Badge className="text-xs bg-green-100 text-green-800">Paid</Badge>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <p className="font-medium text-green-600">₹{Number(payment.amount).toLocaleString()}</p>
+                        <Badge className="text-xs bg-green-100 text-green-800">Paid</Badge>
+                      </div>
+                      {isAdmin && (
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          onClick={() => handleDeletePayment(payment.id)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      )}
                     </div>
                   </div>)}
               </div>
@@ -660,10 +727,21 @@ const Dashboard = () => {
                           <Badge className={getStatusColor(project.status)}>
                             {project.status}
                           </Badge>
-                          {isAdmin && <Button size="sm" variant="outline" onClick={() => handlePaymentRequest(project)}>
-                              <Send className="w-3 h-3 mr-1" />
-                              Payment
-                            </Button>}
+                          {isAdmin && (
+                            <>
+                              <Button size="sm" variant="outline" onClick={() => handlePaymentRequest(project)}>
+                                <Send className="w-3 h-3 mr-1" />
+                                Payment
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="destructive" 
+                                onClick={() => handleDeleteProject(project.id)}
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </div>
                       
@@ -740,12 +818,21 @@ const Dashboard = () => {
                           Reference: {payment.reference_number || 'N/A'}
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                     <div className="flex items-center gap-3">
                         <p className="font-medium text-yellow-600">₹{Number(payment.amount).toLocaleString()}</p>
                         <Button size="sm" variant="gradient" onClick={() => handlePayNow(payment)}>
                           <CreditCard className="w-3 h-3 mr-1" />
                           Pay Now
                         </Button>
+                        {isAdmin && (
+                          <Button 
+                            size="sm" 
+                            variant="destructive" 
+                            onClick={() => handleDeletePayment(payment.id)}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
