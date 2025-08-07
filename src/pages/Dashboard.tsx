@@ -328,23 +328,30 @@ const Dashboard = () => {
   };
   const handleProgressUpdate = async (projectId: string, newProgress: number) => {
     try {
+      const project = projects.find(p => p.id === projectId);
+      const estimatedHours = project?.estimated_hours || 0;
+      const hoursWorked = Math.round((newProgress / 100) * estimatedHours);
+
       const { error } = await supabase
         .from('projects')
-        .update({ completion_percentage: newProgress })
+        .update({ 
+          completion_percentage: newProgress,
+          hours_worked: hoursWorked
+        })
         .eq('id', projectId);
 
       if (error) throw error;
 
       // Update local state
-      setProjects(projects.map(project => 
-        project.id === projectId 
-          ? { ...project, completion_percentage: newProgress }
-          : project
+      setProjects(projects.map(p => 
+        p.id === projectId 
+          ? { ...p, completion_percentage: newProgress, hours_worked: hoursWorked }
+          : p
       ));
 
       toast({
         title: "Success",
-        description: "Project progress updated successfully!"
+        description: `Progress updated to ${newProgress}% (${hoursWorked}h completed)`
       });
     } catch (error) {
       console.error('Error updating progress:', error);
