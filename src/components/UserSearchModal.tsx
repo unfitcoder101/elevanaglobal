@@ -37,22 +37,18 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
   const { toast } = useToast();
 
   const searchUsers = async () => {
-    if (!searchEmail.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter an email to search",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
     try {
-      // Search for users by getting all profiles first (since we can't query auth.users directly)
-      const { data: profiles, error } = await supabase
+      let query = supabase
         .from('profiles')
-        .select('*')
-        .ilike('full_name', `%${searchEmail}%`);
+        .select('*');
+
+      // If search term provided, filter by name
+      if (searchEmail.trim()) {
+        query = query.ilike('full_name', `%${searchEmail}%`);
+      }
+
+      const { data: profiles, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
 
@@ -61,7 +57,7 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
       if (!profiles || profiles.length === 0) {
         toast({
           title: "No users found",
-          description: "No users found matching that search term",
+          description: searchEmail.trim() ? "No users found matching that search term" : "No users found in the system",
         });
       }
     } catch (error) {
@@ -168,7 +164,7 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input
-                  placeholder="Search by name or partial email..."
+                  placeholder="Search by name (leave empty to show all users)..."
                   value={searchEmail}
                   onChange={(e) => setSearchEmail(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && searchUsers()}
@@ -176,6 +172,10 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
                 <Button onClick={searchUsers} disabled={isLoading}>
                   <Search className="w-4 h-4" />
                 </Button>
+              </div>
+              
+              <div className="text-xs text-muted-foreground">
+                Tip: Leave search empty and click search to see all users
               </div>
 
               {/* Search Results */}

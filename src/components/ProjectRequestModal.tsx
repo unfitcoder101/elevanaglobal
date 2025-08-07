@@ -29,7 +29,9 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
     title: '',
     description: '',
     project_type: '',
-    admin_notes: ''
+    admin_notes: '',
+    custom_cost: '',
+    custom_hours: ''
   });
   const { toast } = useToast();
 
@@ -61,6 +63,8 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
     setIsLoading(true);
     try {
       const selectedType = projectTypes.find(type => type.id === formData.project_type);
+      const customCost = formData.custom_cost ? parseFloat(formData.custom_cost) : selectedType?.cost;
+      const customHours = formData.custom_hours ? parseInt(formData.custom_hours) : selectedType?.estimatedHours;
       
       // Get current admin user id
       const { data: { user } } = await supabase.auth.getUser();
@@ -74,8 +78,8 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
           title: formData.title,
           description: formData.description,
           project_type: formData.project_type,
-          estimated_hours: selectedType?.estimatedHours,
-          estimated_cost: selectedType?.cost,
+          estimated_hours: customHours,
+          estimated_cost: customCost,
           admin_notes: formData.admin_notes
         }]);
 
@@ -94,7 +98,9 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
         title: '',
         description: '',
         project_type: '',
-        admin_notes: ''
+        admin_notes: '',
+        custom_cost: '',
+        custom_hours: ''
       });
     } catch (error) {
       console.error('Error creating project request:', error);
@@ -112,7 +118,7 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Send Project Request</DialogTitle>
           <DialogDescription>
@@ -155,7 +161,7 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
               placeholder="Describe the project requirements..."
-              rows={4}
+              rows={3}
             />
           </div>
 
@@ -171,17 +177,32 @@ const ProjectRequestModal = ({ isOpen, onClose, targetUserId, onSuccess }: Proje
           </div>
 
           {selectedType && (
-            <div className="p-4 bg-muted rounded-lg">
+            <div className="p-3 bg-muted rounded-lg">
               <h4 className="font-medium mb-2">Project Estimate</h4>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <span className="text-muted-foreground">Estimated Hours:</span>
-                  <p className="font-medium">{selectedType.estimatedHours} hours</p>
+                  <Label className="text-xs">Hours</Label>
+                  <Input
+                    type="number"
+                    value={formData.custom_hours}
+                    onChange={(e) => handleInputChange('custom_hours', e.target.value)}
+                    placeholder={selectedType.estimatedHours.toString()}
+                    className="text-xs h-8"
+                  />
                 </div>
                 <div>
-                  <span className="text-muted-foreground">Estimated Cost:</span>
-                  <p className="font-medium">₹{selectedType.cost.toLocaleString()}</p>
+                  <Label className="text-xs">Cost (₹)</Label>
+                  <Input
+                    type="number"
+                    value={formData.custom_cost}
+                    onChange={(e) => handleInputChange('custom_cost', e.target.value)}
+                    placeholder={selectedType.cost.toString()}
+                    className="text-xs h-8"
+                  />
                 </div>
+              </div>
+              <div className="mt-2 text-xs text-muted-foreground">
+                Default: {selectedType.estimatedHours}h / ₹{selectedType.cost.toLocaleString()}
               </div>
             </div>
           )}

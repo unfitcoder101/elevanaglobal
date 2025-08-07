@@ -70,7 +70,7 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ isOpen, onClose, paymen
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[450px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <IndianRupee className="w-5 h-5 text-primary" />
@@ -155,12 +155,12 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ isOpen, onClose, paymen
               {/* UPI QR Code (Demo) */}
               {paymentMethod === 'upi' && (
                 <Card>
-                  <CardContent className="flex flex-col items-center p-6">
-                    <QrCode className="w-32 h-32 text-muted-foreground mb-4" />
-                    <p className="text-sm text-center text-muted-foreground">
+                  <CardContent className="flex flex-col items-center p-4">
+                    <QrCode className="w-24 h-24 text-muted-foreground mb-2" />
+                    <p className="text-xs text-center text-muted-foreground">
                       Scan this QR code with your UPI app
                     </p>
-                    <Badge variant="outline" className="mt-2">Demo QR Code</Badge>
+                    <Badge variant="outline" className="mt-1 text-xs">Demo QR Code</Badge>
                   </CardContent>
                 </Card>
               )}

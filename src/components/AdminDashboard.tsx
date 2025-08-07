@@ -70,6 +70,8 @@ const AdminDashboard = () => {
     due_date: ''
   });
   const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -137,6 +139,33 @@ const AdminDashboard = () => {
         console.error('Error loading payments:', paymentsError);
       } else {
         setPaymentHistory(paymentsData || []);
+      }
+
+      // Load projects for admin view
+      const { data: projectsData, error: projectsError } = await supabase
+        .from('projects')
+        .select(`
+          *,
+          profiles!projects_user_id_fkey(full_name)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (projectsError) {
+        console.error('Error loading projects:', projectsError);
+      } else {
+        setProjects(projectsData || []);
+      }
+
+      // Load messages
+      const { data: messagesData, error: messagesError } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (messagesError) {
+        console.error('Error loading messages:', messagesError);
+      } else {
+        setMessages(messagesData || []);
       }
 
     } catch (error) {
@@ -329,7 +358,7 @@ www.elevana.com | support@elevana.com
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="customizations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               Quote Requests ({customizations.length})
@@ -338,9 +367,17 @@ www.elevana.com | support@elevana.com
               <FileText className="w-4 h-4" />
               Project Requests ({projectRequests.length})
             </TabsTrigger>
+            <TabsTrigger value="projects" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              Active Projects ({projects.length})
+            </TabsTrigger>
             <TabsTrigger value="payments" className="flex items-center gap-2">
               <IndianRupee className="w-4 h-4" />
               Payment History ({paymentHistory.length})
+            </TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" />
+              Messages ({messages.length})
             </TabsTrigger>
             <TabsTrigger value="contacts" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
@@ -649,6 +686,92 @@ www.elevana.com | support@elevana.com
             </Card>
           </TabsContent>
 
+          <TabsContent value="projects">
+            {/* Active Projects Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Projects</CardTitle>
+                <CardDescription>Ongoing projects with hour tracking</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {projects.map((project) => (
+                    <div key={project.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{project.title}</h3>
+                        <Badge 
+                          className={
+                            project.status === 'completed' ? 'bg-green-500' :
+                            project.status === 'in_progress' ? 'bg-blue-500' :
+                            'bg-yellow-500'
+                          }
+                        >
+                          {project.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          {project.profiles?.full_name || 'Unknown User'}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(project.created_at).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {project.completion_percentage || 0}% Complete
+                        </div>
+                      </div>
+                      
+                      {/* Hours Tracking Section */}
+                      <div className="grid grid-cols-2 gap-4 mt-3 p-3 bg-muted rounded">
+                        <div>
+                          <Label className="text-xs">Hours Worked</Label>
+                          <Input
+                            type="number"
+                            value={project.hours_worked || 0}
+                            onChange={async (e) => {
+                              const newHours = parseInt(e.target.value) || 0;
+                              const { error } = await supabase
+                                .from('projects')
+                                .update({ hours_worked: newHours })
+                                .eq('id', project.id);
+                              
+                              if (!error) {
+                                setProjects(prev => prev.map(p => 
+                                  p.id === project.id ? { ...p, hours_worked: newHours } : p
+                                ));
+                              }
+                            }}
+                            className="text-xs h-8"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Estimated Total</Label>
+                          <div className="text-sm font-medium mt-1">
+                            {project.estimated_hours || 0} hours
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {project.description || 'No description provided'}
+                      </p>
+                      
+                      {project.estimated_cost && (
+                        <div className="flex items-center gap-1 text-primary mt-2">
+                          <DollarSign className="w-3 h-3" />
+                          ₹{Number(project.estimated_cost).toLocaleString()}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="payments">
             {/* Payment History Tab */}
             <Card>
@@ -698,6 +821,53 @@ www.elevana.com | support@elevana.com
                           {payment.description}
                         </div>
                       )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="messages">
+            {/* Messages Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Messages</CardTitle>
+                <CardDescription>All messages from website visitors and forms</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {messages.map((message) => (
+                    <div key={message.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{message.name}</h3>
+                        <Badge variant={message.status === 'unread' ? 'secondary' : 'default'}>
+                          {message.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Mail className="w-3 h-3" />
+                          {message.email}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(message.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      {message.phone && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                          <Phone className="w-3 h-3" />
+                          {message.phone}
+                        </div>
+                      )}
+                      {message.subject && (
+                        <p className="text-sm font-medium mb-1">Subject: {message.subject}</p>
+                      )}
+                      <p className="text-sm">{message.message}</p>
+                      <div className="text-xs text-muted-foreground mt-2">
+                        Type: {message.message_type}
+                      </div>
                     </div>
                   ))}
                 </div>

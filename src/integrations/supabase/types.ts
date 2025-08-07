@@ -197,6 +197,51 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          message_type: string
+          name: string
+          phone: string | null
+          status: string
+          subject: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          message_type?: string
+          name: string
+          phone?: string | null
+          status?: string
+          subject?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          message_type?: string
+          name?: string
+          phone?: string | null
+          status?: string
+          subject?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
