@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -76,6 +76,11 @@ const AdminDashboard = () => {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const { toast } = useToast();
+
+  // Read active tab from URL (e.g., /admin?tab=messages)
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'customizations';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   useEffect(() => {
     loadAllData();
@@ -183,7 +188,7 @@ const AdminDashboard = () => {
       // Load project requests
       const { data: projectRequestsData, error: projectRequestsError } = await supabase
         .from('project_requests')
-        .select('*, profiles!inner(full_name)')
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (projectRequestsError) throw projectRequestsError;
@@ -275,55 +280,12 @@ const AdminDashboard = () => {
 
   const sendPaymentRequest = async () => {
     if (!selectedCustomization) return;
-    
-    setSendingPayment(true);
-    try {
-      // First, try to find if user exists in auth.users by email
-      // Since we can't query auth.users directly, we'll use the customization user_id if available
-      // or create a payment record without user_id for manual processing
-      
-      const { error } = await supabase
-        .from('payments')
-        .insert([{
-          user_id: null, // Guest submissions don't have user_id initially
-          amount: paymentRequest.amount,
-          description: paymentRequest.description || `Payment for ${selectedCustomization.business_name} - ${selectedCustomization.description}`,
-          due_date: paymentRequest.due_date || null,
-          status: 'pending',
-          currency: 'INR',
-          reference_number: `REF-${Date.now()}`,
-          order_id: `ORD-${selectedCustomization.id.slice(0, 8)}`
-        }]);
 
-      if (error) throw error;
-
-      // Update customization status
-      await updateCustomizationStatus(selectedCustomization.id, 'quote_sent');
-
-      toast({
-        title: "Payment request sent!",
-        description: `Payment request for ₹${paymentRequest.amount.toLocaleString()} has been created.`,
-      });
-
-      // Reset form
-      setPaymentRequest({
-        user_id: '',
-        amount: 0,
-        description: '',
-        due_date: ''
-      });
-      setSelectedCustomization(null);
-
-    } catch (error) {
-      console.error('Error sending payment request:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send payment request.",
-        variant: "destructive",
-      });
-    } finally {
-      setSendingPayment(false);
-    }
+    // This flow now requires an active project. Use the Projects tab → Request Payment.
+    toast({
+      title: 'Select a project to request payment',
+      description: 'Open the Projects tab and click “Request Payment” on a project.',
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -421,7 +383,7 @@ www.elevana.com | support@elevana.com
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="customizations" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />

@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import ProjectRequestModal from '@/components/ProjectRequestModal';
 import PaymentRequestModal from '@/components/PaymentRequestModal';
 import PaymentGateway from '@/components/PaymentGateway';
-import { LogOut, User, Plus, Clock, IndianRupee, CheckCircle, AlertCircle, Settings, BarChart3, CreditCard, Send, Users, Home, Search } from 'lucide-react';
+import { LogOut, User, Plus, Clock, IndianRupee, CheckCircle, AlertCircle, Settings, BarChart3, CreditCard, Send, Users, Home, Search, MessageSquare } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 interface UserProfile {
   id: string;
@@ -341,7 +341,7 @@ const Dashboard = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="outline" onClick={() => navigate('/')}>
+            <Button variant="outline" onClick={() => navigate('/')}> 
               <Home className="w-4 h-4 mr-2" />
               Home
             </Button>
@@ -349,6 +349,12 @@ const Dashboard = () => {
               <Settings className="w-4 h-4 mr-2" />
               Profile
             </Button>
+            {user?.email === 'kanhayadav1610@gmail.com' && (
+              <Button variant="outline" onClick={() => navigate('/admin?tab=messages')}>
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Admin Messages
+              </Button>
+            )}
             <Button variant="outline" onClick={signOut}>
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
@@ -592,6 +598,40 @@ const Dashboard = () => {
                 </div>}
             </CardContent>
           </Card>
+
+          {/* Pending Payments */}
+          {payments.filter(p => p.status === 'pending').length > 0 && (
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Pending Payments</CardTitle>
+                <CardDescription>Complete your outstanding payment requests</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {payments.filter(p => p.status === 'pending').map(payment => (
+                    <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">
+                          {payment.description || 'Payment'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {payment.due_date ? `Due: ${new Date(payment.due_date).toLocaleDateString()} • ` : ''}
+                          Reference: {payment.reference_number || 'N/A'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <p className="font-medium text-yellow-600">₹{Number(payment.amount).toLocaleString()}</p>
+                        <Button size="sm" variant="gradient" onClick={() => handlePayNow(payment)}>
+                          <CreditCard className="w-3 h-3 mr-1" />
+                          Pay Now
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Payment History */}
           
