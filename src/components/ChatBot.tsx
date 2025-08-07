@@ -73,7 +73,7 @@ const ChatBot: React.FC = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-glow hover:shadow-primary hover-lift z-50"
+          className="fixed bottom-6 left-6 h-14 w-14 rounded-full shadow-glow hover:shadow-primary hover-lift z-50"
           variant="gradient"
         >
           <MessageCircle className="h-6 w-6" />
@@ -82,7 +82,7 @@ const ChatBot: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-[calc(100vw-3rem)] sm:w-80 h-[70vh] sm:h-96 shadow-elegant z-50 flex flex-col max-w-[calc(100vw-3rem)] max-h-[calc(100vh-3rem)]">
+        <Card className="fixed bottom-6 left-6 w-[calc(100vw-3rem)] sm:w-80 h-[70vh] sm:h-96 shadow-elegant z-50 flex flex-col max-w-[calc(100vw-3rem)] max-h-[calc(100vh-3rem)]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Bot className="h-4 w-4 text-primary" />

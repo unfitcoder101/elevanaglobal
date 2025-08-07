@@ -72,10 +72,7 @@ const Index = () => {
 
   // Scroll animations
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      // Reveal animations
+    const revealElements = () => {
       const elements = document.querySelectorAll('.reveal-up');
       elements.forEach(el => {
         const rect = el.getBoundingClientRect();
@@ -85,6 +82,14 @@ const Index = () => {
       });
     };
 
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      revealElements();
+    };
+
+    // Trigger animations on page load
+    revealElements();
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
