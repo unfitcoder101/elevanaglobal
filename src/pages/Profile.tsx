@@ -118,10 +118,10 @@ const Profile = () => {
       const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      // Upload file to Supabase Storage
+      // Upload file to Supabase Storage with upsert to replace existing
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file);
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) {
         throw uploadError;

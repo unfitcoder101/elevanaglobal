@@ -5,6 +5,7 @@ import { useAuth } from '@/components/AuthProvider';
 import ContactModal from '@/components/ContactModal';
 import CustomizationModal from '@/components/CustomizationModal';
 import ChatBot from '@/components/ChatBot';
+import ServiceSelectionModal from '@/components/ServiceSelectionModal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -57,6 +58,7 @@ const Index = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [customizationModalOpen, setCustomizationModalOpen] = useState(false);
+  const [serviceModalOpen, setServiceModalOpen] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -745,7 +747,7 @@ const Index = () => {
               </div>
               
               <div className="mt-12">
-                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => setServiceModalOpen(true)}>
                   🚀 I Want Results Like This
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -909,6 +911,12 @@ const Index = () => {
             <p>Call us at {contactInfo.phone}</p>
           </TooltipContent>
         </Tooltip>
+
+        {/* Modals */}
+        <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
+        <CustomizationModal isOpen={customizationModalOpen} onClose={() => setCustomizationModalOpen(false)} />
+        <ServiceSelectionModal isOpen={serviceModalOpen} onClose={() => setServiceModalOpen(false)} />
+        <ChatBot />
 
       </div>
     </TooltipProvider>

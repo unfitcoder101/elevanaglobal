@@ -227,7 +227,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                ${getPaidAmount().toFixed(2)}
+                ₹{getPaidAmount().toFixed(2)}
               </div>
               <p className="text-xs text-muted-foreground">
                 Total amount paid
@@ -242,7 +242,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">
-                ${getDueAmount().toFixed(2)}
+                ₹{getDueAmount().toFixed(2)}
               </div>
               <p className="text-xs text-muted-foreground">
                 Overdue payments
@@ -257,7 +257,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-yellow-600">
-                ${getPendingAmount().toFixed(2)}
+                ₹{getPendingAmount().toFixed(2)}
               </div>
               <p className="text-xs text-muted-foreground">
                 Pending payments
