@@ -505,7 +505,7 @@ const Index = () => {
               {services.map((service, index) => {
                 if (service.isCustomPlan) {
                   return (
-                    <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative md:col-span-2">
+                    <Card key={index} className="group hover-lift reveal-up shadow-elegant border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm overflow-hidden relative">
                       <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
                       <CardContent className="p-8 relative z-10">
                         <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.gradient} shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
