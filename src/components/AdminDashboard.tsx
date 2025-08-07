@@ -8,7 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import UserSearchModal from '@/components/UserSearchModal';
 import PaymentRequestModal from '@/components/PaymentRequestModal';
@@ -27,7 +29,10 @@ import {
   Home,
   MessageSquare,
   UserCheck,
-  Search
+  Search,
+  BarChart3,
+  Edit3,
+  Save
 } from 'lucide-react';
 
 interface BusinessCustomization {
@@ -76,6 +81,7 @@ const AdminDashboard = () => {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Read active tab from URL (e.g., /admin?tab=messages)
   const [searchParams] = useSearchParams();
@@ -384,7 +390,7 @@ www.elevana.com | support@elevana.com
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               Quote Requests ({customizations.length})
@@ -393,9 +399,13 @@ www.elevana.com | support@elevana.com
               <FileText className="w-4 h-4" />
               Project Requests ({projectRequests.length})
             </TabsTrigger>
+            <TabsTrigger value="your-projects" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Your Projects ({user ? projects.filter(p => p.admin_id === user.id).length : 0})
+            </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
-              Active Projects ({projects.length})
+              All Projects ({projects.length})
             </TabsTrigger>
             <TabsTrigger value="payments" className="flex items-center gap-2">
               <IndianRupee className="w-4 h-4" />
@@ -659,92 +669,278 @@ www.elevana.com | support@elevana.com
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {projectRequests.map((request) => (
-                    <div key={request.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-medium">{request.title}</h3>
-                        <Badge 
-                          className={
-                            request.status === 'accepted' ? 'bg-green-500' :
-                            request.status === 'declined' ? 'bg-red-500' :
-                            'bg-yellow-500'
-                          }
-                        >
-                          {request.status}
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
-                        <div className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          {request.profiles?.full_name || 'Unknown User'}
+                  {projectRequests.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No project requests found</p>
+                    </div>
+                  ) : (
+                    projectRequests.map((request) => (
+                      <div key={request.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-medium">{request.title}</h3>
+                          <Badge 
+                            className={
+                              request.status === 'accepted' ? 'bg-green-500' :
+                              request.status === 'declined' ? 'bg-red-500' :
+                              'bg-yellow-500'
+                            }
+                          >
+                            {request.status}
+                          </Badge>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(request.created_at).toLocaleDateString()}
+                        <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {request.profiles?.full_name || 'Unknown User'}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {new Date(request.created_at).toLocaleDateString()}
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {request.description || 'No description provided'}
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>Type: {request.project_type}</div>
-                        {request.estimated_cost && (
-                          <div className="flex items-center gap-1 text-primary">
-                            <DollarSign className="w-3 h-3" />
-                            ₹{request.estimated_cost.toLocaleString()}
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {request.description || 'No description provided'}
+                        </p>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>Type: {request.project_type}</div>
+                          {request.estimated_cost && (
+                            <div className="flex items-center gap-1 text-primary">
+                              <DollarSign className="w-3 h-3" />
+                              ₹{request.estimated_cost.toLocaleString()}
+                            </div>
+                          )}
+                        </div>
+                        {request.estimated_hours && (
+                          <div className="text-sm text-muted-foreground mt-1">
+                            Estimated Hours: {request.estimated_hours}
                           </div>
                         )}
-                      </div>
-                      {request.estimated_hours && (
-                        <div className="text-sm text-muted-foreground mt-1">
-                          Estimated Hours: {request.estimated_hours}
+                        {request.user_response_message && (
+                          <div className="mt-2 p-2 bg-muted rounded text-sm">
+                            <strong>User Response:</strong> {request.user_response_message}
+                          </div>
+                        )}
+                        <div className="flex justify-end mt-3">
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={async () => {
+                              const { error } = await supabase
+                                .from('project_requests')
+                                .delete()
+                                .eq('id', request.id);
+                              if (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to remove request.",
+                                  variant: "destructive",
+                                });
+                              } else {
+                                setProjectRequests((prev) => prev.filter((r) => r.id !== request.id));
+                                toast({
+                                  title: "Removed",
+                                  description: "Request deleted.",
+                                });
+                              }
+                            }}
+                          >
+                            Remove
+                          </Button>
                         </div>
-                      )}
-                      {request.user_response_message && (
-                        <div className="mt-2 p-2 bg-muted rounded text-sm">
-                          <strong>User Response:</strong> {request.user_response_message}
-                        </div>
-                      )}
-                      <div className="flex justify-end mt-3">
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={async () => {
-                            const { error } = await supabase
-                              .from('project_requests')
-                              .delete()
-                              .eq('id', request.id);
-                            if (error) {
-                              toast({
-                                title: "Error",
-                                description: "Failed to remove request.",
-                                variant: "destructive",
-                              });
-                            } else {
-                              setProjectRequests((prev) => prev.filter((r) => r.id !== request.id));
-                              toast({
-                                title: "Removed",
-                                description: "Request deleted.",
-                              });
-                            }
-                          }}
-                        >
-                          Remove
-                        </Button>
                       </div>
+                    ))
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="your-projects">
+            {/* Your Projects Tab - Admin assigned projects */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Assigned Projects</CardTitle>
+                <CardDescription>Projects where you are the assigned admin - manage progress and request payments</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {!user ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <p>Please log in to view your projects</p>
                     </div>
-                  ))}
+                  ) : projects.filter(p => p.admin_id === user.id).length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No projects assigned to you yet</p>
+                    </div>
+                  ) : (
+                    projects.filter(p => p.admin_id === user.id).map((project) => (
+                      <div key={project.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="font-medium">{project.title}</h3>
+                          <div className="flex items-center gap-2">
+                            <Badge 
+                              className={
+                                project.status === 'completed' ? 'bg-green-500' :
+                                project.status === 'in_progress' ? 'bg-blue-500' :
+                                'bg-yellow-500'
+                              }
+                            >
+                              {project.status}
+                            </Badge>
+                            <Button
+                              size="sm"
+                              className="h-7 px-3 text-xs"
+                              onClick={() => {
+                                setSelectedProject(project);
+                                setShowPaymentModal(true);
+                              }}
+                            >
+                              <IndianRupee className="w-3 h-3 mr-1" />
+                              Request Payment
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-3">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {project.profiles?.full_name || 'Unknown User'}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Mail className="w-3 h-3" />
+                            {project.profiles?.email || 'No email'}
+                          </div>
+                        </div>
+                        
+                        {project.description && (
+                          <p className="text-sm text-muted-foreground mb-3">{project.description}</p>
+                        )}
+                        
+                        {/* Progress Section */}
+                        <div className="space-y-3 mb-4">
+                          <div className="flex items-center justify-between text-sm">
+                            <span>Progress</span>
+                            <span>{project.completion_percentage || 0}%</span>
+                          </div>
+                          <Progress value={project.completion_percentage || 0} className="h-2" />
+                        </div>
+                        
+                        {/* Admin Edit Section */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                          <div>
+                            <Label className="text-xs">Hours Worked</Label>
+                            <Input
+                              type="number"
+                              value={project.hours_worked || 0}
+                              onChange={async (e) => {
+                                const newHours = parseInt(e.target.value) || 0;
+                                const { error } = await supabase
+                                  .from('projects')
+                                  .update({ hours_worked: newHours })
+                                  .eq('id', project.id);
+                                if (error) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to update hours",
+                                    variant: "destructive",
+                                  });
+                                } else {
+                                  // Update local state
+                                  setProjects(prev => prev.map(p => 
+                                    p.id === project.id ? { ...p, hours_worked: newHours } : p
+                                  ));
+                                }
+                              }}
+                              className="h-8"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Completion %</Label>
+                            <Input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={project.completion_percentage || 0}
+                              onChange={async (e) => {
+                                const newPercentage = Math.min(100, Math.max(0, parseInt(e.target.value) || 0));
+                                const { error } = await supabase
+                                  .from('projects')
+                                  .update({ completion_percentage: newPercentage })
+                                  .eq('id', project.id);
+                                if (error) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to update completion percentage",
+                                    variant: "destructive",
+                                  });
+                                } else {
+                                  setProjects(prev => prev.map(p => 
+                                    p.id === project.id ? { ...p, completion_percentage: newPercentage } : p
+                                  ));
+                                }
+                              }}
+                              className="h-8"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Estimated Cost</Label>
+                            <div className="text-sm text-muted-foreground pt-1">
+                              ₹{project.estimated_cost ? Number(project.estimated_cost).toLocaleString() : 'Not set'}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Progress Notes */}
+                        <div className="mb-3">
+                          <Label className="text-xs">Progress Notes</Label>
+                          <Textarea
+                            value={project.progress_notes || ''}
+                            onChange={async (e) => {
+                              const newNotes = e.target.value;
+                              const { error } = await supabase
+                                .from('projects')
+                                .update({ 
+                                  progress_notes: newNotes,
+                                  updated_at: new Date().toISOString()
+                                })
+                                .eq('id', project.id);
+                              if (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to update notes",
+                                  variant: "destructive",
+                                });
+                              } else {
+                                setProjects(prev => prev.map(p => 
+                                  p.id === project.id ? { ...p, progress_notes: newNotes } : p
+                                ));
+                              }
+                            }}
+                            placeholder="Add progress notes with timestamps..."
+                            className="min-h-[80px] text-sm"
+                          />
+                        </div>
+                        
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Created: {new Date(project.created_at).toLocaleDateString()}</span>
+                          <span>Type: {project.project_type.replace('-', ' ')}</span>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="projects">
-            {/* Active Projects Tab */}
+            {/* All Projects Tab */}
             <Card>
               <CardHeader>
-                <CardTitle>Active Projects</CardTitle>
-                <CardDescription>Ongoing projects with hour tracking and payment requests</CardDescription>
+                <CardTitle>All Projects</CardTitle>
+                <CardDescription>All projects in the system with basic information</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">

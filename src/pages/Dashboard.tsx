@@ -34,6 +34,7 @@ interface Project {
   updated_at: string;
   admin_id: string | null;
   notes: string | null;
+  progress_notes: string | null;
 }
 interface ProjectPayment {
   id: string;
@@ -294,7 +295,7 @@ const Dashboard = () => {
           project_type: request.project_type,
           estimated_cost: request.estimated_cost,
           estimated_hours: request.estimated_hours,
-          status: 'pending'
+          status: 'in_progress'
         }]);
         if (projectError) throw projectError;
       }
@@ -589,6 +590,13 @@ const Dashboard = () => {
                           {project.estimated_cost && <span>Cost: ₹{Number(project.estimated_cost).toLocaleString()}</span>}
                         </div>
                       </div>
+                      
+                      {project.progress_notes && (
+                        <div className="mt-3 p-2 bg-muted rounded-md">
+                          <p className="text-xs font-medium text-muted-foreground mb-1">Progress Notes:</p>
+                          <p className="text-sm">{project.progress_notes}</p>
+                        </div>
+                      )}
                       
                       <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
                         <span>Created: {new Date(project.created_at).toLocaleDateString()}</span>

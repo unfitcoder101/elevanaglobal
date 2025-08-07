@@ -450,6 +450,7 @@ export type Database = {
           hours_worked: number | null
           id: string
           notes: string | null
+          progress_notes: string | null
           project_type: string
           status: string
           title: string
@@ -466,6 +467,7 @@ export type Database = {
           hours_worked?: number | null
           id?: string
           notes?: string | null
+          progress_notes?: string | null
           project_type: string
           status?: string
           title: string
@@ -482,6 +484,7 @@ export type Database = {
           hours_worked?: number | null
           id?: string
           notes?: string | null
+          progress_notes?: string | null
           project_type?: string
           status?: string
           title?: string
