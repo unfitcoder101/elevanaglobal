@@ -63,6 +63,24 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
 
       if (dbError) throw dbError;
 
+      // Also save to messages table for unified inbox
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          subject: 'Custom Plan Request',
+          message: formData.description + (formData.additional_requirements ? `\n\nAdditional: ${formData.additional_requirements}` : ''),
+          message_type: 'customization',
+          status: 'unread',
+          service: formData.business_type || 'custom_plan',
+          budget: formData.budget_range || null
+        }]);
+
+      if (messageError) {
+        console.error('Message save error:', messageError);
+      }
+
       // Send notification email
       const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
         body: {

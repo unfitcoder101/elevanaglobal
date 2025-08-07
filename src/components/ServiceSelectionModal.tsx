@@ -179,6 +179,27 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
 
       if (dbError) throw dbError;
 
+      // Also save to messages table for unified inbox
+      const selectedServiceNames = selectedServicesData.map(s => s?.name).join(', ');
+      const selectedOptionNames = selectedSubOptionsData.map(s => s?.name).join(', ');
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          subject: 'Service Quote Request',
+          message: `Selected Services: ${selectedServiceNames}. Additional Options: ${selectedOptionNames}.` + (formData.additional_requirements ? `\n\nAdditional Requirements: ${formData.additional_requirements}` : ''),
+          message_type: 'service_selection',
+          status: 'unread',
+          service: selectedServiceNames,
+          budget: `₹${calculateTotalPrice().toLocaleString()}`
+        }]);
+
+      if (messageError) {
+        console.error('Message save error:', messageError);
+      }
+
       // Send notification email
       const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
         body: {

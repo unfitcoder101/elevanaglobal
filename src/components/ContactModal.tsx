@@ -61,7 +61,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           subject: `Call Request - ${formData.business_type}`,
           message: formData.problem_description || 'Call request submission',
           message_type: 'contact',
-          status: 'unread'
+          status: 'unread',
+          service: formData.business_type || null,
+          budget: null
         }]);
 
       if (messageError) {

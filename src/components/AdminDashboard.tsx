@@ -974,6 +974,8 @@ www.elevana.com | support@elevana.com
                       {message.subject && (
                         <p className="text-sm font-medium mb-1">Subject: {message.subject}</p>
                       )}
+                      {message.service && <p className="text-sm"><strong>Service:</strong> {message.service}</p>}
+                      {message.budget && <p className="text-sm"><strong>Budget:</strong> {message.budget}</p>}
                       <p className="text-sm">{message.message}</p>
                       <div className="text-xs text-muted-foreground mt-2">
                         Type: {message.message_type}

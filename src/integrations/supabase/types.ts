@@ -200,6 +200,7 @@ export type Database = {
       messages: {
         Row: {
           admin_notes: string | null
+          budget: string | null
           created_at: string
           email: string
           id: string
@@ -207,6 +208,7 @@ export type Database = {
           message_type: string
           name: string
           phone: string | null
+          service: string | null
           status: string
           subject: string | null
           updated_at: string
@@ -214,6 +216,7 @@ export type Database = {
         }
         Insert: {
           admin_notes?: string | null
+          budget?: string | null
           created_at?: string
           email: string
           id?: string
@@ -221,6 +224,7 @@ export type Database = {
           message_type?: string
           name: string
           phone?: string | null
+          service?: string | null
           status?: string
           subject?: string | null
           updated_at?: string
@@ -228,6 +232,7 @@ export type Database = {
         }
         Update: {
           admin_notes?: string | null
+          budget?: string | null
           created_at?: string
           email?: string
           id?: string
@@ -235,6 +240,7 @@ export type Database = {
           message_type?: string
           name?: string
           phone?: string | null
+          service?: string | null
           status?: string
           subject?: string | null
           updated_at?: string
