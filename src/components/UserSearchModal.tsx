@@ -14,6 +14,7 @@ interface Profile {
   id: string;
   user_id: string;
   full_name: string | null;
+  email: string | null;
   created_at: string;
 }
 
@@ -43,9 +44,9 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
         .from('profiles')
         .select('*');
 
-      // If search term provided, filter by name
+      // If search term provided, filter by name or email
       if (searchEmail.trim()) {
-        query = query.ilike('full_name', `%${searchEmail}%`);
+        query = query.or(`full_name.ilike.%${searchEmail}%,email.ilike.%${searchEmail}%`);
       }
 
       const { data: profiles, error } = await query.order('created_at', { ascending: false });
@@ -164,7 +165,7 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input
-                  placeholder="Search by name (leave empty to show all users)..."
+                  placeholder="Search by name or email (leave empty to show all users)..."
                   value={searchEmail}
                   onChange={(e) => setSearchEmail(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && searchUsers()}
@@ -193,9 +194,16 @@ const UserSearchModal = ({ isOpen, onClose }: UserSearchModalProps) => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4" />
-                          <span className="font-medium">
-                            {profile.full_name || 'No name set'}
-                          </span>
+                          <div>
+                            <span className="font-medium">
+                              {profile.full_name || 'No name set'}
+                            </span>
+                            {profile.email && (
+                              <div className="text-sm text-muted-foreground">
+                                {profile.email}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <Badge variant="outline">
                           ID: {profile.user_id.slice(0, 8)}...
