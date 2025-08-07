@@ -49,7 +49,16 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
     try {
       const { error } = await supabase
         .from('business_customizations')
-        .insert([formData]);
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          business_name: formData.business_name,
+          business_type: formData.business_type,
+          description: formData.description,
+          budget_range: formData.budget_range,
+          timeline: formData.timeline,
+          additional_requirements: formData.additional_requirements
+        }]);
 
       if (error) {
         throw error;
@@ -191,12 +200,12 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
                   <SelectValue placeholder="Select budget range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="under-1k">Under $1,000</SelectItem>
-                  <SelectItem value="1k-5k">$1,000 - $5,000</SelectItem>
-                  <SelectItem value="5k-10k">$5,000 - $10,000</SelectItem>
-                  <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-                  <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-                  <SelectItem value="50k-plus">$50,000+</SelectItem>
+                  <SelectItem value="under-25k">Under ₹25,000</SelectItem>
+                  <SelectItem value="25k-50k">₹25,000 - ₹50,000</SelectItem>
+                  <SelectItem value="50k-100k">₹50,000 - ₹1,00,000</SelectItem>
+                  <SelectItem value="100k-250k">₹1,00,000 - ₹2,50,000</SelectItem>
+                  <SelectItem value="250k-500k">₹2,50,000 - ₹5,00,000</SelectItem>
+                  <SelectItem value="500k-plus">₹5,00,000+</SelectItem>
                   <SelectItem value="discuss">Let's discuss</SelectItem>
                 </SelectContent>
               </Select>

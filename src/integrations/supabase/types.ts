@@ -27,6 +27,7 @@ export type Database = {
           estimated_cost: number | null
           id: string
           name: string
+          phone: string | null
           status: string
           timeline: string | null
           updated_at: string
@@ -44,6 +45,7 @@ export type Database = {
           estimated_cost?: number | null
           id?: string
           name: string
+          phone?: string | null
           status?: string
           timeline?: string | null
           updated_at?: string
@@ -61,6 +63,7 @@ export type Database = {
           estimated_cost?: number | null
           id?: string
           name?: string
+          phone?: string | null
           status?: string
           timeline?: string | null
           updated_at?: string
@@ -210,6 +213,116 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      project_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          due_date: string | null
+          id: string
+          paid_at: string | null
+          payment_method: string | null
+          project_id: string
+          reference_number: string | null
+          status: string
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          project_id: string
+          reference_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          project_id?: string
+          reference_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_payments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          admin_id: string | null
+          completion_percentage: number | null
+          created_at: string
+          description: string | null
+          estimated_cost: number | null
+          estimated_hours: number | null
+          hours_worked: number | null
+          id: string
+          notes: string | null
+          project_type: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_id?: string | null
+          completion_percentage?: number | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          project_type: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_id?: string | null
+          completion_percentage?: number | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          project_type?: string
+          status?: string
+          title?: string
           updated_at?: string
           user_id?: string
         }

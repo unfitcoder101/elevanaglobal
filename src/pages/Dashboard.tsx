@@ -8,18 +8,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { Label } from '@/components/ui/label';
+import CreateProjectModal from '@/components/CreateProjectModal';
+import PaymentRequestModal from '@/components/PaymentRequestModal';
+import PaymentGateway from '@/components/PaymentGateway';
 import { 
   LogOut, 
   User, 
   Plus, 
   Clock, 
-  DollarSign, 
+  IndianRupee, 
   CheckCircle, 
   AlertCircle,
-  MessageCircle,
   Settings,
-  Upload,
-  BarChart3
+  BarChart3,
+  CreditCard,
+  Send,
+  Users
 } from 'lucide-react';
 
 interface UserProfile {
@@ -28,26 +33,33 @@ interface UserProfile {
   avatar_url: string | null;
 }
 
-interface UserRequest {
+interface Project {
   id: string;
+  user_id: string;
   title: string;
-  description: string;
+  description: string | null;
+  project_type: string;
   status: string;
-  priority: string;
   hours_worked: number;
-  progress_percentage: number;
+  estimated_hours: number | null;
+  estimated_cost: number | null;
+  completion_percentage: number;
   created_at: string;
   updated_at: string;
+  admin_id: string | null;
+  notes: string | null;
 }
 
-interface Payment {
+interface ProjectPayment {
   id: string;
+  project_id: string;
   amount: number;
   currency: string;
   status: string;
   description: string | null;
   due_date: string | null;
   created_at: string;
+  reference_number: string | null;
 }
 
 const Dashboard = () => {
@@ -56,9 +68,17 @@ const Dashboard = () => {
   const navigate = useNavigate();
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [requests, setRequests] = useState<UserRequest[]>([]);
-  const [payments, setPayments] = useState<Payment[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [payments, setPayments] = useState<ProjectPayment[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showPaymentRequest, setShowPaymentRequest] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [showPaymentGateway, setShowPaymentGateway] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<ProjectPayment | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -78,6 +98,10 @@ const Dashboard = () => {
     try {
       setLoadingData(true);
       
+      // Check if user is admin (simplified check - you might want to implement proper role system)
+      const adminEmails = ['admin@elevana.com', 'contact@elevana.com'];
+      setIsAdmin(adminEmails.includes(user.email || ''));
+      
       // Load profile
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
@@ -91,22 +115,22 @@ const Dashboard = () => {
         setProfile(profileData);
       }
 
-      // Load user requests
-      const { data: requestsData, error: requestsError } = await supabase
-        .from('user_requests')
+      // Load projects
+      const { data: projectsData, error: projectsError } = await supabase
+        .from('projects')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (requestsError) {
-        console.error('Error loading requests:', requestsError);
+      if (projectsError) {
+        console.error('Error loading projects:', projectsError);
       } else {
-        setRequests(requestsData || []);
+        setProjects(projectsData || []);
       }
 
-      // Load payments
+      // Load project payments
       const { data: paymentsData, error: paymentsError } = await supabase
-        .from('payments')
+        .from('project_payments')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
@@ -115,6 +139,18 @@ const Dashboard = () => {
         console.error('Error loading payments:', paymentsError);
       } else {
         setPayments(paymentsData || []);
+      }
+
+      // Load all users if admin
+      if (adminEmails.includes(user.email || '')) {
+        const { data: usersData } = await supabase
+          .from('profiles')
+          .select('user_id, full_name')
+          .neq('user_id', user.id);
+        
+        if (usersData) {
+          setAllUsers(usersData);
+        }
       }
 
     } catch (error) {
@@ -151,19 +187,41 @@ const Dashboard = () => {
   const getPaidAmount = () => {
     return payments
       .filter(p => p.status === 'paid')
-      .reduce((sum, p) => sum + p.amount, 0);
+      .reduce((sum, p) => sum + Number(p.amount), 0);
   };
 
   const getDueAmount = () => {
     return payments
       .filter(p => p.status === 'pending' && p.due_date && new Date(p.due_date) < new Date())
-      .reduce((sum, p) => sum + p.amount, 0);
+      .reduce((sum, p) => sum + Number(p.amount), 0);
   };
 
   const getPendingAmount = () => {
     return payments
       .filter(p => p.status === 'pending')
-      .reduce((sum, p) => sum + p.amount, 0);
+      .reduce((sum, p) => sum + Number(p.amount), 0);
+  };
+
+  const handlePaymentRequest = (project: Project) => {
+    setSelectedProject(project);
+    setShowPaymentRequest(true);
+  };
+
+  const handleCreateProject = () => {
+    if (selectedUserId) {
+      setShowCreateProject(true);
+    } else {
+      toast({
+        title: "Select a user",
+        description: "Please select a user to create a project for.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handlePayNow = (payment: ProjectPayment) => {
+    setSelectedPayment(payment);
+    setShowPaymentGateway(true);
   };
 
   if (loading || loadingData) {
@@ -266,52 +324,218 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Admin Section */}
+        {isAdmin && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Admin Panel
+              </CardTitle>
+              <CardDescription>Manage projects and users</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4 items-end">
+                <div className="flex-1">
+                  <Label>Select User to Create Project For</Label>
+                  <select 
+                    className="w-full p-2 border rounded-md"
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                  >
+                    <option value="">Choose a user...</option>
+                    {allUsers.map((user) => (
+                      <option key={user.user_id} value={user.user_id}>
+                        {user.full_name || 'Unknown User'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <Button 
+                  onClick={handleCreateProject}
+                  variant="gradient"
+                  disabled={!selectedUserId}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Project
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Recent Activity */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Your latest project updates</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {projects.length === 0 ? (
+              <p className="text-muted-foreground text-center py-4">
+                No recent activity. Your projects will appear here once they're created.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {projects.slice(0, 3).map((project) => (
+                  <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">{project.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Updated: {new Date(project.updated_at).toLocaleDateString()} • 
+                        {project.hours_worked} hours worked
+                      </p>
+                    </div>
+                    <Badge className={getStatusColor(project.status)}>
+                      {project.status}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Projects Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>Get started with these common tasks</CardDescription>
+              <CardTitle className="flex items-center justify-between">
+                Your Projects
+                {isAdmin && (
+                  <Badge variant="outline">Admin View</Badge>
+                )}
+              </CardTitle>
+              <CardDescription>Track the progress of your ongoing projects</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Button className="w-full justify-start" variant="outline">
-                <Plus className="w-4 h-4 mr-2" />
-                I want results like this
-              </Button>
-              <Button className="w-full justify-start" variant="outline">
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Send Feedback
-              </Button>
-              <Button className="w-full justify-start" variant="outline">
-                <BarChart3 className="w-4 h-4 mr-2" />
-                View Analytics
-              </Button>
+            <CardContent>
+              {projects.length === 0 ? (
+                <div className="text-center py-8">
+                  <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No projects yet</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Projects created by admin will appear here
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {projects.map((project) => (
+                    <div key={project.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-medium">{project.title}</h3>
+                        <div className="flex items-center gap-2">
+                          <Badge className={getStatusColor(project.status)}>
+                            {project.status}
+                          </Badge>
+                          {isAdmin && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handlePaymentRequest(project)}
+                            >
+                              <Send className="w-3 h-3 mr-1" />
+                              Payment
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {project.description && (
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {project.description}
+                        </p>
+                      )}
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span>Progress</span>
+                          <span>{project.completion_percentage}%</span>
+                        </div>
+                        <Progress value={project.completion_percentage} className="h-2" />
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 mt-3 text-sm text-muted-foreground">
+                        <div>
+                          <span>Hours: {project.hours_worked}</span>
+                          {project.estimated_hours && (
+                            <span> / {project.estimated_hours}</span>
+                          )}
+                        </div>
+                        <div>
+                          {project.estimated_cost && (
+                            <span>Cost: ₹{Number(project.estimated_cost).toLocaleString()}</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
+                        <span>Created: {new Date(project.created_at).toLocaleDateString()}</span>
+                        <span>Type: {project.project_type.replace('-', ' ')}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
 
+          {/* Payment History */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Your latest project updates</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="w-5 h-5" />
+                Payment History
+              </CardTitle>
+              <CardDescription>Track your payment requests and transactions</CardDescription>
             </CardHeader>
             <CardContent>
-              {requests.length === 0 ? (
-                <p className="text-muted-foreground text-center py-4">
-                  No recent activity. Create your first request to get started!
-                </p>
+              {payments.length === 0 ? (
+                <div className="text-center py-8">
+                  <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No payments yet</h3>
+                  <p className="text-muted-foreground">
+                    Payment requests will appear here
+                  </p>
+                </div>
               ) : (
                 <div className="space-y-3">
-                  {requests.slice(0, 3).map((request) => (
-                    <div key={request.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{request.title}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(request.updated_at).toLocaleDateString()}
-                        </p>
+                  {payments.map((payment) => (
+                    <div key={payment.id} className="border rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium">₹{Number(payment.amount).toLocaleString()}</span>
+                        <Badge className={getPaymentStatusColor(payment.status)}>
+                          {payment.status}
+                        </Badge>
                       </div>
-                      <Badge className={getStatusColor(request.status)}>
-                        {request.status}
-                      </Badge>
+                      
+                      {payment.description && (
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {payment.description}
+                        </p>
+                      )}
+                      
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>Ref: {payment.reference_number}</span>
+                        <span>{new Date(payment.created_at).toLocaleDateString()}</span>
+                      </div>
+                      
+                      {payment.due_date && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Due: {new Date(payment.due_date).toLocaleDateString()}
+                        </p>
+                      )}
+                      
+                      {payment.status === 'pending' && (
+                        <Button
+                          size="sm"
+                          variant="gradient"
+                          onClick={() => handlePayNow(payment)}
+                          className="mt-2 w-full"
+                        >
+                          <CreditCard className="w-3 h-3 mr-1" />
+                          Pay Now
+                        </Button>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -319,59 +543,37 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Projects Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Projects</CardTitle>
-            <CardDescription>Track the progress of your ongoing projects</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {requests.length === 0 ? (
-              <div className="text-center py-8">
-                <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">No projects yet</h3>
-                <p className="text-muted-foreground mb-4">
-                  Start your first project by clicking "I want results like this"
-                </p>
-                <Button variant="gradient">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Project
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {requests.map((request) => (
-                  <div key={request.id} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-medium">{request.title}</h3>
-                      <Badge className={getStatusColor(request.status)}>
-                        {request.status}
-                      </Badge>
-                    </div>
-                    
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {request.description}
-                    </p>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span>Progress</span>
-                        <span>{request.progress_percentage}%</span>
-                      </div>
-                      <Progress value={request.progress_percentage} className="h-2" />
-                    </div>
-                    
-                    <div className="flex items-center justify-between mt-3 text-sm text-muted-foreground">
-                      <span>Hours worked: {request.hours_worked}</span>
-                      <span>Updated: {new Date(request.updated_at).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        
+        {/* Modals */}
+        <CreateProjectModal
+          isOpen={showCreateProject}
+          onClose={() => setShowCreateProject(false)}
+          onProjectCreated={loadUserData}
+          userId={selectedUserId}
+        />
+        
+        {selectedProject && (
+          <PaymentRequestModal
+            isOpen={showPaymentRequest}
+            onClose={() => setShowPaymentRequest(false)}
+            projectId={selectedProject.id}
+            userId={selectedProject.user_id}
+            projectTitle={selectedProject.title}
+          />
+        )}
+        
+        {selectedPayment && (
+          <PaymentGateway
+            isOpen={showPaymentGateway}
+            onClose={() => setShowPaymentGateway(false)}
+            payment={{
+              id: selectedPayment.id,
+              amount: Number(selectedPayment.amount),
+              description: selectedPayment.description || 'Project payment',
+              reference_number: selectedPayment.reference_number || 'N/A'
+            }}
+          />
+        )}
       </div>
     </div>
   );

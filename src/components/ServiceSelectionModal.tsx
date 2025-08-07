@@ -165,11 +165,15 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
       const { error } = await supabase
         .from('business_customizations')
         .insert([{
-          ...formData,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          business_name: formData.business_name,
           business_type: 'service_selection',
+          timeline: formData.timeline,
+          additional_requirements: `${formData.additional_requirements}\n\nSelected Services: ${JSON.stringify(selectedServicesData)}\nSelected Options: ${JSON.stringify(selectedSubOptionsData)}\nTotal Price: ₹${calculateTotalPrice().toLocaleString()}`,
           description: `Selected Services: ${selectedServicesData.map(s => s?.name).join(', ')}. Additional Options: ${selectedSubOptionsData.map(s => s?.name).join(', ')}`,
-          estimated_cost: calculateTotalPrice(),
-          additional_requirements: `${formData.additional_requirements}\n\nSelected Services: ${JSON.stringify(selectedServicesData)}\nSelected Options: ${JSON.stringify(selectedSubOptionsData)}\nTotal Price: ₹${calculateTotalPrice().toLocaleString()}`
+          estimated_cost: calculateTotalPrice()
         }]);
 
       if (error) throw error;
