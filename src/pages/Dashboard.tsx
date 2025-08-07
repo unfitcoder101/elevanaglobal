@@ -84,28 +84,34 @@ const Dashboard = () => {
       loadUserData();
       
       // Set up real-time subscriptions
-      const setupRealtime = () => {
-        // Subscribe to projects table changes for current user
+      const setupRealtime = async () => {
+        // Check if user is admin first
+        const { data: adminCheck } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin'
+        });
+        
+        // Subscribe to projects table changes - all projects if admin, current user if not
         const projectsChannel = supabase
           .channel('user_projects_realtime')
           .on('postgres_changes', {
             event: '*',
             schema: 'public',
             table: 'projects',
-            filter: `user_id=eq.${user.id}`
+            ...(adminCheck ? {} : { filter: `user_id=eq.${user.id}` })
           }, () => {
             loadUserData();
           })
           .subscribe();
 
-        // Subscribe to project_payments table changes for current user
+        // Subscribe to project_payments table changes - all payments if admin, current user if not
         const paymentsChannel = supabase
           .channel('user_payments_realtime')
           .on('postgres_changes', {
             event: '*',
             schema: 'public',
             table: 'project_payments',
-            filter: `user_id=eq.${user.id}`
+            ...(adminCheck ? {} : { filter: `user_id=eq.${user.id}` })
           }, () => {
             loadUserData();
           })
@@ -131,8 +137,17 @@ const Dashboard = () => {
         };
       };
 
-      const cleanup = setupRealtime();
-      return cleanup;
+      let cleanup: (() => void) | undefined;
+      
+      setupRealtime().then((cleanupFn) => {
+        cleanup = cleanupFn;
+      });
+
+      return () => {
+        if (cleanup) {
+          cleanup();
+        }
+      };
     }
   }, [user]);
   const loadUserData = async () => {
@@ -160,26 +175,43 @@ const Dashboard = () => {
         setProfile(profileData);
       }
 
-      // Load projects
+      // Load projects - if admin, load all projects; if regular user, load only their projects
+      let projectsQuery = supabase.from('projects').select(`
+        *,
+        profiles!projects_user_id_fkey(full_name)
+      `);
+      
+      if (!adminCheck) {
+        projectsQuery = projectsQuery.eq('user_id', user.id);
+      }
+      
       const {
         data: projectsData,
         error: projectsError
-      } = await supabase.from('projects').select('*').eq('user_id', user.id).order('created_at', {
+      } = await projectsQuery.order('created_at', {
         ascending: false
       });
+      
       if (projectsError) {
         console.error('Error loading projects:', projectsError);
       } else {
         setProjects(projectsData || []);
       }
 
-      // Load project payments
+      // Load project payments - if admin, load all payments; if regular user, load only their payments
+      let paymentsQuery = supabase.from('project_payments').select('*');
+      
+      if (!adminCheck) {
+        paymentsQuery = paymentsQuery.eq('user_id', user.id);
+      }
+      
       const {
         data: paymentsData,
         error: paymentsError
-      } = await supabase.from('project_payments').select('*').eq('user_id', user.id).order('created_at', {
+      } = await paymentsQuery.order('created_at', {
         ascending: false
       });
+      
       if (paymentsError) {
         console.error('Error loading payments:', paymentsError);
       } else {
@@ -457,16 +489,21 @@ const Dashboard = () => {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest project updates from all users</CardDescription>
+            <CardDescription>
+              {isAdmin ? 'Latest project updates from all users' : 'Your latest project updates'}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {projects.length === 0 ? <p className="text-muted-foreground text-center py-4">
-                No recent activity. Your projects will appear here once they're created.
+                {isAdmin ? 'No recent activity from any users.' : 'No recent activity. Your projects will appear here once they\'re created.'}
               </p> : <div className="space-y-3">
                 {projects.slice(0, 3).map(project => <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex-1">
                       <p className="font-medium text-sm">{project.title}</p>
                       <p className="text-xs text-muted-foreground">
+                        {isAdmin && (project as any).profiles?.full_name && (
+                          <>User: {(project as any).profiles.full_name} • </>
+                        )}
                         Updated: {new Date(project.updated_at).toLocaleDateString()} • 
                         {project.hours_worked} hours worked
                       </p>
@@ -542,10 +579,12 @@ const Dashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                All User Projects
+                {isAdmin ? 'All User Projects' : 'Your Projects'}
                 {isAdmin && <Badge variant="outline">Admin View</Badge>}
               </CardTitle>
-              <CardDescription>Track the progress of projects from all users</CardDescription>
+              <CardDescription>
+                {isAdmin ? 'Track the progress of projects from all users' : 'Track the progress of your ongoing projects'}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {projects.length === 0 ? <div className="text-center py-8">
@@ -559,6 +598,11 @@ const Dashboard = () => {
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-medium">{project.title}</h3>
                         <div className="flex items-center gap-2">
+                          {isAdmin && (project as any).profiles?.full_name && (
+                            <Badge variant="secondary" className="text-xs">
+                              {(project as any).profiles.full_name}
+                            </Badge>
+                          )}
                           <Badge className={getStatusColor(project.status)}>
                             {project.status}
                           </Badge>
