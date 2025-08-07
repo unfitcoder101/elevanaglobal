@@ -274,35 +274,35 @@ const Index = () => {
         
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <a href="#hero" 
-               className="flex items-center text-xl md:text-2xl font-extrabold pl-2 md:pl-6 cursor-pointer transition-all duration-300 hover:opacity-80 font-poppins"
+               className="flex items-center text-3xl font-extrabold pl-6 cursor-pointer transition-all duration-300 hover:opacity-80 font-poppins"
                style={{ color: '#008C8C', letterSpacing: '0.5px' }}>
               ELEVANA<span style={{ color: '#20C997' }}>.</span>
             </a>
             
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-              <a href="#services" className="text-sm text-foreground hover:text-primary transition-smooth">Services</a>
-              <a href="#proof-in-action" className="text-sm text-foreground hover:text-primary transition-smooth">Results</a>
-              <a href="#what-our-clients-say" className="text-sm text-foreground hover:text-primary transition-smooth">Testimonials</a>
-              <a href="#contact" className="text-sm text-foreground hover:text-primary transition-smooth">Contact</a>
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
+              <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
+              <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
+              <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
             </nav>
 
-            <div className="flex items-center space-x-2 md:space-x-3">
+            <div className="flex items-center space-x-4">
               {user ? (
-                <Button variant="gradient" size="sm" className="hidden lg:inline-flex text-xs md:text-sm px-3 py-2" onClick={() => navigate('/dashboard')}>
+                <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/dashboard')}>
                   Dashboard
-                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               ) : (
                 <>
-                  <Button variant="outline" size="sm" className="hidden lg:inline-flex text-xs md:text-sm px-3 py-2" onClick={() => navigate('/auth')}>
+                  <Button variant="outline" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/auth')}>
                     Sign In
                   </Button>
-                  <Button variant="gradient" size="sm" className="hidden md:inline-flex text-xs md:text-sm px-3 py-2" onClick={() => setContactModalOpen(true)}>
-                    Book Call
-                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => setContactModalOpen(true)}>
+                    Book Free Call
+                    <ArrowRight className="w-4 h-4" />
                   </Button>
                 </>
               )}
@@ -310,32 +310,32 @@ const Index = () => {
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2"
+                className="md:hidden"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="lg:hidden bg-background border-t">
+            <div className="md:hidden bg-background border-t">
               <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
                 <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
-                <a href="#proof-in-action" className="text-foreground hover:text-primary transition-smooth">Results</a>
-                <a href="#what-our-clients-say" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
+                <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
+                <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
                 <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
                 {user ? (
-                  <Button variant="gradient" size="sm" className="w-full" onClick={() => navigate('/dashboard')}>
+                  <Button variant="gradient" size="lg" className="w-full" onClick={() => navigate('/dashboard')}>
                     Dashboard
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 ) : (
                   <>
-                    <Button variant="outline" size="sm" className="w-full mb-2" onClick={() => navigate('/auth')}>
+                    <Button variant="outline" size="lg" className="w-full mb-2" onClick={() => navigate('/auth')}>
                       Sign In
                     </Button>
-                    <Button variant="gradient" size="sm" className="w-full" onClick={() => setContactModalOpen(true)}>
+                    <Button variant="gradient" size="lg" className="w-full" onClick={() => setContactModalOpen(true)}>
                       Book Free Call
                       <ArrowRight className="w-4 h-4" />
                     </Button>
@@ -614,7 +614,7 @@ const Index = () => {
 
 
         {/* Premium Client Testimonials Section */}
-        <section id="what-our-clients-say" className="py-20" style={{ backgroundColor: '#f8f9fa' }}>
+        <section id="client-testimonials" className="py-20" style={{ backgroundColor: '#f8f9fa' }}>
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 font-poppins" style={{ color: '#008C8C' }}>
@@ -678,7 +678,7 @@ const Index = () => {
 
 
         {/* 5. Case Study / Project Video Section */}
-        <section id="proof-in-action" className="py-16 bg-muted/20">
+        <section className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 reveal-up">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -851,55 +851,56 @@ const Index = () => {
                 Helping businesses grow their online presence and scale profits
               </p>
               <div className="flex items-center justify-center space-x-8">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button 
-                      onClick={handleEmailClick}
-                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-                    >
-                      <Mail className="w-6 h-6 text-primary" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="flex items-center space-x-2">
-                      <span>{contactInfo.email}</span>
-                      {copiedEmail ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button 
+        onClick={handleEmailClick}
+        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+      >
+        <Mail className="w-6 h-6 text-primary" />
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <div className="flex items-center space-x-2">
+        <span>elevanaglobal@gmail.com</span>
+        {copiedEmail ? (
+          <CheckCircle className="w-4 h-4 text-green-500" />
+        ) : (
+          <Copy className="w-4 h-4" />
+        )}
+      </div>
+    </TooltipContent>
+  </Tooltip>
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button 
-                      onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
-                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-                    >
-                      <Phone className="w-6 h-6 text-primary" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{contactInfo.phone}</p>
-                  </TooltipContent>
-                </Tooltip>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button 
+        onClick={() => window.open(`tel:+919166922448`, '_self')}
+        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+      >
+        <Phone className="w-6 h-6 text-primary" />
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>+91 91 6692 244 8</p>
+    </TooltipContent>
+  </Tooltip>
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button 
-                      onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}
-                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-                    >
-                      <Instagram className="w-6 h-6 text-primary" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{contactInfo.instagram}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button 
+        onClick={() => window.open(`https://www.instagram.com/elevanaglobal/?utm_source=ig_web_button_share_sheet`, '_blank')}
+        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+      >
+        <Instagram className="w-6 h-6 text-primary" />
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>@elevanaglobal</p>
+    </TooltipContent>
+  </Tooltip>
+</div>
+
             </div>
           </div>
         </footer>
