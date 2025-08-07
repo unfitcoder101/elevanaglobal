@@ -786,20 +786,7 @@ const Index = () => {
 
               <Card className="shadow-elegant reveal-up">
                 <CardContent className="p-8">
-                  <div className="text-center mb-6">
-                    <p className="text-muted-foreground mb-4">
-                      Fill out our comprehensive form to get your personalized growth strategy
-                    </p>
-                    <Button 
-                      variant="gradient" 
-                      size="lg"
-                      onClick={() => window.open('https://forms.google.com/your-form-url', '_blank')}
-                      className="w-full md:w-auto"
-                    >
-                      <ExternalLink className="w-5 h-5 mr-2" />
-                      Open Growth Audit Form
-                    </Button>
-                  </div>
+    
                   
                   <div className="bg-muted/30 p-6 rounded-lg">
                     <h3 className="font-semibold mb-4">What we'll cover in your audit:</h3>
@@ -851,56 +838,55 @@ const Index = () => {
                 Helping businesses grow their online presence and scale profits
               </p>
               <div className="flex items-center justify-center space-x-8">
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <button 
-        onClick={handleEmailClick}
-        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-      >
-        <Mail className="w-6 h-6 text-primary" />
-      </button>
-    </TooltipTrigger>
-    <TooltipContent>
-      <div className="flex items-center space-x-2">
-        <span>elevanaglobal@gmail.com</span>
-        {copiedEmail ? (
-          <CheckCircle className="w-4 h-4 text-green-500" />
-        ) : (
-          <Copy className="w-4 h-4" />
-        )}
-      </div>
-    </TooltipContent>
-  </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={handleEmailClick}
+                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+                    >
+                      <Mail className="w-6 h-6 text-primary" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="flex items-center space-x-2">
+                      <span>{contactInfo.email}</span>
+                      {copiedEmail ? (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
 
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <button 
-        onClick={() => window.open(`tel:+919166922448`, '_self')}
-        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-      >
-        <Phone className="w-6 h-6 text-primary" />
-      </button>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p>+91 91 6692 244 8</p>
-    </TooltipContent>
-  </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
+                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+                    >
+                      <Phone className="w-6 h-6 text-primary" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{contactInfo.phone}</p>
+                  </TooltipContent>
+                </Tooltip>
 
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <button 
-        onClick={() => window.open(`https://www.instagram.com/elevanaglobal/?utm_source=ig_web_button_share_sheet`, '_blank')}
-        className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
-      >
-        <Instagram className="w-6 h-6 text-primary" />
-      </button>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p>@elevanaglobal</p>
-    </TooltipContent>
-  </Tooltip>
-</div>
-
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}
+                      className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
+                    >
+                      <Instagram className="w-6 h-6 text-primary" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{contactInfo.instagram}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
           </div>
         </footer>
