@@ -65,9 +65,9 @@ const Index = () => {
 
   // Contact Information
   const contactInfo = {
-    email: 'hello@agencyx.com',
-    phone: '+1 (555) 123-4567',
-    instagram: '@agencyx_digital'
+    email: 'elevanaglobal@gmail.com',
+    phone: '+91 9166922448',
+    instagram: 'https://www.instagram.com/elevanaglobal/?utm_source=ig_web_button_share_sheet'
   };
 
   // Scroll animations
