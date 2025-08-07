@@ -51,6 +51,24 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
       if (dbError) throw dbError;
 
+      // Also save to messages table for unified inbox
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: `Call Request - ${formData.business_type}`,
+          message: formData.problem_description || 'Call request submission',
+          message_type: 'contact',
+          status: 'unread'
+        }]);
+
+      if (messageError) {
+        console.error('Message save error:', messageError);
+        // Don't throw error here, lead submission was successful
+      }
+
       // Send notification email
       const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
         body: {

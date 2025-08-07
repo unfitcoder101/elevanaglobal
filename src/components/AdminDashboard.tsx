@@ -76,6 +76,67 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     loadAllData();
+    
+    // Set up real-time subscriptions
+    const setupRealtime = () => {
+      // Subscribe to projects table changes
+      const projectsChannel = supabase
+        .channel('projects_realtime')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'projects'
+        }, () => {
+          loadAllData();
+        })
+        .subscribe();
+
+      // Subscribe to project_payments table changes
+      const paymentsChannel = supabase
+        .channel('payments_realtime')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'project_payments'
+        }, () => {
+          loadAllData();
+        })
+        .subscribe();
+
+      // Subscribe to project_requests table changes
+      const requestsChannel = supabase
+        .channel('requests_realtime')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'project_requests'
+        }, () => {
+          loadAllData();
+        })
+        .subscribe();
+
+      // Subscribe to messages table changes
+      const messagesChannel = supabase
+        .channel('messages_realtime')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'messages'
+        }, () => {
+          loadAllData();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(projectsChannel);
+        supabase.removeChannel(paymentsChannel);
+        supabase.removeChannel(requestsChannel);
+        supabase.removeChannel(messagesChannel);
+      };
+    };
+
+    const cleanup = setupRealtime();
+    return cleanup;
   }, []);
 
   const loadAllData = async () => {
@@ -724,33 +785,59 @@ www.elevana.com | support@elevana.com
                         </div>
                       </div>
                       
-                      {/* Hours Tracking Section */}
-                      <div className="grid grid-cols-2 gap-4 mt-3 p-3 bg-muted rounded">
-                        <div>
-                          <Label className="text-xs">Hours Worked</Label>
-                          <Input
-                            type="number"
-                            value={project.hours_worked || 0}
-                            onChange={async (e) => {
-                              const newHours = parseInt(e.target.value) || 0;
-                              const { error } = await supabase
-                                .from('projects')
-                                .update({ hours_worked: newHours })
-                                .eq('id', project.id);
-                              
-                              if (!error) {
-                                setProjects(prev => prev.map(p => 
-                                  p.id === project.id ? { ...p, hours_worked: newHours } : p
-                                ));
-                              }
-                            }}
-                            className="text-xs h-8"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-xs">Estimated Total</Label>
-                          <div className="text-sm font-medium mt-1">
-                            {project.estimated_hours || 0} hours
+                      {/* Hours Tracking Section - Enhanced */}
+                      <div className="mt-4 p-4 bg-primary/5 border-l-4 border-primary rounded-r">
+                        <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          Hours Tracking
+                        </h4>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <Label className="text-xs font-medium">Hours Worked</Label>
+                            <Input
+                              type="number"
+                              min="0"
+                              value={project.hours_worked || 0}
+                              onChange={async (e) => {
+                                const newHours = parseInt(e.target.value) || 0;
+                                const { error } = await supabase
+                                  .from('projects')
+                                  .update({ hours_worked: newHours })
+                                  .eq('id', project.id);
+                                
+                                if (!error) {
+                                  setProjects(prev => prev.map(p => 
+                                    p.id === project.id ? { ...p, hours_worked: newHours } : p
+                                  ));
+                                  toast({
+                                    title: "Hours Updated",
+                                    description: `Hours updated to ${newHours} for ${project.title}`,
+                                  });
+                                } else {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to update hours.",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                              className="text-sm h-9 border-2"
+                              placeholder="0"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs font-medium">Estimated Total</Label>
+                            <div className="text-sm font-semibold mt-2 p-2 bg-background rounded border">
+                              {project.estimated_hours || 0} hours
+                            </div>
+                          </div>
+                          <div>
+                            <Label className="text-xs font-medium">Progress</Label>
+                            <div className="text-sm font-semibold mt-2 p-2 bg-background rounded border">
+                              {project.estimated_hours 
+                                ? Math.round(((project.hours_worked || 0) / project.estimated_hours) * 100)
+                                : 0}%
+                            </div>
                           </div>
                         </div>
                       </div>

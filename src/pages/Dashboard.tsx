@@ -81,6 +81,57 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       loadUserData();
+      
+      // Set up real-time subscriptions
+      const setupRealtime = () => {
+        // Subscribe to projects table changes for current user
+        const projectsChannel = supabase
+          .channel('user_projects_realtime')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'projects',
+            filter: `user_id=eq.${user.id}`
+          }, () => {
+            loadUserData();
+          })
+          .subscribe();
+
+        // Subscribe to project_payments table changes for current user
+        const paymentsChannel = supabase
+          .channel('user_payments_realtime')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'project_payments',
+            filter: `user_id=eq.${user.id}`
+          }, () => {
+            loadUserData();
+          })
+          .subscribe();
+
+        // Subscribe to project_requests table changes for current user
+        const requestsChannel = supabase
+          .channel('user_requests_realtime')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'project_requests',
+            filter: `user_id=eq.${user.id}`
+          }, () => {
+            loadUserData();
+          })
+          .subscribe();
+
+        return () => {
+          supabase.removeChannel(projectsChannel);
+          supabase.removeChannel(paymentsChannel);
+          supabase.removeChannel(requestsChannel);
+        };
+      };
+
+      const cleanup = setupRealtime();
+      return cleanup;
     }
   }, [user]);
   const loadUserData = async () => {
