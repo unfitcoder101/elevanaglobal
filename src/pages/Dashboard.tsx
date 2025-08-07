@@ -168,15 +168,18 @@ const Dashboard = () => {
         setProjectRequests(requestsData || []);
       }
 
-      // Load all users if admin
+      // Load all users (including current admin) if admin
       if (adminCheck) {
-        const { data: usersData } = await supabase
+        const { data: usersData, error: usersError } = await supabase
           .from('profiles')
           .select('user_id, full_name')
-          .neq('user_id', user.id);
+          .order('full_name');
         
-        if (usersData) {
-          setAllUsers(usersData);
+        if (usersError) {
+          console.error('Error loading users:', usersError);
+        } else {
+          console.log('Loaded users:', usersData);
+          setAllUsers(usersData || []);
         }
       }
 

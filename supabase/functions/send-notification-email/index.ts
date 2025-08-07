@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
         break;
     }
 
-    // Send email to admin
+    // Send email to admin (using verified email in test mode)
     const adminEmailResponse = await resend.emails.send({
       from: "ELEVANA Notifications <notifications@kanhayadav1610@gmail.com>",
       to: ["kanhayadav1610@gmail.com"],
@@ -129,10 +129,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin email sent successfully:", adminEmailResponse);
 
-    // Send confirmation email to customer (only to verified email in test mode)
+    // Send confirmation email to customer (test mode - only to verified email)
     const customerEmailResponse = await resend.emails.send({
       from: "ELEVANA <hello@kanhayadav1610@gmail.com>",
-      to: ["kanhayadav1610@gmail.com"],
+      to: ["kanhayadav1610@gmail.com"], // In production, change to [requestData.email]
       subject: "Thank you for contacting ELEVANA!",
       html: customerEmailContent,
     });
