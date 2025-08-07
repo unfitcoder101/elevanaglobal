@@ -405,7 +405,7 @@ www.elevana.com | support@elevana.com
             </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
-              All Projects ({projects.length})
+              All User Projects ({projects.length})
             </TabsTrigger>
             <TabsTrigger value="payments" className="flex items-center gap-2">
               <IndianRupee className="w-4 h-4" />
