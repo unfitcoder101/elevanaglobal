@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import UserSearchModal from '@/components/UserSearchModal';
 import { 
   IndianRupee, 
   Send, 
@@ -24,7 +25,8 @@ import {
   DollarSign,
   Home,
   MessageSquare,
-  UserCheck
+  UserCheck,
+  Search
 } from 'lucide-react';
 
 interface BusinessCustomization {
@@ -60,6 +62,7 @@ const AdminDashboard = () => {
   const [selectedCustomization, setSelectedCustomization] = useState<BusinessCustomization | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sendingPayment, setSendingPayment] = useState(false);
+  const [showUserSearch, setShowUserSearch] = useState(false);
   const [paymentRequest, setPaymentRequest] = useState<PaymentRequest>({
     user_id: '',
     amount: 0,
@@ -280,20 +283,30 @@ www.elevana.com | support@elevana.com
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-primary">ELEVANA Admin Dashboard</h1>
-              <p className="text-muted-foreground">Manage customer requests and send payment requests</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-primary">ELEVANA Admin Dashboard</h1>
+                <p className="text-muted-foreground">Manage customer requests and send payment requests</p>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowUserSearch(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Search className="w-4 h-4" />
+                  Send Project Request
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/')}
+                  className="flex items-center gap-2"
+                >
+                  <Home className="w-4 h-4" />
+                  Home Page
+                </Button>
+              </div>
             </div>
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/')}
-              className="flex items-center gap-2"
-            >
-              <Home className="w-4 h-4" />
-              Home Page
-            </Button>
-          </div>
         </div>
       </header>
 
@@ -749,6 +762,11 @@ www.elevana.com | support@elevana.com
           </TabsContent>
         </Tabs>
       </div>
+
+      <UserSearchModal 
+        isOpen={showUserSearch} 
+        onClose={() => setShowUserSearch(false)} 
+      />
     </div>
   );
 };

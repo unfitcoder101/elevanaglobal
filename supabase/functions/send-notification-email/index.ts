@@ -121,18 +121,18 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "ELEVANA Notifications <notifications@resend.dev>",
-      to: ["elevanaglobal@gmail.com"],
+      from: "ELEVANA Notifications <notifications@kanhayadav1610@gmail.com>",
+      to: ["kanhayadav1610@gmail.com"],
       subject: subject,
       html: adminEmailContent,
     });
 
     console.log("Admin email sent successfully:", adminEmailResponse);
 
-    // Send confirmation email to customer
+    // Send confirmation email to customer (only to verified email in test mode)
     const customerEmailResponse = await resend.emails.send({
-      from: "ELEVANA <hello@resend.dev>",
-      to: [requestData.email],
+      from: "ELEVANA <hello@kanhayadav1610@gmail.com>",
+      to: ["kanhayadav1610@gmail.com"],
       subject: "Thank you for contacting ELEVANA!",
       html: customerEmailContent,
     });
