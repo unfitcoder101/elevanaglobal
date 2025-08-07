@@ -56,6 +56,7 @@ const AdminDashboard = () => {
   const [contactRequests, setContactRequests] = useState<any[]>([]);
   const [growthAudits, setGrowthAudits] = useState<any[]>([]);
   const [leads, setLeads] = useState<any[]>([]);
+  const [projectRequests, setProjectRequests] = useState<any[]>([]);
   const [selectedCustomization, setSelectedCustomization] = useState<BusinessCustomization | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sendingPayment, setSendingPayment] = useState(false);
@@ -108,6 +109,15 @@ const AdminDashboard = () => {
 
       if (leadsError) throw leadsError;
       setLeads(leadsData || []);
+
+      // Load project requests
+      const { data: projectRequestsData, error: projectRequestsError } = await supabase
+        .from('project_requests')
+        .select('*, profiles!inner(full_name)')
+        .order('created_at', { ascending: false });
+
+      if (projectRequestsError) throw projectRequestsError;
+      setProjectRequests(projectRequestsData || []);
 
     } catch (error) {
       console.error('Error loading data:', error);
@@ -289,10 +299,14 @@ www.elevana.com | support@elevana.com
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="customizations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="customizations" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               Business Requests ({customizations.length})
+            </TabsTrigger>
+            <TabsTrigger value="project-requests" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              Project Requests ({projectRequests.length})
             </TabsTrigger>
             <TabsTrigger value="contacts" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
@@ -537,6 +551,68 @@ www.elevana.com | support@elevana.com
             )}
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="project-requests">
+            {/* Project Requests Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Requests</CardTitle>
+                <CardDescription>All project requests sent to users</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {projectRequests.map((request) => (
+                    <div key={request.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{request.title}</h3>
+                        <Badge 
+                          className={
+                            request.status === 'accepted' ? 'bg-green-500' :
+                            request.status === 'declined' ? 'bg-red-500' :
+                            'bg-yellow-500'
+                          }
+                        >
+                          {request.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          {request.profiles?.full_name || 'Unknown User'}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(request.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {request.description || 'No description provided'}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>Type: {request.project_type}</div>
+                        {request.estimated_cost && (
+                          <div className="flex items-center gap-1 text-primary">
+                            <DollarSign className="w-3 h-3" />
+                            ₹{request.estimated_cost.toLocaleString()}
+                          </div>
+                        )}
+                      </div>
+                      {request.estimated_hours && (
+                        <div className="text-sm text-muted-foreground mt-1">
+                          Estimated Hours: {request.estimated_hours}
+                        </div>
+                      )}
+                      {request.user_response_message && (
+                        <div className="mt-2 p-2 bg-muted rounded text-sm">
+                          <strong>User Response:</strong> {request.user_response_message}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="contacts">

@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { Label } from '@/components/ui/label';
-import CreateProjectModal from '@/components/CreateProjectModal';
+import ProjectRequestModal from '@/components/ProjectRequestModal';
 import PaymentRequestModal from '@/components/PaymentRequestModal';
 import PaymentGateway from '@/components/PaymentGateway';
 import { 
@@ -24,7 +24,8 @@ import {
   BarChart3,
   CreditCard,
   Send,
-  Users
+  Users,
+  Home
 } from 'lucide-react';
 
 interface UserProfile {
@@ -72,7 +73,7 @@ const Dashboard = () => {
   const [payments, setPayments] = useState<ProjectPayment[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showProjectRequest, setShowProjectRequest] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [allUsers, setAllUsers] = useState<any[]>([]);
@@ -98,9 +99,12 @@ const Dashboard = () => {
     try {
       setLoadingData(true);
       
-      // Check if user is admin (simplified check - you might want to implement proper role system)
-      const adminEmails = ['admin@elevana.com', 'contact@elevana.com'];
-      setIsAdmin(adminEmails.includes(user.email || ''));
+      // Check if user is admin using the has_role function
+      const { data: adminCheck } = await supabase.rpc('has_role', {
+        _user_id: user.id,
+        _role: 'admin'
+      });
+      setIsAdmin(adminCheck || false);
       
       // Load profile
       const { data: profileData, error: profileError } = await supabase
@@ -142,7 +146,7 @@ const Dashboard = () => {
       }
 
       // Load all users if admin
-      if (adminEmails.includes(user.email || '')) {
+      if (adminCheck) {
         const { data: usersData } = await supabase
           .from('profiles')
           .select('user_id, full_name')
@@ -207,13 +211,13 @@ const Dashboard = () => {
     setShowPaymentRequest(true);
   };
 
-  const handleCreateProject = () => {
+  const handleCreateProjectRequest = () => {
     if (selectedUserId) {
-      setShowCreateProject(true);
+      setShowProjectRequest(true);
     } else {
       toast({
         title: "Select a user",
-        description: "Please select a user to create a project for.",
+        description: "Please select a user to send a project request to.",
         variant: "destructive",
       });
     }
@@ -245,6 +249,10 @@ const Dashboard = () => {
           </div>
           
           <div className="flex items-center space-x-4">
+            <Button variant="outline" onClick={() => navigate('/')}>
+              <Home className="w-4 h-4 mr-2" />
+              Home
+            </Button>
             <Button variant="outline" onClick={() => navigate('/profile')}>
               <Settings className="w-4 h-4 mr-2" />
               Profile
@@ -352,12 +360,12 @@ const Dashboard = () => {
                   </select>
                 </div>
                 <Button 
-                  onClick={handleCreateProject}
+                  onClick={handleCreateProjectRequest}
                   variant="gradient"
                   disabled={!selectedUserId}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Project
+                  Send Project Request
                 </Button>
               </div>
             </CardContent>
@@ -545,11 +553,11 @@ const Dashboard = () => {
         </div>
         
         {/* Modals */}
-        <CreateProjectModal
-          isOpen={showCreateProject}
-          onClose={() => setShowCreateProject(false)}
-          onProjectCreated={loadUserData}
-          userId={selectedUserId}
+        <ProjectRequestModal
+          isOpen={showProjectRequest}
+          onClose={() => setShowProjectRequest(false)}
+          targetUserId={selectedUserId}
+          onSuccess={loadUserData}
         />
         
         {selectedProject && (
