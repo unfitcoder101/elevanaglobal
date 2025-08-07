@@ -162,7 +162,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
         return null;
       }).filter(Boolean);
 
-      const { error } = await supabase
+      // Save to business_customizations table
+      const { error: dbError } = await supabase
         .from('business_customizations')
         .insert([{
           name: formData.name,
@@ -176,7 +177,27 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           estimated_cost: calculateTotalPrice()
         }]);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // Send notification email
+      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'quote_request',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          business_name: formData.business_name,
+          business_type: 'service_selection',
+          description: `Selected Services: ${selectedServicesData.map(s => s?.name).join(', ')}. Additional Options: ${selectedSubOptionsData.map(s => s?.name).join(', ')}`,
+          budget_range: `₹${calculateTotalPrice().toLocaleString()}`,
+          timeline: formData.timeline
+        }
+      });
+
+      if (emailError) {
+        console.error('Email notification error:', emailError);
+        // Don't throw error here, form submission was successful
+      }
 
       toast({
         title: "Service request submitted!",

@@ -47,7 +47,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
     setIsLoading(true);
 
     try {
-      const { error } = await supabase
+      // Save to business_customizations table
+      const { error: dbError } = await supabase
         .from('business_customizations')
         .insert([{
           name: formData.name,
@@ -60,13 +61,30 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
           additional_requirements: formData.additional_requirements
         }]);
 
-      if (error) {
-        throw error;
+      if (dbError) throw dbError;
+
+      // Send notification email
+      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'custom_plan',
+          name: formData.name,
+          email: formData.email,
+          business_name: formData.business_name,
+          business_type: formData.business_type,
+          description: formData.description,
+          budget_range: formData.budget_range,
+          timeline: formData.timeline
+        }
+      });
+
+      if (emailError) {
+        console.error('Email notification error:', emailError);
+        // Don't throw error here, form submission was successful
       }
 
       toast({
-        title: "Customization request submitted!",
-        description: "We'll review your requirements and send you a custom quote within 24 hours.",
+        title: "Custom plan request submitted!",
+        description: "We'll review your requirements and send you a tailored proposal within 24 hours.",
       });
 
       // Reset form

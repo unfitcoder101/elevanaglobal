@@ -529,7 +529,12 @@ const Index = () => {
                           </div>
                           <p className="font-medium text-foreground">Just tell us what you need — we'll map out a solution.</p>
                         </div>
-                        <Button variant="cta" size="lg" className="hover:scale-105 transition-transform">
+                        <Button 
+                          variant="cta" 
+                          size="lg" 
+                          className="hover:scale-105 transition-transform"
+                          onClick={() => setCustomizationModalOpen(true)}
+                        >
                           🔘 Get Your Custom Plan
                           <ArrowRight className="w-4 h-4" />
                         </Button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -19,7 +21,10 @@ import {
   Phone,
   Building2,
   Calendar,
-  DollarSign
+  DollarSign,
+  Home,
+  MessageSquare,
+  UserCheck
 } from 'lucide-react';
 
 interface BusinessCustomization {
@@ -46,7 +51,11 @@ interface PaymentRequest {
 }
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [customizations, setCustomizations] = useState<BusinessCustomization[]>([]);
+  const [contactRequests, setContactRequests] = useState<any[]>([]);
+  const [growthAudits, setGrowthAudits] = useState<any[]>([]);
+  const [leads, setLeads] = useState<any[]>([]);
   const [selectedCustomization, setSelectedCustomization] = useState<BusinessCustomization | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sendingPayment, setSendingPayment] = useState(false);
@@ -59,23 +68,52 @@ const AdminDashboard = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    loadCustomizations();
+    loadAllData();
   }, []);
 
-  const loadCustomizations = async () => {
+  const loadAllData = async () => {
     try {
-      const { data, error } = await supabase
+      // Load business customizations
+      const { data: customizationsData, error: customizationsError } = await supabase
         .from('business_customizations')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setCustomizations(data || []);
+      if (customizationsError) throw customizationsError;
+      setCustomizations(customizationsData || []);
+
+      // Load contact requests
+      const { data: contactData, error: contactError } = await supabase
+        .from('contact_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (contactError) throw contactError;
+      setContactRequests(contactData || []);
+
+      // Load growth audit submissions
+      const { data: auditData, error: auditError } = await supabase
+        .from('growth_audit_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (auditError) throw auditError;
+      setGrowthAudits(auditData || []);
+
+      // Load leads
+      const { data: leadsData, error: leadsError } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (leadsError) throw leadsError;
+      setLeads(leadsData || []);
+
     } catch (error) {
-      console.error('Error loading customizations:', error);
+      console.error('Error loading data:', error);
       toast({
         title: "Error",
-        description: "Failed to load customer data.",
+        description: "Failed to load admin data.",
         variant: "destructive",
       });
     } finally {
@@ -232,74 +270,108 @@ www.elevana.com | support@elevana.com
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-primary">ELEVANA Admin Dashboard</h1>
-          <p className="text-muted-foreground">Manage customer requests and send payment requests</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-primary">ELEVANA Admin Dashboard</h1>
+              <p className="text-muted-foreground">Manage customer requests and send payment requests</p>
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2"
+            >
+              <Home className="w-4 h-4" />
+              Home Page
+            </Button>
+          </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Customer Requests List */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Customer Requests ({customizations.length})
-                </CardTitle>
-                <CardDescription>
-                  All customer customization requests and service inquiries
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {customizations.map((customization) => (
-                    <div 
-                      key={customization.id} 
-                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                        selectedCustomization?.id === customization.id ? 'border-primary bg-primary/5' : ''
-                      }`}
-                      onClick={() => setSelectedCustomization(customization)}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-medium">{customization.business_name}</h3>
-                        <Badge className={getStatusColor(customization.status)}>
-                          {customization.status}
-                        </Badge>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
-                        <div className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
-                          {customization.email}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(customization.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                      
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {customization.description.length > 100 
-                          ? `${customization.description.substring(0, 100)}...` 
-                          : customization.description}
-                      </p>
-                      
-                      {customization.estimated_cost && (
-                        <div className="flex items-center gap-1 text-primary font-semibold">
-                          <IndianRupee className="w-4 h-4" />
-                          {customization.estimated_cost.toLocaleString()}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <Tabs defaultValue="customizations" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="customizations" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              Business Requests ({customizations.length})
+            </TabsTrigger>
+            <TabsTrigger value="contacts" className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" />
+              Contact Requests ({contactRequests.length})
+            </TabsTrigger>
+            <TabsTrigger value="audits" className="flex items-center gap-2">
+              <UserCheck className="w-4 h-4" />
+              Growth Audits ({growthAudits.length})
+            </TabsTrigger>
+            <TabsTrigger value="leads" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Leads ({leads.length})
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Details and Actions Panel */}
-          <div className="space-y-6">
+          <TabsContent value="customizations">
+            {/* Business Customizations Tab */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Customer Requests List */}
+              <div className="lg:col-span-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Building2 className="w-5 h-5" />
+                      Business Customization Requests ({customizations.length})
+                    </CardTitle>
+                    <CardDescription>
+                      All customer customization requests and service inquiries
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {customizations.map((customization) => (
+                        <div 
+                          key={customization.id} 
+                          className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                            selectedCustomization?.id === customization.id ? 'border-primary bg-primary/5' : ''
+                          }`}
+                          onClick={() => setSelectedCustomization(customization)}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className="font-medium">{customization.business_name}</h3>
+                            <Badge className={getStatusColor(customization.status)}>
+                              {customization.status}
+                            </Badge>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                            <div className="flex items-center gap-1">
+                              <Mail className="w-3 h-3" />
+                              {customization.email}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {new Date(customization.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                          
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {customization.description.length > 100 
+                              ? `${customization.description.substring(0, 100)}...` 
+                              : customization.description}
+                          </p>
+                          
+                          {customization.estimated_cost && (
+                            <div className="flex items-center gap-1 text-primary font-semibold">
+                              <IndianRupee className="w-4 h-4" />
+                              {customization.estimated_cost.toLocaleString()}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Details and Actions Panel */}
+              <div className="space-y-6">
             {selectedCustomization ? (
               <>
                 {/* Customer Details */}
@@ -463,8 +535,143 @@ www.elevana.com | support@elevana.com
                 </CardContent>
               </Card>
             )}
-          </div>
-        </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="contacts">
+            {/* Contact Requests Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact & Call Requests</CardTitle>
+                <CardDescription>All schedule call and contact form submissions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {contactRequests.map((request) => (
+                    <div key={request.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{request.name}</h3>
+                        <Badge variant={request.status === 'pending' ? 'secondary' : 'default'}>
+                          {request.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Mail className="w-3 h-3" />
+                          {request.email}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(request.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      {request.phone && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                          <Phone className="w-3 h-3" />
+                          {request.phone}
+                        </div>
+                      )}
+                      <p className="text-sm">{request.message || 'No message provided'}</p>
+                      <div className="text-xs text-muted-foreground mt-2">
+                        Type: {request.request_type}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="audits">
+            {/* Growth Audits Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Growth Audit Requests</CardTitle>
+                <CardDescription>Free growth audit submissions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {growthAudits.map((audit) => (
+                    <div key={audit.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{audit.name}</h3>
+                        <Badge variant={audit.status === 'pending' ? 'secondary' : 'default'}>
+                          {audit.status || 'pending'}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Mail className="w-3 h-3" />
+                          {audit.email}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(audit.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      {audit.phone && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                          <Phone className="w-3 h-3" />
+                          {audit.phone}
+                        </div>
+                      )}
+                      <div className="space-y-2 text-sm">
+                        <p><strong>Website/Instagram:</strong> {audit.website_instagram || 'Not provided'}</p>
+                        <p><strong>Desired Results:</strong> {audit.desired_results}</p>
+                        <p><strong>Biggest Challenge:</strong> {audit.biggest_challenge}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="leads">
+            {/* Leads Tab */}
+            <Card>
+              <CardHeader>
+                <CardTitle>General Leads</CardTitle>
+                <CardDescription>Contact form submissions and general inquiries</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {leads.map((lead) => (
+                    <div key={lead.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{lead.name}</h3>
+                        <Badge variant={lead.status === 'pending' ? 'secondary' : 'default'}>
+                          {lead.status || 'pending'}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Mail className="w-3 h-3" />
+                          {lead.email}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(lead.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      {lead.phone && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                          <Phone className="w-3 h-3" />
+                          {lead.phone}
+                        </div>
+                      )}
+                      <div className="space-y-1 text-sm">
+                        {lead.business_type && <p><strong>Business Type:</strong> {lead.business_type}</p>}
+                        {lead.problem_description && <p><strong>Problem:</strong> {lead.problem_description}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

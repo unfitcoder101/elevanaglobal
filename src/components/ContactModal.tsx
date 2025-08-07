@@ -44,17 +44,32 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase
+      // Save to leads table
+      const { error: dbError } = await supabase
         .from('leads')
         .insert([formData]);
 
-      if (error) {
-        throw error;
+      if (dbError) throw dbError;
+
+      // Send notification email
+      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'schedule_call',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.problem_description
+        }
+      });
+
+      if (emailError) {
+        console.error('Email notification error:', emailError);
+        // Don't throw error here, form submission was successful
       }
 
       toast({
-        title: "Call scheduled!",
-        description: "You'll hear from us shortly.",
+        title: "Call request sent!",
+        description: "We'll contact you within 24 hours to schedule your free consultation.",
       });
 
       // Reset form
