@@ -457,7 +457,7 @@ const Dashboard = () => {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Your latest project updates</CardDescription>
+            <CardDescription>Latest project updates from all users</CardDescription>
           </CardHeader>
           <CardContent>
             {projects.length === 0 ? <p className="text-muted-foreground text-center py-4">
@@ -542,10 +542,10 @@ const Dashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                Your Projects
+                All User Projects
                 {isAdmin && <Badge variant="outline">Admin View</Badge>}
               </CardTitle>
-              <CardDescription>Track the progress of your ongoing projects</CardDescription>
+              <CardDescription>Track the progress of projects from all users</CardDescription>
             </CardHeader>
             <CardContent>
               {projects.length === 0 ? <div className="text-center py-8">
