@@ -257,7 +257,7 @@ const Dashboard = () => {
         if (usersError) {
           console.error('Error loading users:', usersError);
         } else {
-          console.log('Loaded users:', usersData);
+          
           setAllUsers(usersData || []);
         }
       }

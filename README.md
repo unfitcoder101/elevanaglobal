@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+# ELEVANA - Digital Marketing Agency
 
-## Project info
+A modern digital marketing agency website built with React, TypeScript, and Supabase.
 
-**URL**: https://lovable.dev/projects/a72755e3-499d-4cde-9bd2-f9d603ebb7bb
+## Features
 
-## How can I edit this code?
+- **Modern Landing Page** - Responsive design with animations and testimonials
+- **User Authentication** - Secure login/signup with Supabase Auth
+- **Admin Dashboard** - Manage clients, projects, and payments
+- **Service Booking** - Interactive modals for service selection and quotes
+- **Payment Integration** - Handle payments and invoicing
+- **Profile Management** - User profiles with avatar upload and URL support
+- **Real-time Chat** - AI-powered chatbot assistant
+- **Contact Management** - Lead capture and management system
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Icons**: Lucide React
+- **UI Components**: Radix UI primitives
+- **Animations**: CSS animations and transitions
+- **Charts**: Recharts for data visualization
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a72755e3-499d-4cde-9bd2-f9d603ebb7bb) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd elevana-agency
+   ```
 
-**Use your preferred IDE**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. **Set up environment variables**
+   Create a `.env.local` file with your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-Follow these steps:
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Database Schema
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+The application uses Supabase with the following main tables:
+- `profiles` - User profile information
+- `projects` - Client projects and their status
+- `payments` - Payment tracking and invoicing
+- `messages` - Contact form submissions
+- `business_customizations` - Service quote requests
+- `contact_requests` - General contact inquiries
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Deployment
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+The application is ready for production deployment. Make sure to:
 
-**Edit a file directly in GitHub**
+1. Configure your Supabase project settings
+2. Set up proper environment variables
+3. Configure your custom domain if needed
+4. Enable appropriate security settings in Supabase
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Security Features
 
-**Use GitHub Codespaces**
+- Row Level Security (RLS) enabled on all tables
+- Secure authentication with Supabase Auth
+- Protected admin routes and functions
+- Input validation and sanitization
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Support
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a72755e3-499d-4cde-9bd2-f9d603ebb7bb) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+For any questions or issues, please contact the development team.
