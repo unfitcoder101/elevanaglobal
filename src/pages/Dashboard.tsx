@@ -25,8 +25,10 @@ import {
   CreditCard,
   Send,
   Users,
-  Home
+  Home,
+  Search
 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 interface UserProfile {
   id: string;
@@ -81,6 +83,13 @@ const Dashboard = () => {
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<ProjectPayment | null>(null);
   const [projectRequests, setProjectRequests] = useState<any[]>([]);
+  const [userSearchTerm, setUserSearchTerm] = useState<string>('');
+
+  // Filter users based on search term
+  const filteredUsers = allUsers.filter(user => 
+    user.full_name?.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+    user.user_id.toLowerCase().includes(userSearchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     if (!loading && !user) {
@@ -359,6 +368,18 @@ const Dashboard = () => {
             <CardContent className="space-y-4">
               <div className="flex gap-4 items-end">
                 <div className="flex-1">
+                  <Label>Search Users</Label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by name or email..."
+                      value={userSearchTerm}
+                      onChange={(e) => setUserSearchTerm(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <div className="flex-1">
                   <Label>Select User to Create Project For</Label>
                   <select 
                     className="w-full p-2 border rounded-md"
@@ -366,9 +387,9 @@ const Dashboard = () => {
                     onChange={(e) => setSelectedUserId(e.target.value)}
                   >
                     <option value="">Choose a user...</option>
-                    {allUsers.map((user) => (
+                    {filteredUsers.map((user) => (
                       <option key={user.user_id} value={user.user_id}>
-                        {user.full_name || 'Unknown User'}
+                        {user.full_name || 'No name'} ({user.user_id.slice(0, 8)}...)
                       </option>
                     ))}
                   </select>
