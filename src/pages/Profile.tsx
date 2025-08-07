@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, Upload, User, Camera } from 'lucide-react';
+import { ArrowLeft, Upload, User, Camera, Link, AlertTriangle } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -26,6 +27,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -105,6 +108,33 @@ const Profile = () => {
     }
   };
 
+  const validateFile = (file: File): string | null => {
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    
+    if (file.size > maxSize) {
+      return 'File size must be less than 2MB';
+    }
+    
+    if (!allowedTypes.includes(file.type)) {
+      return 'Please upload a valid image file (JPG, PNG, GIF, or WebP)';
+    }
+    
+    return null;
+  };
+
+  const validateImageUrl = async (url: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+      
+      // Timeout after 5 seconds
+      setTimeout(() => resolve(false), 5000);
+    });
+  };
+
   const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true);
@@ -114,17 +144,41 @@ const Profile = () => {
       }
 
       const file = event.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      
+      // Validate file before upload
+      const validationError = validateFile(file);
+      if (validationError) {
+        toast({
+          title: "Invalid file",
+          description: validationError,
+          variant: "destructive",
+        });
+        return;
+      }
 
-      // Upload file to Supabase Storage with upsert to replace existing
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
+      const filePath = `${user?.id}/${fileName}`; // Organize files by user ID
+
+      // Upload file to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) {
-        throw uploadError;
+        let errorMessage = 'Failed to upload avatar. Please try again.';
+        if (uploadError.message.includes('row-level security')) {
+          errorMessage = 'Upload permission denied. Please contact support.';
+        } else if (uploadError.message.includes('size')) {
+          errorMessage = 'File is too large. Please use a file under 2MB.';
+        }
+        
+        toast({
+          title: "Upload failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        return;
       }
 
       // Get public URL
@@ -143,6 +197,7 @@ const Profile = () => {
       }
 
       setProfile(prev => prev ? { ...prev, avatar_url: data.publicUrl } : null);
+      setPreviewUrl(null);
       toast({
         title: "Avatar updated",
         description: "Your profile picture has been updated successfully.",
@@ -156,6 +211,68 @@ const Profile = () => {
       });
     } finally {
       setUploading(false);
+    }
+  };
+
+  const updateAvatarFromUrl = async () => {
+    if (!avatarUrl.trim()) {
+      toast({
+        title: "Invalid URL",
+        description: "Please enter a valid image URL.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setUploading(true);
+      
+      // Validate URL is an image
+      const isValidImage = await validateImageUrl(avatarUrl);
+      if (!isValidImage) {
+        toast({
+          title: "Invalid image URL",
+          description: "The URL doesn't point to a valid image. Please check the URL and try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Update profile with new avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: avatarUrl })
+        .eq('user_id', user?.id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      setProfile(prev => prev ? { ...prev, avatar_url: avatarUrl } : null);
+      setAvatarUrl('');
+      setPreviewUrl(null);
+      toast({
+        title: "Avatar updated",
+        description: "Your profile picture has been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error updating avatar from URL:', error);
+      toast({
+        title: "Update failed",
+        description: "Failed to update avatar. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handlePreviewUrl = async (url: string) => {
+    setAvatarUrl(url);
+    if (url.trim()) {
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
     }
   };
 
@@ -193,45 +310,101 @@ const Profile = () => {
             <CardHeader>
               <CardTitle>Profile Picture</CardTitle>
               <CardDescription>
-                Upload a profile picture to personalize your account
+                Upload a profile picture or provide an image URL
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center space-x-6">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={profile?.avatar_url || ''} />
-                  <AvatarFallback>
-                    <User className="h-12 w-12" />
-                  </AvatarFallback>
-                </Avatar>
+              <div className="flex items-start space-x-6">
+                <div className="space-y-4">
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={previewUrl || profile?.avatar_url || ''} />
+                    <AvatarFallback>
+                      <User className="h-12 w-12" />
+                    </AvatarFallback>
+                  </Avatar>
+                  {previewUrl && (
+                    <p className="text-xs text-muted-foreground">Preview</p>
+                  )}
+                </div>
                 
-                <div className="space-y-2">
-                  <div className="relative">
-                    <input
-                      type="file"
-                      id="avatar-upload"
-                      accept="image/*"
-                      onChange={uploadAvatar}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      disabled={uploading}
-                    />
-                    <Button variant="outline" disabled={uploading}>
-                      {uploading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Camera className="w-4 h-4 mr-2" />
-                          Change Picture
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    JPG, PNG or GIF (max. 5MB)
-                  </p>
+                <div className="flex-1">
+                  <Tabs defaultValue="upload" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="upload">
+                        <Camera className="w-4 h-4 mr-2" />
+                        Upload File
+                      </TabsTrigger>
+                      <TabsTrigger value="url">
+                        <Link className="w-4 h-4 mr-2" />
+                        Image URL
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="upload" className="space-y-4">
+                      <div className="relative">
+                        <input
+                          type="file"
+                          id="avatar-upload"
+                          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                          onChange={uploadAvatar}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          disabled={uploading}
+                        />
+                        <Button variant="outline" disabled={uploading} className="w-full">
+                          {uploading ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="w-4 h-4 mr-2" />
+                              Choose File
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>JPG, PNG, GIF, WebP (max. 2MB)</span>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="url" className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="avatar-url">Image URL</Label>
+                        <Input
+                          id="avatar-url"
+                          type="url"
+                          placeholder="https://example.com/image.jpg"
+                          value={avatarUrl}
+                          onChange={(e) => handlePreviewUrl(e.target.value)}
+                          disabled={uploading}
+                        />
+                      </div>
+                      <Button 
+                        onClick={updateAvatarFromUrl} 
+                        disabled={uploading || !avatarUrl.trim()}
+                        className="w-full"
+                      >
+                        {uploading ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                            Updating...
+                          </>
+                        ) : (
+                          <>
+                            <Link className="w-4 h-4 mr-2" />
+                            Update Avatar
+                          </>
+                        )}
+                      </Button>
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>Make sure the URL points to a valid image</span>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </div>
               </div>
             </CardContent>
