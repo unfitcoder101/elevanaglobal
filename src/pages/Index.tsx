@@ -484,7 +484,7 @@ const Index = () => {
               </div>
               
               <div className="mt-12">
-                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform">
+                <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => setServiceModalOpen(true)}>
                   ✨ Show Me How This Works
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -786,7 +786,20 @@ const Index = () => {
 
               <Card className="shadow-elegant reveal-up">
                 <CardContent className="p-8">
-    
+                  <div className="text-center mb-6">
+                    <p className="text-muted-foreground mb-4">
+                      Fill out our comprehensive form to get your personalized growth strategy
+                    </p>
+                    <Button 
+                      variant="gradient" 
+                      size="lg"
+                      onClick={() => window.open('https://forms.google.com/your-form-url', '_blank')}
+                      className="w-full md:w-auto"
+                    >
+                      <ExternalLink className="w-5 h-5 mr-2" />
+                      Open Growth Audit Form
+                    </Button>
+                  </div>
                   
                   <div className="bg-muted/30 p-6 rounded-lg">
                     <h3 className="font-semibold mb-4">What we'll cover in your audit:</h3>
