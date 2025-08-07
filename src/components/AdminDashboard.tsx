@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import UserSearchModal from '@/components/UserSearchModal';
+import PaymentRequestModal from '@/components/PaymentRequestModal';
 import { 
   IndianRupee, 
   Send, 
@@ -72,6 +73,8 @@ const AdminDashboard = () => {
   const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -752,7 +755,7 @@ www.elevana.com | support@elevana.com
             <Card>
               <CardHeader>
                 <CardTitle>Active Projects</CardTitle>
-                <CardDescription>Ongoing projects with hour tracking</CardDescription>
+                <CardDescription>Ongoing projects with hour tracking and payment requests</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -760,20 +763,40 @@ www.elevana.com | support@elevana.com
                     <div key={project.id} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-medium">{project.title}</h3>
-                        <Badge 
-                          className={
-                            project.status === 'completed' ? 'bg-green-500' :
-                            project.status === 'in_progress' ? 'bg-blue-500' :
-                            'bg-yellow-500'
-                          }
-                        >
-                          {project.status}
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge 
+                            className={
+                              project.status === 'completed' ? 'bg-green-500' :
+                              project.status === 'in_progress' ? 'bg-blue-500' :
+                              'bg-yellow-500'
+                            }
+                          >
+                            {project.status}
+                          </Badge>
+                          {project.status === 'in_progress' && (
+                            <Button
+                              size="sm"
+                              className="h-7 px-3 text-xs"
+                              onClick={() => {
+                                setSelectedProject(project);
+                                setShowPaymentModal(true);
+                              }}
+                            >
+                              <IndianRupee className="w-3 h-3 mr-1" />
+                              Request Payment
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
+                      
+                      <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-3">
                         <div className="flex items-center gap-1">
                           <Users className="w-3 h-3" />
                           {project.profiles?.full_name || 'Unknown User'}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Mail className="w-3 h-3" />
+                          {project.profiles?.email || 'No email'}
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
@@ -1101,6 +1124,19 @@ www.elevana.com | support@elevana.com
         isOpen={showUserSearch} 
         onClose={() => setShowUserSearch(false)} 
       />
+      
+      {selectedProject && (
+        <PaymentRequestModal
+          isOpen={showPaymentModal}
+          onClose={() => {
+            setShowPaymentModal(false);
+            setSelectedProject(null);
+          }}
+          projectId={selectedProject.id}
+          userId={selectedProject.user_id}
+          projectTitle={selectedProject.title}
+        />
+      )}
     </div>
   );
 };
