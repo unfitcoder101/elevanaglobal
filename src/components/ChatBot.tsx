@@ -98,9 +98,10 @@ const ChatBot: React.FC = () => {
             </Button>
           </CardHeader>
           
-          <CardContent className="flex-1 flex flex-col p-0">
+          
+          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
             <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4">
+              <div className="space-y-4 pr-2">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
@@ -114,7 +115,7 @@ const ChatBot: React.FC = () => {
                       </div>
                     )}
                     <div
-                      className={`max-w-[70%] p-3 rounded-lg text-sm ${
+                      className={`max-w-[200px] sm:max-w-[70%] p-3 rounded-lg text-sm break-words ${
                         msg.isBot
                           ? 'bg-muted text-foreground'
                           : 'bg-primary text-primary-foreground ml-auto'
