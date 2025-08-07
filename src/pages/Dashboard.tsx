@@ -176,10 +176,7 @@ const Dashboard = () => {
       }
 
       // Load projects - if admin, load all projects; if regular user, load only their projects
-      let projectsQuery = supabase.from('projects').select(`
-        *,
-        profiles!projects_user_id_fkey(full_name)
-      `);
+      let projectsQuery = supabase.from('projects').select('*');
       
       if (!adminCheck) {
         projectsQuery = projectsQuery.eq('user_id', user.id);
@@ -195,7 +192,26 @@ const Dashboard = () => {
       if (projectsError) {
         console.error('Error loading projects:', projectsError);
       } else {
-        setProjects(projectsData || []);
+        // If admin, fetch user names for each project
+        if (adminCheck && projectsData) {
+          const projectsWithUserNames = await Promise.all(
+            projectsData.map(async (project) => {
+              const { data: userProfile } = await supabase
+                .from('profiles')
+                .select('full_name')
+                .eq('user_id', project.user_id)
+                .single();
+              
+              return {
+                ...project,
+                user_full_name: userProfile?.full_name || 'Unknown User'
+              };
+            })
+          );
+          setProjects(projectsWithUserNames);
+        } else {
+          setProjects(projectsData || []);
+        }
       }
 
       // Load project payments - if admin, load all payments; if regular user, load only their payments
@@ -501,8 +517,8 @@ const Dashboard = () => {
                     <div className="flex-1">
                       <p className="font-medium text-sm">{project.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        {isAdmin && (project as any).profiles?.full_name && (
-                          <>User: {(project as any).profiles.full_name} • </>
+                        {isAdmin && (project as any).user_full_name && (
+                          <>User: {(project as any).user_full_name} • </>
                         )}
                         Updated: {new Date(project.updated_at).toLocaleDateString()} • 
                         {project.hours_worked} hours worked
@@ -598,9 +614,9 @@ const Dashboard = () => {
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-medium">{project.title}</h3>
                         <div className="flex items-center gap-2">
-                          {isAdmin && (project as any).profiles?.full_name && (
+                          {isAdmin && (project as any).user_full_name && (
                             <Badge variant="secondary" className="text-xs">
-                              {(project as any).profiles.full_name}
+                              {(project as any).user_full_name}
                             </Badge>
                           )}
                           <Badge className={getStatusColor(project.status)}>
