@@ -21,6 +21,7 @@ export type Database = {
           budget_range: string | null
           business_name: string
           business_type: string
+          call_time: string | null
           created_at: string
           description: string
           email: string
@@ -39,6 +40,7 @@ export type Database = {
           budget_range?: string | null
           business_name: string
           business_type: string
+          call_time?: string | null
           created_at?: string
           description: string
           email: string
@@ -57,6 +59,7 @@ export type Database = {
           budget_range?: string | null
           business_name?: string
           business_type?: string
+          call_time?: string | null
           created_at?: string
           description?: string
           email?: string
@@ -74,6 +77,7 @@ export type Database = {
       contact_requests: {
         Row: {
           admin_notes: string | null
+          call_time: string | null
           contacted_at: string | null
           created_at: string
           email: string
@@ -87,6 +91,7 @@ export type Database = {
         }
         Insert: {
           admin_notes?: string | null
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           email: string
@@ -100,6 +105,7 @@ export type Database = {
         }
         Update: {
           admin_notes?: string | null
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           email?: string
@@ -117,6 +123,7 @@ export type Database = {
         Row: {
           admin_notes: string | null
           biggest_challenge: string
+          call_time: string | null
           contacted_at: string | null
           created_at: string
           desired_results: string
@@ -131,6 +138,7 @@ export type Database = {
         Insert: {
           admin_notes?: string | null
           biggest_challenge: string
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           desired_results: string
@@ -145,6 +153,7 @@ export type Database = {
         Update: {
           admin_notes?: string | null
           biggest_challenge?: string
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           desired_results?: string
@@ -161,6 +170,7 @@ export type Database = {
       leads: {
         Row: {
           business_type: string | null
+          call_time: string | null
           contacted_at: string | null
           created_at: string
           email: string
@@ -173,6 +183,7 @@ export type Database = {
         }
         Insert: {
           business_type?: string | null
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           email: string
@@ -185,6 +196,7 @@ export type Database = {
         }
         Update: {
           business_type?: string | null
+          call_time?: string | null
           contacted_at?: string | null
           created_at?: string
           email?: string
@@ -201,6 +213,7 @@ export type Database = {
         Row: {
           admin_notes: string | null
           budget: string | null
+          call_time: string | null
           created_at: string
           email: string
           id: string
@@ -217,6 +230,7 @@ export type Database = {
         Insert: {
           admin_notes?: string | null
           budget?: string | null
+          call_time?: string | null
           created_at?: string
           email: string
           id?: string
@@ -233,6 +247,7 @@ export type Database = {
         Update: {
           admin_notes?: string | null
           budget?: string | null
+          call_time?: string | null
           created_at?: string
           email?: string
           id?: string

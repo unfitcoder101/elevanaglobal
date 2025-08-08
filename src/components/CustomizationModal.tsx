@@ -24,7 +24,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
     description: '',
     budget_range: '',
     timeline: '',
-    additional_requirements: ''
+    additional_requirements: '',
+    call_time: ''
   });
   const { toast } = useToast();
 
@@ -48,34 +49,36 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
 
     try {
       // Save to business_customizations table
-      const { error: dbError } = await supabase
-        .from('business_customizations')
-        .insert([{
-          name: formData.name,
-          email: formData.email,
-          business_name: formData.business_name,
-          business_type: formData.business_type,
-          description: formData.description,
-          budget_range: formData.budget_range,
-          timeline: formData.timeline,
-          additional_requirements: formData.additional_requirements
-        }]);
+        const { error: dbError } = await supabase
+          .from('business_customizations')
+          .insert([{
+            name: formData.name,
+            email: formData.email,
+            business_name: formData.business_name,
+            business_type: formData.business_type,
+            description: formData.description,
+            budget_range: formData.budget_range,
+            timeline: formData.timeline,
+            additional_requirements: formData.additional_requirements,
+            call_time: formData.call_time || null
+          }]);
 
       if (dbError) throw dbError;
 
       // Also save to messages table for unified inbox
-      const { error: messageError } = await supabase
-        .from('messages')
-        .insert([{
-          name: formData.name,
-          email: formData.email,
-          subject: 'Custom Plan Request',
-          message: formData.description + (formData.additional_requirements ? `\n\nAdditional: ${formData.additional_requirements}` : ''),
-          message_type: 'customization',
-          status: 'unread',
-          service: formData.business_type || 'custom_plan',
-          budget: formData.budget_range || null
-        }]);
+        const { error: messageError } = await supabase
+          .from('messages')
+          .insert([{
+            name: formData.name,
+            email: formData.email,
+            subject: 'Custom Plan Request',
+            message: formData.description + (formData.additional_requirements ? `\n\nAdditional: ${formData.additional_requirements}` : ''),
+            message_type: 'customization',
+            status: 'unread',
+            service: formData.business_type || 'custom_plan',
+            budget: formData.budget_range || null,
+            call_time: formData.call_time || null
+          }]);
 
       if (messageError) {
         console.error('Message save error:', messageError);
@@ -105,17 +108,18 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
         description: "We'll review your requirements and send you a tailored proposal within 24 hours.",
       });
 
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        business_name: '',
-        business_type: '',
-        description: '',
-        budget_range: '',
-        timeline: '',
-        additional_requirements: ''
-      });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          business_name: '',
+          business_type: '',
+          description: '',
+          budget_range: '',
+          timeline: '',
+          additional_requirements: '',
+          call_time: ''
+        });
 
       onClose();
     } catch (error) {
@@ -274,6 +278,18 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
               value={formData.additional_requirements}
               onChange={handleInputChange}
               rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="call_time">Preferred Time to Call You</Label>
+            <Input
+              id="call_time"
+              name="call_time"
+              type="time"
+              value={formData.call_time}
+              onChange={handleInputChange}
+              placeholder="Select preferred call time"
             />
           </div>
 

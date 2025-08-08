@@ -95,7 +95,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
     phone: '',
     business_name: '',
     timeline: '',
-    additional_requirements: ''
+    additional_requirements: '',
+    call_time: ''
   });
   const { toast } = useToast();
 
@@ -174,7 +175,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           timeline: formData.timeline,
           additional_requirements: `${formData.additional_requirements}\n\nSelected Services: ${JSON.stringify(selectedServicesData)}\nSelected Options: ${JSON.stringify(selectedSubOptionsData)}\nTotal Price: ₹${calculateTotalPrice().toLocaleString()}`,
           description: `Selected Services: ${selectedServicesData.map(s => s?.name).join(', ')}. Additional Options: ${selectedSubOptionsData.map(s => s?.name).join(', ')}`,
-          estimated_cost: calculateTotalPrice()
+          estimated_cost: calculateTotalPrice(),
+          call_time: formData.call_time || null
         }]);
 
       if (dbError) throw dbError;
@@ -193,7 +195,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           message_type: 'service_selection',
           status: 'unread',
           service: selectedServiceNames,
-          budget: `₹${calculateTotalPrice().toLocaleString()}`
+          budget: `₹${calculateTotalPrice().toLocaleString()}`,
+          call_time: formData.call_time || null
         }]);
 
       if (messageError) {
@@ -232,7 +235,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
         phone: '',
         business_name: '',
         timeline: '',
-        additional_requirements: ''
+        additional_requirements: '',
+        call_time: ''
       });
       setSelectedServices([]);
       setSelectedSubOptions([]);
@@ -387,6 +391,18 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
               value={formData.additional_requirements}
               onChange={handleInputChange}
               rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="call_time">Preferred Time to Call You</Label>
+            <Input
+              id="call_time"
+              name="call_time"
+              type="time"
+              value={formData.call_time}
+              onChange={handleInputChange}
+              placeholder="Select preferred call time"
             />
           </div>
 

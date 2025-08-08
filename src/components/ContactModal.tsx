@@ -21,7 +21,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     email: '',
     phone: '',
     business_type: '',
-    problem_description: ''
+    problem_description: '',
+    call_time: ''
   });
   const { toast } = useToast();
 
@@ -63,7 +64,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           message_type: 'contact',
           status: 'unread',
           service: formData.business_type || null,
-          budget: null
+          budget: null,
+          call_time: formData.call_time || null
         }]);
 
       if (messageError) {
@@ -98,7 +100,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         email: '',
         phone: '',
         business_type: '',
-        problem_description: ''
+        problem_description: '',
+        call_time: ''
       });
 
       onClose();
@@ -205,6 +208,18 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               value={formData.problem_description}
               onChange={handleInputChange}
               rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="call_time">Preferred Time to Call You</Label>
+            <Input
+              id="call_time"
+              name="call_time"
+              type="time"
+              value={formData.call_time}
+              onChange={handleInputChange}
+              placeholder="Select preferred call time"
             />
           </div>
 
