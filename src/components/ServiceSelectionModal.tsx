@@ -18,12 +18,12 @@ interface ServiceSelectionModalProps {
 interface ServiceOption {
   id: string;
   name: string;
-  basePrice: number;
+  // basePrice: number; // Commented out - will uncomment later
   icon: React.ReactNode;
   subOptions: {
     id: string;
     name: string;
-    price: number;
+    // price: number; // Commented out - will uncomment later
     description: string;
   }[];
 }
@@ -32,55 +32,55 @@ const serviceOptions: ServiceOption[] = [
   {
     id: 'website',
     name: 'Full Website Creation',
-    basePrice: 25000,
+    // basePrice: 25000, // Commented out - will uncomment later
     icon: <Globe className="w-5 h-5" />,
     subOptions: [
-      { id: 'ui-ux', name: 'UI/UX Design', price: 8000, description: 'Modern, responsive design' },
-      { id: 'seo', name: 'SEO Optimization', price: 5000, description: 'Search engine optimization' },
-      { id: 'hosting', name: 'Hosting Setup', price: 3000, description: '1 year hosting included' },
-      { id: 'deployment', name: 'Deployment & Launch', price: 2000, description: 'Complete deployment setup' },
-      { id: 'cms', name: 'Content Management', price: 7000, description: 'Easy content updates' },
-      { id: 'mobile-responsive', name: 'Mobile Responsive', price: 4000, description: 'Perfect mobile experience' }
+      { id: 'ui-ux', name: 'UI/UX Design', /* price: 8000, */ description: 'Modern, responsive design' },
+      { id: 'seo', name: 'SEO Optimization', /* price: 5000, */ description: 'Search engine optimization' },
+      { id: 'hosting', name: 'Hosting Setup', /* price: 3000, */ description: '1 year hosting included' },
+      { id: 'deployment', name: 'Deployment & Launch', /* price: 2000, */ description: 'Complete deployment setup' },
+      { id: 'cms', name: 'Content Management', /* price: 7000, */ description: 'Easy content updates' },
+      { id: 'mobile-responsive', name: 'Mobile Responsive', /* price: 4000, */ description: 'Perfect mobile experience' }
     ]
   },
   {
     id: 'automation',
     name: 'Business Automation',
-    basePrice: 15000,
+    // basePrice: 15000, // Commented out - will uncomment later
     icon: <Zap className="w-5 h-5" />,
     subOptions: [
-      { id: 'payment-integration', name: 'Payment Gateway', price: 5000, description: 'Secure payment processing' },
-      { id: 'email-automation', name: 'Email Automation', price: 4000, description: 'Automated email campaigns' },
-      { id: 'inventory-management', name: 'Inventory Management', price: 8000, description: 'Track products & stock' },
-      { id: 'customer-management', name: 'Customer Management', price: 6000, description: 'CRM integration' },
-      { id: 'analytics', name: 'Analytics Dashboard', price: 7000, description: 'Business insights & reports' },
-      { id: 'social-media', name: 'Social Media Integration', price: 3000, description: 'Connect social platforms' }
+      { id: 'payment-integration', name: 'Payment Gateway', /* price: 5000, */ description: 'Secure payment processing' },
+      { id: 'email-automation', name: 'Email Automation', /* price: 4000, */ description: 'Automated email campaigns' },
+      { id: 'inventory-management', name: 'Inventory Management', /* price: 8000, */ description: 'Track products & stock' },
+      { id: 'customer-management', name: 'Customer Management', /* price: 6000, */ description: 'CRM integration' },
+      { id: 'analytics', name: 'Analytics Dashboard', /* price: 7000, */ description: 'Business insights & reports' },
+      { id: 'social-media', name: 'Social Media Integration', /* price: 3000, */ description: 'Connect social platforms' }
     ]
   },
   {
     id: 'mobile-app',
     name: 'Mobile App Development',
-    basePrice: 40000,
+    // basePrice: 40000, // Commented out - will uncomment later
     icon: <Smartphone className="w-5 h-5" />,
     subOptions: [
-      { id: 'ios-app', name: 'iOS App', price: 20000, description: 'Native iOS application' },
-      { id: 'android-app', name: 'Android App', price: 18000, description: 'Native Android application' },
-      { id: 'app-store', name: 'App Store Publishing', price: 5000, description: 'Publish to app stores' },
-      { id: 'push-notifications', name: 'Push Notifications', price: 3000, description: 'Engage users effectively' },
-      { id: 'offline-mode', name: 'Offline Functionality', price: 8000, description: 'Works without internet' }
+      { id: 'ios-app', name: 'iOS App', /* price: 20000, */ description: 'Native iOS application' },
+      { id: 'android-app', name: 'Android App', /* price: 18000, */ description: 'Native Android application' },
+      { id: 'app-store', name: 'App Store Publishing', /* price: 5000, */ description: 'Publish to app stores' },
+      { id: 'push-notifications', name: 'Push Notifications', /* price: 3000, */ description: 'Engage users effectively' },
+      { id: 'offline-mode', name: 'Offline Functionality', /* price: 8000, */ description: 'Works without internet' }
     ]
   },
   {
     id: 'marketing',
     name: 'Digital Marketing',
-    basePrice: 12000,
+    // basePrice: 12000, // Commented out - will uncomment later
     icon: <BarChart3 className="w-5 h-5" />,
     subOptions: [
-      { id: 'social-media-marketing', name: 'Social Media Marketing', price: 6000, description: 'Complete social strategy' },
-      { id: 'google-ads', name: 'Google Ads Setup', price: 4000, description: 'Professional ad campaigns' },
-      { id: 'content-creation', name: 'Content Creation', price: 5000, description: 'Engaging content strategy' },
-      { id: 'brand-identity', name: 'Brand Identity', price: 8000, description: 'Logo & brand guidelines' },
-      { id: 'video-marketing', name: 'Video Marketing', price: 10000, description: 'Professional video content' }
+      { id: 'social-media-marketing', name: 'Social Media Marketing', /* price: 6000, */ description: 'Complete social strategy' },
+      { id: 'google-ads', name: 'Google Ads Setup', /* price: 4000, */ description: 'Professional ad campaigns' },
+      { id: 'content-creation', name: 'Content Creation', /* price: 5000, */ description: 'Engaging content strategy' },
+      { id: 'brand-identity', name: 'Brand Identity', /* price: 8000, */ description: 'Logo & brand guidelines' },
+      { id: 'video-marketing', name: 'Video Marketing', /* price: 10000, */ description: 'Professional video content' }
     ]
   }
 ];
@@ -94,7 +94,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
     email: '',
     phone: '',
     business_name: '',
-    timeline: '',
+    // timeline: '', // Commented out - will uncomment later
     additional_requirements: '',
     call_time: ''
   });
@@ -116,25 +116,26 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
     );
   };
 
-  const calculateTotalPrice = () => {
-    let total = 0;
-    
-    // Add base prices for selected services
-    selectedServices.forEach(serviceId => {
-      const service = serviceOptions.find(s => s.id === serviceId);
-      if (service) total += service.basePrice;
-    });
-    
-    // Add prices for selected sub-options
-    selectedSubOptions.forEach(subOptionId => {
-      serviceOptions.forEach(service => {
-        const subOption = service.subOptions.find(sub => sub.id === subOptionId);
-        if (subOption) total += subOption.price;
-      });
-    });
-    
-    return total;
-  };
+  // Commented out price calculation - will uncomment later
+  // const calculateTotalPrice = () => {
+  //   let total = 0;
+  //   
+  //   // Add base prices for selected services
+  //   selectedServices.forEach(serviceId => {
+  //     const service = serviceOptions.find(s => s.id === serviceId);
+  //     if (service) total += service.basePrice;
+  //   });
+  //   
+  //   // Add prices for selected sub-options
+  //   selectedSubOptions.forEach(subOptionId => {
+  //     serviceOptions.forEach(service => {
+  //       const subOption = service.subOptions.find(sub => sub.id === subOptionId);
+  //       if (subOption) total += subOption.price;
+  //     });
+  //   });
+  //   
+  //   return total;
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -150,14 +151,14 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
     try {
       const selectedServicesData = selectedServices.map(serviceId => {
         const service = serviceOptions.find(s => s.id === serviceId);
-        return service ? { id: serviceId, name: service.name, basePrice: service.basePrice } : null;
+        return service ? { id: serviceId, name: service.name /* basePrice: service.basePrice */ } : null;
       }).filter(Boolean);
 
       const selectedSubOptionsData = selectedSubOptions.map(subOptionId => {
         for (const service of serviceOptions) {
           const subOption = service.subOptions.find(sub => sub.id === subOptionId);
           if (subOption) {
-            return { id: subOptionId, name: subOption.name, price: subOption.price, parentService: service.id };
+            return { id: subOptionId, name: subOption.name, /* price: subOption.price, */ parentService: service.id };
           }
         }
         return null;
@@ -172,10 +173,10 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           phone: formData.phone,
           business_name: formData.business_name,
           business_type: 'service_selection',
-          timeline: formData.timeline,
-          additional_requirements: `${formData.additional_requirements}\n\nSelected Services: ${JSON.stringify(selectedServicesData)}\nSelected Options: ${JSON.stringify(selectedSubOptionsData)}\nTotal Price: ₹${calculateTotalPrice().toLocaleString()}`,
+          // timeline: formData.timeline, // Commented out - will uncomment later
+          additional_requirements: `${formData.additional_requirements}\n\nSelected Services: ${JSON.stringify(selectedServicesData)}\nSelected Options: ${JSON.stringify(selectedSubOptionsData)}`,
           description: `Selected Services: ${selectedServicesData.map(s => s?.name).join(', ')}. Additional Options: ${selectedSubOptionsData.map(s => s?.name).join(', ')}`,
-          estimated_cost: calculateTotalPrice(),
+          // estimated_cost: calculateTotalPrice(), // Commented out - will uncomment later
           call_time: formData.call_time || null
         }]);
 
@@ -195,7 +196,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           message_type: 'service_selection',
           status: 'unread',
           service: selectedServiceNames,
-          budget: `₹${calculateTotalPrice().toLocaleString()}`,
+          // budget: `₹${calculateTotalPrice().toLocaleString()}`, // Commented out - will uncomment later
           call_time: formData.call_time || null
         }]);
 
@@ -213,8 +214,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
           business_name: formData.business_name,
           business_type: 'service_selection',
           description: `Selected Services: ${selectedServicesData.map(s => s?.name).join(', ')}. Additional Options: ${selectedSubOptionsData.map(s => s?.name).join(', ')}`,
-          budget_range: `₹${calculateTotalPrice().toLocaleString()}`,
-          timeline: formData.timeline
+          // budget_range: `₹${calculateTotalPrice().toLocaleString()}`, // Commented out - will uncomment later
+          // timeline: formData.timeline // Commented out - will uncomment later
         }
       });
 
@@ -225,7 +226,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
 
       toast({
         title: "Service request submitted!",
-        description: `Your custom quote for ₹${calculateTotalPrice().toLocaleString()} has been sent. We'll contact you within 24 hours.`,
+        description: "Your service request has been sent. We'll contact you within 24 hours.",
       });
 
       // Reset form
@@ -234,7 +235,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
         email: '',
         phone: '',
         business_name: '',
-        timeline: '',
+        // timeline: '', // Commented out - will uncomment later
         additional_requirements: '',
         call_time: ''
       });
@@ -332,7 +333,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
                     <label htmlFor={service.id} className="flex items-center space-x-2 cursor-pointer flex-1">
                       {service.icon}
                       <span className="font-medium">{service.name}</span>
-                      <span className="text-primary font-semibold">₹{service.basePrice.toLocaleString()}</span>
+                      {/* <span className="text-primary font-semibold">₹{service.basePrice.toLocaleString()}</span> */}
                     </label>
                   </div>
                   
@@ -351,7 +352,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
                               <span className="font-medium">{subOption.name}</span>
                               <p className="text-xs text-muted-foreground">{subOption.description}</p>
                             </div>
-                            <span className="text-primary font-semibold">+₹{subOption.price.toLocaleString()}</span>
+                            {/* <span className="text-primary font-semibold">+₹{subOption.price.toLocaleString()}</span> */}
                           </label>
                         </div>
                       ))}
@@ -362,8 +363,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
             </div>
           </div>
 
-          {/* Timeline and Additional Requirements */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Timeline and Additional Requirements - Timeline commented out */}
+          {/* <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Project Timeline</Label>
               <Select onValueChange={(value) => setFormData({...formData, timeline: value})} value={formData.timeline}>
@@ -380,7 +381,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
                 </SelectContent>
               </Select>
             </div>
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <Label htmlFor="additional_requirements">Additional Requirements</Label>
@@ -406,8 +407,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
             />
           </div>
 
-          {/* Total Price */}
-          {(selectedServices.length > 0 || selectedSubOptions.length > 0) && (
+          {/* Total Price - Commented out */}
+          {/* {(selectedServices.length > 0 || selectedSubOptions.length > 0) && (
             <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -420,7 +421,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
                 Final price may vary based on specific requirements. We'll send you a detailed quote.
               </p>
             </div>
-          )}
+          )} */}
 
           <div className="flex gap-3 pt-4">
             <Button
@@ -437,7 +438,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({ isOpen, o
               disabled={isLoading || selectedServices.length === 0}
               className="flex-1"
             >
-              {isLoading ? "Submitting..." : `Get Quote - ₹${calculateTotalPrice().toLocaleString()}`}
+              {isLoading ? "Submitting..." : "Get Quote"}
             </Button>
           </div>
         </form>

@@ -22,8 +22,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
     business_name: '',
     business_type: '',
     description: '',
-    budget_range: '',
-    timeline: '',
+    // budget_range: '', // Commented out - will uncomment later
+    // timeline: '', // Commented out - will uncomment later
     additional_requirements: '',
     call_time: ''
   });
@@ -57,8 +57,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
             business_name: formData.business_name,
             business_type: formData.business_type,
             description: formData.description,
-            budget_range: formData.budget_range,
-            timeline: formData.timeline,
+            // budget_range: formData.budget_range, // Commented out - will uncomment later
+            // timeline: formData.timeline, // Commented out - will uncomment later
             additional_requirements: formData.additional_requirements,
             call_time: formData.call_time || null
           }]);
@@ -76,7 +76,7 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
             message_type: 'customization',
             status: 'unread',
             service: formData.business_type || 'custom_plan',
-            budget: formData.budget_range || null,
+            // budget: formData.budget_range || null, // Commented out - will uncomment later
             call_time: formData.call_time || null
           }]);
 
@@ -93,8 +93,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
           business_name: formData.business_name,
           business_type: formData.business_type,
           description: formData.description,
-          budget_range: formData.budget_range,
-          timeline: formData.timeline
+          // budget_range: formData.budget_range, // Commented out - will uncomment later
+          // timeline: formData.timeline // Commented out - will uncomment later
         }
       });
 
@@ -115,8 +115,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
           business_name: '',
           business_type: '',
           description: '',
-          budget_range: '',
-          timeline: '',
+          // budget_range: '', // Commented out - will uncomment later
+          // timeline: '', // Commented out - will uncomment later
           additional_requirements: '',
           call_time: ''
         });
@@ -232,7 +232,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* Budget and Timeline - Commented out */}
+          {/* <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Budget Range</Label>
               <Select onValueChange={(value) => handleSelectChange('budget_range', value)} value={formData.budget_range}>
@@ -267,7 +268,7 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
                 </SelectContent>
               </Select>
             </div>
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <Label htmlFor="additional_requirements">Additional Requirements (Optional)</Label>
