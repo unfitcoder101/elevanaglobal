@@ -484,7 +484,7 @@ const Dashboard = () => {
               <Settings className="w-4 h-4 mr-2" />
               Profile
             </Button>
-            {user?.email === 'kanhayadav1610@gmail.com' && (
+            {isAdmin && (
               <Button variant="outline" onClick={() => navigate('/admin?tab=messages')}>
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Admin Messages
