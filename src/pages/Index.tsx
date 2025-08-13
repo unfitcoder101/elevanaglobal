@@ -67,7 +67,7 @@ const Index = () => {
   const contactInfo = {
     email: 'elevanaglobal@gmail.com',
     phone: '+91 9166922448',
-    instagram: 'https://www.instagram.com/elevanaglobal/?utm_source=ig_web_button_share_sheet'
+    instagram: 'https://www.instagram.com/elevanaglobal?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
   };
 
   // Scroll animations
@@ -891,7 +891,7 @@ const Index = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button 
-                      onClick={() => window.open(`https://instagram.com/${contactInfo.instagram.replace('@', '')}`, '_blank')}
+                      onClick={() => window.open(contactInfo.instagram, '_blank')}
                       className="flex items-center justify-center w-12 h-12 bg-primary/10 hover:bg-primary/20 rounded-full transition-all duration-300 hover:scale-110"
                     >
                       <Instagram className="w-6 h-6 text-primary" />
