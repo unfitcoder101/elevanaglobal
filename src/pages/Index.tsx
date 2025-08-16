@@ -300,7 +300,7 @@ const Index = () => {
                   <Button variant="outline" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/auth')}>
                     Sign In
                   </Button>
-                  <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => setContactModalOpen(true)}>
+                  <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}>
                     Book Free Call
                     <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -335,7 +335,7 @@ const Index = () => {
                     <Button variant="outline" size="lg" className="w-full mb-2" onClick={() => navigate('/auth')}>
                       Sign In
                     </Button>
-                    <Button variant="gradient" size="lg" className="w-full" onClick={() => setContactModalOpen(true)}>
+                    <Button variant="gradient" size="lg" className="w-full" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}>
                       Book Free Call
                       <ArrowRight className="w-4 h-4" />
                     </Button>
@@ -390,19 +390,19 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
-              <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => setContactModalOpen(true)}>
+              <Button variant="cta" size="xl" className="hover:scale-105 transition-transform" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}>
                 🔥 Book Your Free Demo Now
                 <ArrowRight className="w-5 h-5" />
               </Button>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="xl">
+                  <Button variant="outline" size="xl" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}>
                     <Phone className="w-5 h-5" />
                     Schedule a Call
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{contactInfo.phone}</p>
+                  <p>Book your free 30-minute consultation</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -913,14 +913,14 @@ const Index = () => {
               variant="floating" 
               size="lg" 
               className="floating-cta"
-              onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
+              onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}
             >
               <Phone className="w-5 h-5" />
               Book Free Call
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Call us at {contactInfo.phone}</p>
+            <p>Book your free 30-minute consultation</p>
           </TooltipContent>
         </Tooltip>
 
