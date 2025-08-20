@@ -646,14 +646,14 @@ const Index = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <CardContent className="p-8 relative z-10">
                     <div className="flex items-start space-x-4 mb-6">
-                      <img 
-                        src={testimonial.image} 
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg"
-                        style={{ 
-                          filter: 'blur(0.5px)',
-                          borderColor: '#20C997'
-                        }}
+                       <img 
+                         src={testimonial.image} 
+                         alt={testimonial.name}
+                         className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg"
+                         style={{ 
+                           filter: 'blur(2px)',
+                           borderColor: '#20C997'
+                         }}
                       />
                       <div className="flex-1">
                         <blockquote className="text-lg leading-relaxed text-gray-700 font-poppins mb-4">

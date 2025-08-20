@@ -42,7 +42,7 @@ const App = () => (
                 Note: Due to confidentiality agreements, some client details and project screenshots are anonymized or simulated. We respect our client's trust and only disclose specifics upon direct request.
               </div>
               <div className="text-sm text-foreground/70">
-                🧠 Built with ❤️ by NIT Students | ELEVANA © 2025
+                🧠 Built with ❤️ | ELEVANA © 2025
               </div>
             </div>
           </footer>
