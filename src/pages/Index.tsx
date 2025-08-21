@@ -40,8 +40,8 @@ import testimonial4 from '@/assets/testimonial-4.jpg';
 import heroBackground from '@/assets/hero-background.jpg';
 
 // Import portfolio images
-import portfolioFurniture from '@/assets/portfolio-furniture-website.png';
-import portfolioInterior from '@/assets/portfolio-luxury-interior.png';
+import furnitureWebsite from '@/assets/furniture-website.png';
+import interiorWebsite from '@/assets/interior-website.png';
 
 // Import new testimonial images
 import testimonialRohit from '@/assets/testimonial-rohit.jpg';
@@ -681,51 +681,6 @@ const Index = () => {
         </section>
 
 
-        {/* Creative Work Highlights Section */}
-        <section className="py-20 bg-gradient-to-br from-muted/10 to-accent/5">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#008C8C' }}>
-                Creative Work Highlights
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Premium websites that convert visitors into customers
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              <div className="reveal-up group">
-                <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                  <img 
-                    src={portfolioFurniture}
-                    alt="Modern furniture website design"
-                    className="w-full h-80 object-cover"
-                  />
-                  <div className="p-6">
-                    <p className="text-gray-600 text-center font-medium">
-                      Furniture Landing Page Design – Minimal, Modern, and User-Centric.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="reveal-up group">
-                <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                  <img 
-                    src={portfolioInterior}
-                    alt="Luxury interior designer website"
-                    className="w-full h-80 object-cover"
-                  />
-                  <div className="p-6">
-                    <p className="text-gray-600 text-center font-medium">
-                      Luxury Interior Designer Landing Page – Elegant, Premium, and Trust-Building.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* 5. Case Study / Project Video Section */}
         <section className="py-16 bg-muted/20">
@@ -789,6 +744,32 @@ const Index = () => {
                   </div>
                   <p className="text-muted-foreground italic mt-4 text-center">
                     "Online payments flowing 24/7"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={furnitureWebsite} 
+                      alt="Furniture landing page website"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Furniture Landing Page"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
+                      src={interiorWebsite} 
+                      alt="Luxury interior designer landing page"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Luxury Interior Designer Landing Page"
                   </p>
                 </div>
               </div>
