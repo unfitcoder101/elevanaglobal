@@ -39,10 +39,6 @@ import testimonial3 from '@/assets/testimonial-3.jpg';
 import testimonial4 from '@/assets/testimonial-4.jpg';
 import heroBackground from '@/assets/hero-background.jpg';
 
-// Import portfolio images
-import furnitureWebsite from '@/assets/furniture-website.png';
-import interiorWebsite from '@/assets/interior-website.png';
-
 // Import new testimonial images
 import testimonialRohit from '@/assets/testimonial-rohit.jpg';
 import testimonialClaire from '@/assets/testimonial-claire.jpg';
@@ -681,7 +677,6 @@ const Index = () => {
         </section>
 
 
-
         {/* 5. Case Study / Project Video Section */}
         <section className="py-16 bg-muted/20">
           <div className="container mx-auto px-4">
@@ -724,6 +719,19 @@ const Index = () => {
                 <div className="reveal-up">
                   <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <img 
+                      src={instagramGrowth} 
+                      alt="Instagram growth analytics"
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  <p className="text-muted-foreground italic mt-4 text-center">
+                    "Instagram reach tripled in 3 weeks"
+                  </p>
+                </div>
+                
+                <div className="reveal-up">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <img 
                       src={instagramDms} 
                       alt="Instagram automated DMs"
                       className="w-full h-64 object-cover"
@@ -744,32 +752,6 @@ const Index = () => {
                   </div>
                   <p className="text-muted-foreground italic mt-4 text-center">
                     "Online payments flowing 24/7"
-                  </p>
-                </div>
-                
-                <div className="reveal-up">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <img 
-                      src={furnitureWebsite} 
-                      alt="Furniture landing page website"
-                      className="w-full h-64 object-cover"
-                    />
-                  </div>
-                  <p className="text-muted-foreground italic mt-4 text-center">
-                    "Furniture Landing Page"
-                  </p>
-                </div>
-                
-                <div className="reveal-up">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <img 
-                      src={interiorWebsite} 
-                      alt="Luxury interior designer landing page"
-                      className="w-full h-64 object-cover"
-                    />
-                  </div>
-                  <p className="text-muted-foreground italic mt-4 text-center">
-                    "Luxury Interior Designer Landing Page"
                   </p>
                 </div>
               </div>
