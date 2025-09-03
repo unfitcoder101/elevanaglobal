@@ -67,7 +67,7 @@ const Index = () => {
   const contactInfo = {
     email: 'elevanaglobal@gmail.com',
     phone: '+91 9166922448',
-    instagram: 'https://www.instagram.com/elevanaglobal?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
+    instagram: 'https://www.instagram.com/elevanaglobal'
   };
 
   // Scroll animations
