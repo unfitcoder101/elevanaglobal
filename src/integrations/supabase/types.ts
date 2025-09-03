@@ -26,12 +26,15 @@ export type Database = {
           description: string
           email: string
           estimated_cost: number | null
+          honeypot_field: string | null
           id: string
           name: string
           phone: string | null
           status: string
+          submission_ip: unknown | null
           timeline: string | null
           updated_at: string
+          user_agent: string | null
           user_id: string | null
         }
         Insert: {
@@ -45,12 +48,15 @@ export type Database = {
           description: string
           email: string
           estimated_cost?: number | null
+          honeypot_field?: string | null
           id?: string
           name: string
           phone?: string | null
           status?: string
+          submission_ip?: unknown | null
           timeline?: string | null
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
         }
         Update: {
@@ -64,12 +70,15 @@ export type Database = {
           description?: string
           email?: string
           estimated_cost?: number | null
+          honeypot_field?: string | null
           id?: string
           name?: string
           phone?: string | null
           status?: string
+          submission_ip?: unknown | null
           timeline?: string | null
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -81,13 +90,16 @@ export type Database = {
           contacted_at: string | null
           created_at: string
           email: string
+          honeypot_field: string | null
           id: string
           message: string | null
           name: string
           phone: string | null
           request_type: string
           status: string
+          submission_ip: unknown | null
           updated_at: string
+          user_agent: string | null
         }
         Insert: {
           admin_notes?: string | null
@@ -95,13 +107,16 @@ export type Database = {
           contacted_at?: string | null
           created_at?: string
           email: string
+          honeypot_field?: string | null
           id?: string
           message?: string | null
           name: string
           phone?: string | null
           request_type?: string
           status?: string
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
         }
         Update: {
           admin_notes?: string | null
@@ -109,13 +124,16 @@ export type Database = {
           contacted_at?: string | null
           created_at?: string
           email?: string
+          honeypot_field?: string | null
           id?: string
           message?: string | null
           name?: string
           phone?: string | null
           request_type?: string
           status?: string
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
         }
         Relationships: []
       }
@@ -128,11 +146,14 @@ export type Database = {
           created_at: string
           desired_results: string
           email: string
+          honeypot_field: string | null
           id: string
           name: string
           phone: string | null
           status: string | null
+          submission_ip: unknown | null
           updated_at: string
+          user_agent: string | null
           website_instagram: string | null
         }
         Insert: {
@@ -143,11 +164,14 @@ export type Database = {
           created_at?: string
           desired_results: string
           email: string
+          honeypot_field?: string | null
           id?: string
           name: string
           phone?: string | null
           status?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
           website_instagram?: string | null
         }
         Update: {
@@ -158,11 +182,14 @@ export type Database = {
           created_at?: string
           desired_results?: string
           email?: string
+          honeypot_field?: string | null
           id?: string
           name?: string
           phone?: string | null
           status?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
           website_instagram?: string | null
         }
         Relationships: []
@@ -174,12 +201,15 @@ export type Database = {
           contacted_at: string | null
           created_at: string
           email: string
+          honeypot_field: string | null
           id: string
           name: string
           phone: string | null
           problem_description: string | null
           status: string | null
+          submission_ip: unknown | null
           updated_at: string
+          user_agent: string | null
         }
         Insert: {
           business_type?: string | null
@@ -187,12 +217,15 @@ export type Database = {
           contacted_at?: string | null
           created_at?: string
           email: string
+          honeypot_field?: string | null
           id?: string
           name: string
           phone?: string | null
           problem_description?: string | null
           status?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
         }
         Update: {
           business_type?: string | null
@@ -200,12 +233,15 @@ export type Database = {
           contacted_at?: string | null
           created_at?: string
           email?: string
+          honeypot_field?: string | null
           id?: string
           name?: string
           phone?: string | null
           problem_description?: string | null
           status?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
         }
         Relationships: []
       }
@@ -216,6 +252,7 @@ export type Database = {
           call_time: string | null
           created_at: string
           email: string
+          honeypot_field: string | null
           id: string
           message: string
           message_type: string
@@ -224,7 +261,9 @@ export type Database = {
           service: string | null
           status: string
           subject: string | null
+          submission_ip: unknown | null
           updated_at: string
+          user_agent: string | null
           user_id: string | null
         }
         Insert: {
@@ -233,6 +272,7 @@ export type Database = {
           call_time?: string | null
           created_at?: string
           email: string
+          honeypot_field?: string | null
           id?: string
           message: string
           message_type?: string
@@ -241,7 +281,9 @@ export type Database = {
           service?: string | null
           status?: string
           subject?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
         }
         Update: {
@@ -250,6 +292,7 @@ export type Database = {
           call_time?: string | null
           created_at?: string
           email?: string
+          honeypot_field?: string | null
           id?: string
           message?: string
           message_type?: string
@@ -258,7 +301,9 @@ export type Database = {
           service?: string | null
           status?: string
           subject?: string | null
+          submission_ip?: unknown | null
           updated_at?: string
+          user_agent?: string | null
           user_id?: string | null
         }
         Relationships: []
