@@ -25,7 +25,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
     // budget_range: '', // Commented out - will uncomment later
     // timeline: '', // Commented out - will uncomment later
     additional_requirements: '',
-    call_time: ''
+    call_time: '',
+    honeypot_field: '' // Hidden field for spam protection
   });
   const { toast } = useToast();
 
@@ -60,7 +61,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
             // budget_range: formData.budget_range, // Commented out - will uncomment later
             // timeline: formData.timeline, // Commented out - will uncomment later
             additional_requirements: formData.additional_requirements,
-            call_time: formData.call_time || null
+            call_time: formData.call_time || null,
+            honeypot_field: formData.honeypot_field || null
           }]);
 
       if (dbError) throw dbError;
@@ -77,7 +79,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
             status: 'unread',
             service: formData.business_type || 'custom_plan',
             // budget: formData.budget_range || null, // Commented out - will uncomment later
-            call_time: formData.call_time || null
+            call_time: formData.call_time || null,
+            honeypot_field: formData.honeypot_field || null
           }]);
 
       if (messageError) {
@@ -118,7 +121,8 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
           // budget_range: '', // Commented out - will uncomment later
           // timeline: '', // Commented out - will uncomment later
           additional_requirements: '',
-          call_time: ''
+          call_time: '',
+          honeypot_field: ''
         });
 
       onClose();
@@ -293,6 +297,17 @@ const CustomizationModal: React.FC<CustomizationModalProps> = ({ isOpen, onClose
               placeholder="Select preferred call time"
             />
           </div>
+
+          {/* Hidden honeypot field for spam protection */}
+          <input
+            type="text"
+            name="honeypot_field"
+            value={formData.honeypot_field}
+            onChange={handleInputChange}
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
 
           <div className="flex gap-3 pt-4">
             <Button

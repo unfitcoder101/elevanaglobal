@@ -22,7 +22,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     phone: '',
     business_type: '',
     problem_description: '',
-    call_time: ''
+    call_time: '',
+    honeypot_field: '' // Hidden field for spam protection
   });
   const { toast } = useToast();
 
@@ -101,7 +102,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         phone: '',
         business_type: '',
         problem_description: '',
-        call_time: ''
+        call_time: '',
+        honeypot_field: ''
       });
 
       onClose();
@@ -222,6 +224,17 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               placeholder="Select preferred call time"
             />
           </div>
+
+          {/* Hidden honeypot field for spam protection */}
+          <input
+            type="text"
+            name="honeypot_field"
+            value={formData.honeypot_field}
+            onChange={handleInputChange}
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
 
           <div className="flex gap-3 pt-4">
             <Button
