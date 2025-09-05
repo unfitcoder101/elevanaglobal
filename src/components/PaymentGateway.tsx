@@ -16,9 +16,10 @@ interface PaymentGatewayProps {
     description: string;
     reference_number: string;
   };
+  onPaymentSuccess?: () => void; // Callback to refresh data
 }
 
-const PaymentGateway: React.FC<PaymentGatewayProps> = ({ isOpen, onClose, payment }) => {
+const PaymentGateway: React.FC<PaymentGatewayProps> = ({ isOpen, onClose, payment, onPaymentSuccess }) => {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -54,6 +55,10 @@ const PaymentGateway: React.FC<PaymentGatewayProps> = ({ isOpen, onClose, paymen
         onClose();
         setPaymentSuccess(false);
         setPaymentMethod(null);
+        // Refresh dashboard data after payment
+        if (onPaymentSuccess) {
+          onPaymentSuccess();
+        }
       }, 2000);
 
     } catch (error) {

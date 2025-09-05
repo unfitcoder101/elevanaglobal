@@ -872,12 +872,17 @@ const Dashboard = () => {
         
         {selectedProject && <PaymentRequestModal isOpen={showPaymentRequest} onClose={() => setShowPaymentRequest(false)} projectId={selectedProject.id} userId={selectedProject.user_id} projectTitle={selectedProject.title} />}
         
-        {selectedPayment && <PaymentGateway isOpen={showPaymentGateway} onClose={() => setShowPaymentGateway(false)} payment={{
-        id: selectedPayment.id,
-        amount: Number(selectedPayment.amount),
-        description: selectedPayment.description || 'Project payment',
-        reference_number: selectedPayment.reference_number || 'N/A'
-      }} />}
+        {selectedPayment && <PaymentGateway 
+          isOpen={showPaymentGateway} 
+          onClose={() => setShowPaymentGateway(false)} 
+          payment={{
+            id: selectedPayment.id,
+            amount: Number(selectedPayment.amount),
+            description: selectedPayment.description || 'Project payment',
+            reference_number: selectedPayment.reference_number || 'N/A'
+          }}
+          onPaymentSuccess={loadUserData} // Refresh data after payment success
+        />}
       </div>
     </div>;
 };
