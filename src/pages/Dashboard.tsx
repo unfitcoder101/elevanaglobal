@@ -63,6 +63,7 @@ const Dashboard = () => {
   const [payments, setPayments] = useState<ProjectPayment[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [respondingToRequest, setRespondingToRequest] = useState<string | null>(null);
   const [showProjectRequest, setShowProjectRequest] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -412,6 +413,9 @@ const Dashboard = () => {
   };
 
   const handleProjectRequestResponse = async (requestId: string, response: 'accepted' | 'declined') => {
+    if (respondingToRequest === requestId) return; // Prevent multiple submissions
+    
+    setRespondingToRequest(requestId);
     try {
       if (response === 'accepted') {
         // Get the project request details
@@ -457,6 +461,8 @@ const Dashboard = () => {
         description: "Failed to respond to project request.",
         variant: "destructive"
       });
+    } finally {
+      setRespondingToRequest(null);
     }
   };
   if (loading || loadingData) {
@@ -637,11 +643,35 @@ const Dashboard = () => {
                       <div>Cost: ₹{Number(request.estimated_cost).toLocaleString()}</div>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="default" onClick={() => handleProjectRequestResponse(request.id, 'accepted')}>
-                        Accept
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        onClick={() => handleProjectRequestResponse(request.id, 'accepted')}
+                        disabled={respondingToRequest === request.id}
+                      >
+                        {respondingToRequest === request.id ? (
+                          <>
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current mr-2"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          'Accept'
+                        )}
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleProjectRequestResponse(request.id, 'declined')}>
-                        Decline
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={() => handleProjectRequestResponse(request.id, 'declined')}
+                        disabled={respondingToRequest === request.id}
+                      >
+                        {respondingToRequest === request.id ? (
+                          <>
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current mr-2"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          'Decline'
+                        )}
                       </Button>
                     </div>
                   </div>)}
