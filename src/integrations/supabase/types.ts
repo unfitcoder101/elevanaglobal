@@ -391,7 +391,9 @@ export type Database = {
       }
       project_payments: {
         Row: {
+          admin_confirmed: boolean | null
           amount: number
+          confirmed_at: string | null
           created_at: string
           currency: string
           description: string | null
@@ -407,7 +409,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          admin_confirmed?: boolean | null
           amount: number
+          confirmed_at?: string | null
           created_at?: string
           currency?: string
           description?: string | null
@@ -423,7 +427,9 @@ export type Database = {
           user_id: string
         }
         Update: {
+          admin_confirmed?: boolean | null
           amount?: number
+          confirmed_at?: string | null
           created_at?: string
           currency?: string
           description?: string | null

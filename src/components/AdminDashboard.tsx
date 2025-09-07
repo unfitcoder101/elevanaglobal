@@ -305,6 +305,41 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleConfirmPayment = async (paymentId: string) => {
+    try {
+      const { error } = await supabase
+        .from('project_payments')
+        .update({ 
+          admin_confirmed: true,
+          confirmed_at: new Date().toISOString()
+        })
+        .eq('id', paymentId);
+
+      if (error) throw error;
+
+      // Update local state
+      setPaymentHistory(prev => 
+        prev.map(payment => 
+          payment.id === paymentId 
+            ? { ...payment, admin_confirmed: true, confirmed_at: new Date().toISOString() }
+            : payment
+        )
+      );
+
+      toast({
+        title: "Payment Confirmed",
+        description: "Payment has been confirmed and user notification removed.",
+      });
+    } catch (error) {
+      console.error('Error confirming payment:', error);
+      toast({
+        title: "Error",
+        description: "Failed to confirm payment.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const generateReceipt = (customization: BusinessCustomization) => {
     const receipt = `
 ELEVANA - SERVICE ESTIMATE
@@ -1114,6 +1149,27 @@ www.elevana.com | support@elevana.com
                       {payment.description && (
                         <div className="text-sm mt-2">
                           {payment.description}
+                        </div>
+                      )}
+                      {payment.status === 'paid' && !payment.admin_confirmed && (
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t">
+                          <div className="text-sm text-amber-600 font-medium">
+                            ⚠️ Payment completed - Awaiting admin confirmation
+                          </div>
+                          <Button
+                            size="sm"
+                            onClick={() => handleConfirmPayment(payment.id)}
+                            className="ml-2"
+                          >
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Confirm Payment
+                          </Button>
+                        </div>
+                      )}
+                      {payment.admin_confirmed && (
+                        <div className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Admin confirmed - {payment.confirmed_at ? new Date(payment.confirmed_at).toLocaleDateString() : 'Recently confirmed'}
                         </div>
                       )}
                     </div>

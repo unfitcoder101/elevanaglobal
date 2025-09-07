@@ -306,7 +306,7 @@ const Dashboard = () => {
     return payments.filter(p => p.status === 'pending' && p.due_date && new Date(p.due_date) < new Date()).reduce((sum, p) => sum + Number(p.amount), 0);
   };
   const getPendingAmount = () => {
-    return payments.filter(p => p.status === 'pending').reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'pending' && !(p as any).admin_confirmed).reduce((sum, p) => sum + Number(p.amount), 0);
   };
   const handlePaymentRequest = (project: Project) => {
     setSelectedProject(project);
@@ -820,16 +820,16 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Pending Payments */}
-          {payments.filter(p => p.status === 'pending').length > 0 && (
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Pending Payments</CardTitle>
-                <CardDescription>Complete your outstanding payment requests</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {payments.filter(p => p.status === 'pending').map(payment => (
+        {/* Pending Payments */}
+        {payments.filter(p => p.status === 'pending' && !(p as any).admin_confirmed).length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Pending Payments</CardTitle>
+              <CardDescription>Complete your outstanding payment requests</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {payments.filter(p => p.status === 'pending' && !(p as any).admin_confirmed).map(payment => (
                     <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div className="flex-1">
                         <p className="font-medium text-sm">
