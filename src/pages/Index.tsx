@@ -284,10 +284,10 @@ const Index = () => {
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
-              <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
-              <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
-              <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
+              <a href="#services" className="text-foreground hover:text-primary transition-smooth" onClick={(e) => { e.preventDefault(); document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); }}>Services</a>
+              <a href="#results" className="text-foreground hover:text-primary transition-smooth" onClick={(e) => { e.preventDefault(); document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' }); }}>Results</a>
+              <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth" onClick={(e) => { e.preventDefault(); document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' }); }}>Testimonials</a>
+              <a href="#contact" className="text-foreground hover:text-primary transition-smooth" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
             </nav>
 
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -325,28 +325,44 @@ const Index = () => {
               <a 
                 href="#services" 
                 className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); 
+                  setMobileMenuOpen(false);
+                }}
               >
                 Services
               </a>
               <a 
                 href="#results" 
                 className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' }); 
+                  setMobileMenuOpen(false);
+                }}
               >
                 Results
               </a>
               <a 
                 href="#testimonials" 
                 className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' }); 
+                  setMobileMenuOpen(false);
+                }}
               >
                 Testimonials
               </a>
               <a 
                 href="#contact" 
                 className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); 
+                  setMobileMenuOpen(false);
+                }}
               >
                 Contact
               </a>
@@ -416,7 +432,7 @@ const Index = () => {
                  style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
           </div>
           
-          <div className="relative container mx-auto px-4 text-center reveal-up pt-20">
+          <div className="relative container mx-auto px-4 text-center reveal-up pt-32 sm:pt-24">
             <div className="mb-8 inline-flex items-center px-4 py-2 bg-gradient-to-r from-neon/10 to-primary/10 rounded-full border border-neon/20 backdrop-blur-sm animate-pulse">
               <div className="w-2 h-2 bg-neon rounded-full mr-3 animate-ping"></div>
               <span className="text-sm font-medium text-neon">⚡ Only 3 free audits left this month</span>
