@@ -274,10 +274,11 @@ const Index = () => {
         
         {/* Sticky Header */}
         <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm shadow-elegant' : 'bg-transparent'}`}>
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <a href="#hero" 
-               className="flex items-center text-3xl font-extrabold pl-6 cursor-pointer transition-all duration-300 hover:opacity-80 font-poppins"
-               style={{ color: '#008C8C', letterSpacing: '0.5px' }}>
+               className="flex items-center text-2xl sm:text-3xl font-extrabold sm:pl-6 cursor-pointer transition-all duration-300 hover:opacity-80 font-poppins"
+               style={{ color: '#008C8C', letterSpacing: '0.5px' }}
+               onClick={() => setMobileMenuOpen(false)}>
               ELEVANA<span style={{ color: '#20C997' }}>.</span>
             </a>
             
@@ -289,7 +290,7 @@ const Index = () => {
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
             </nav>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {user ? (
                 <Button variant="gradient" size="lg" className="hidden md:inline-flex" onClick={() => navigate('/dashboard')}>
                   Dashboard
@@ -310,7 +311,8 @@ const Index = () => {
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden"
+                className="md:hidden p-2 hover:bg-muted/50 rounded-lg transition-colors"
+                aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -318,32 +320,80 @@ const Index = () => {
           </div>
 
           {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden bg-background border-t">
-              <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-                <a href="#services" className="text-foreground hover:text-primary transition-smooth">Services</a>
-                <a href="#results" className="text-foreground hover:text-primary transition-smooth">Results</a>
-                <a href="#testimonials" className="text-foreground hover:text-primary transition-smooth">Testimonials</a>
-                <a href="#contact" className="text-foreground hover:text-primary transition-smooth">Contact</a>
+          <div className={`md:hidden bg-background/98 backdrop-blur-md border-t transition-all duration-300 ${mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+            <nav className="container mx-auto px-4 py-6 flex flex-col space-y-4">
+              <a 
+                href="#services" 
+                className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Services
+              </a>
+              <a 
+                href="#results" 
+                className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Results
+              </a>
+              <a 
+                href="#testimonials" 
+                className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Testimonials
+              </a>
+              <a 
+                href="#contact" 
+                className="text-foreground hover:text-primary transition-smooth py-2 text-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </a>
+              <div className="pt-4 space-y-3">
                 {user ? (
-                  <Button variant="gradient" size="lg" className="w-full" onClick={() => navigate('/dashboard')}>
+                  <Button 
+                    variant="gradient" 
+                    size="lg" 
+                    className="w-full" 
+                    onClick={() => {
+                      navigate('/dashboard');
+                      setMobileMenuOpen(false);
+                    }}
+                  >
                     Dashboard
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 ) : (
                   <>
-                    <Button variant="outline" size="lg" className="w-full mb-2" onClick={() => navigate('/auth')}>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full" 
+                      onClick={() => {
+                        navigate('/auth');
+                        setMobileMenuOpen(false);
+                      }}
+                    >
                       Sign In
                     </Button>
-                    <Button variant="gradient" size="lg" className="w-full" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}>
+                    <Button 
+                      variant="gradient" 
+                      size="lg" 
+                      className="w-full" 
+                      onClick={() => {
+                        window.open('https://calendly.com/elevanaglobal/30min', '_blank');
+                        setMobileMenuOpen(false);
+                      }}
+                    >
                       Book Free Call
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </>
                 )}
-              </nav>
-            </div>
-          )}
+              </div>
+            </nav>
+          </div>
         </header>
 
         {/* 1. Hero Section - The Imagination Hook */}
