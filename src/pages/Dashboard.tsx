@@ -47,6 +47,8 @@ interface ProjectPayment {
   due_date: string | null;
   created_at: string;
   reference_number: string | null;
+  admin_confirmed: boolean | null;
+  confirmed_at: string | null;
 }
 const Dashboard = () => {
   const {
@@ -300,13 +302,13 @@ const Dashboard = () => {
     }
   };
   const getPaidAmount = () => {
-    return payments.filter(p => p.status === 'paid').reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'paid' && p.admin_confirmed === true).reduce((sum, p) => sum + Number(p.amount), 0);
   };
   const getDueAmount = () => {
     return payments.filter(p => p.status === 'pending' && p.due_date && new Date(p.due_date) < new Date()).reduce((sum, p) => sum + Number(p.amount), 0);
   };
   const getPendingAmount = () => {
-    return payments.filter(p => p.status === 'pending' && !(p as any).admin_confirmed).reduce((sum, p) => sum + Number(p.amount), 0);
+    return payments.filter(p => p.status === 'paid' && p.admin_confirmed !== true).reduce((sum, p) => sum + Number(p.amount), 0);
   };
   const handlePaymentRequest = (project: Project) => {
     setSelectedProject(project);
