@@ -18,7 +18,7 @@ const ChatBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! 👋 I'm here to help you with any questions about ELEVANA's services. How can I assist you today?",
+      text: "Hi! 👋 I'm here to help you with any questions about LEVRA's services. How can I assist you today?",
       isBot: true,
       timestamp: new Date()
     }
@@ -86,7 +86,7 @@ const ChatBot: React.FC = () => {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Bot className="h-4 w-4 text-primary" />
-              ELEVANA Assistant
+              LEVRA Assistant
             </CardTitle>
             <Button
               variant="ghost"

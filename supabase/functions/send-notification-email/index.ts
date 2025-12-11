@@ -58,7 +58,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Hi ${requestData.name},</p>
           <p>We have received your quote request and will get back to you within 24 hours.</p>
           <p>Our team will review your requirements and provide you with a detailed proposal.</p>
-          <p>Best regards,<br>The ELEVANA Team</p>
+          <p>Best regards,<br>The LEVRA Team</p>
         `;
         break;
 
@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Hi ${requestData.name},</p>
           <p>We're excited to help you build a tailored growth solution for your business.</p>
           <p>Our team will contact you within 24 hours to discuss your specific needs and create a custom plan just for you.</p>
-          <p>Best regards,<br>The ELEVANA Team</p>
+          <p>Best regards,<br>The LEVRA Team</p>
         `;
         break;
 
@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Hi ${requestData.name},</p>
           <p>We're excited to speak with you about how we can help grow your business.</p>
           <p>Our team will contact you within 24 hours to schedule your free consultation call.</p>
-          <p>Best regards,<br>The ELEVANA Team</p>
+          <p>Best regards,<br>The LEVRA Team</p>
         `;
         break;
 
@@ -114,14 +114,14 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Hi ${requestData.name},</p>
           <p>We're excited to help analyze your business and provide actionable growth recommendations.</p>
           <p>Our team will conduct your audit and send you a detailed report within 48 hours.</p>
-          <p>Best regards,<br>The ELEVANA Team</p>
+          <p>Best regards,<br>The LEVRA Team</p>
         `;
         break;
     }
 
     // Send email to admin (using verified email in test mode)
     const adminEmailResponse = await resend.emails.send({
-      from: "ELEVANA Notifications <notifications@kanhayadav1610@gmail.com>",
+      from: "LEVRA Notifications <notifications@kanhayadav1610@gmail.com>",
       to: ["kanhayadav1610@gmail.com"],
       subject: subject,
       html: adminEmailContent,
@@ -131,9 +131,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to customer (test mode - only to verified email)
     const customerEmailResponse = await resend.emails.send({
-      from: "ELEVANA <hello@kanhayadav1610@gmail.com>",
+      from: "LEVRA <hello@kanhayadav1610@gmail.com>",
       to: ["kanhayadav1610@gmail.com"], // In production, change to [requestData.email]
-      subject: "Thank you for contacting ELEVANA!",
+      subject: "Thank you for contacting LEVRA!",
       html: customerEmailContent,
     });
 

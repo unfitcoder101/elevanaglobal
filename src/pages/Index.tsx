@@ -152,7 +152,7 @@ const Index = () => {
             </a>
             
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center space-x-16">
+            <nav className="hidden md:flex items-center space-x-16 ml-12">
               <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">Services</a>
               <a href="#results" onClick={(e) => scrollToSection(e, 'results')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">Results</a>
               <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">About</a>

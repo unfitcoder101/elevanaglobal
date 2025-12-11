@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           </Button>
           
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-primary mb-2">ELEVANA</h1>
+            <h1 className="text-3xl font-bold text-primary mb-2">LEVRA</h1>
             <p className="text-muted-foreground">Reset your password</p>
           </div>
         </div>
