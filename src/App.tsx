@@ -36,16 +36,6 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
-          <footer className="bg-accent/5 py-3 md:py-4">
-            <div className="text-center space-y-2">
-              <div className="text-xs text-muted-foreground/60 italic max-w-2xl mx-auto px-4">
-                Note: Due to confidentiality agreements, some client details and project screenshots are anonymized or simulated. We respect our client's trust and only disclose specifics upon direct request.
-              </div>
-              <div className="text-sm text-foreground/70">
-                🧠 Built with ❤️ | ELEVANA © 2025
-              </div>
-            </div>
-          </footer>
           </BrowserRouter>
         </div>
       </TooltipProvider>
