@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 interface AnimatedCounterProps {
   end: number;
   duration?: number;
-  emoji: string;
+  emoji?: string;
   label: string;
 }
 
@@ -32,7 +32,6 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
               const elapsed = now - startTime;
               const progress = Math.min(elapsed / duration, 1);
               
-              // Easing function for smooth animation
               const easeOutCubic = 1 - Math.pow(1 - progress, 3);
               const currentValue = Math.floor(startValue + (end - startValue) * easeOutCubic);
               
@@ -66,15 +65,17 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   return (
     <div 
       ref={counterRef}
-      className="flex flex-col items-center p-6 bg-background/90 backdrop-blur-sm rounded-xl border border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300 hover:scale-105 group"
+      className="flex flex-col items-center p-8"
     >
-      <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-        {emoji}
+      {emoji && (
+        <div className="text-3xl mb-4">
+          {emoji}
+        </div>
+      )}
+      <div className="text-5xl md:text-6xl font-extralight text-foreground mb-3 tracking-tight">
+        {count.toLocaleString()}+
       </div>
-      <div className="text-3xl md:text-4xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-        {count.toLocaleString()}
-      </div>
-      <div className="text-sm text-muted-foreground text-center font-medium">
+      <div className="text-sm text-muted-foreground text-center tracking-wider uppercase">
         {label}
       </div>
     </div>
