@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/AuthProvider';
@@ -18,7 +18,7 @@ import {
   CheckCircle,
   Menu,
   X,
-  Copy
+  Sparkles
 } from 'lucide-react';
 
 const Index = () => {
@@ -28,9 +28,11 @@ const Index = () => {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [customizationModalOpen, setCustomizationModalOpen] = useState(false);
   const [serviceModalOpen, setServiceModalOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const contactInfo = {
     email: 'hello@levra.co',
@@ -40,7 +42,7 @@ const Index = () => {
 
   useEffect(() => {
     const revealElements = () => {
-      const elements = document.querySelectorAll('.reveal-up');
+      const elements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
       elements.forEach(el => {
         const rect = el.getBoundingClientRect();
         if (rect.top < window.innerHeight * 0.85) {
@@ -51,6 +53,7 @@ const Index = () => {
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setScrollY(window.scrollY);
       revealElements();
     };
 
@@ -133,27 +136,27 @@ const Index = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background overflow-x-hidden">
         
         {/* Header */}
-        <header className={`fixed top-0 w-full z-50 transition-smooth ${isScrolled ? 'bg-background/95 backdrop-blur-sm border-b border-border' : 'bg-transparent'}`}>
-          <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+        <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-background/95 backdrop-blur-sm border-b border-border' : 'bg-transparent'}`}>
+          <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
             
             {/* Logo */}
             <a 
               href="#hero" 
               onClick={(e) => scrollToSection(e, 'hero')}
-              className="text-2xl font-light tracking-[0.3em] text-foreground cursor-pointer"
+              className="text-2xl md:text-3xl font-light tracking-[0.4em] text-foreground cursor-pointer hover:text-accent transition-colors duration-300"
             >
               LEVRA
             </a>
             
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center space-x-12">
-              <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="text-sm tracking-wider text-muted-foreground hover:text-foreground transition-smooth">Services</a>
-              <a href="#results" onClick={(e) => scrollToSection(e, 'results')} className="text-sm tracking-wider text-muted-foreground hover:text-foreground transition-smooth">Results</a>
-              <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="text-sm tracking-wider text-muted-foreground hover:text-foreground transition-smooth">About</a>
-              <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="text-sm tracking-wider text-muted-foreground hover:text-foreground transition-smooth">Contact</a>
+            <nav className="hidden md:flex items-center space-x-16">
+              <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">Services</a>
+              <a href="#results" onClick={(e) => scrollToSection(e, 'results')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">Results</a>
+              <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">About</a>
+              <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="premium-link text-sm tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300">Contact</a>
             </nav>
 
             <div className="flex items-center space-x-4">
@@ -163,7 +166,7 @@ const Index = () => {
                 </Button>
               ) : (
                 <>
-                  <Button variant="ghost" size="sm" onClick={() => navigate('/auth')} className="hidden md:inline-flex">
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/auth')} className="hidden md:inline-flex text-muted-foreground hover:text-foreground">
                     Sign In
                   </Button>
                   <Button variant="default" size="sm" onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')} className="hidden md:inline-flex">
@@ -174,22 +177,22 @@ const Index = () => {
               
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2"
+                className="md:hidden p-2 hover:text-accent transition-colors duration-300"
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
 
           {/* Mobile Menu */}
-          <div className={`md:hidden bg-background border-t border-border transition-all duration-300 ${mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-            <nav className="container mx-auto px-6 py-8 flex flex-col space-y-6">
-              <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="text-sm tracking-wider text-muted-foreground">Services</a>
-              <a href="#results" onClick={(e) => scrollToSection(e, 'results')} className="text-sm tracking-wider text-muted-foreground">Results</a>
-              <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="text-sm tracking-wider text-muted-foreground">About</a>
-              <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="text-sm tracking-wider text-muted-foreground">Contact</a>
-              <div className="pt-4 space-y-3 border-t border-border">
+          <div className={`md:hidden bg-background border-t border-border transition-all duration-500 ease-out ${mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+            <nav className="container mx-auto px-6 py-10 flex flex-col space-y-8">
+              <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="text-lg tracking-widest text-muted-foreground hover:text-foreground transition-colors">Services</a>
+              <a href="#results" onClick={(e) => scrollToSection(e, 'results')} className="text-lg tracking-widest text-muted-foreground hover:text-foreground transition-colors">Results</a>
+              <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="text-lg tracking-widest text-muted-foreground hover:text-foreground transition-colors">About</a>
+              <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="text-lg tracking-widest text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+              <div className="pt-6 space-y-4 border-t border-border">
                 {user ? (
                   <Button variant="outline" className="w-full" onClick={() => { navigate('/dashboard'); setMobileMenuOpen(false); }}>
                     Dashboard
@@ -209,109 +212,159 @@ const Index = () => {
           </div>
         </header>
 
-        {/* Hero Section */}
-        <section id="hero" className="min-h-screen flex items-center justify-center pt-20">
-          <div className="container mx-auto px-6 text-center reveal-up">
+        {/* Hero Section - with parallax */}
+        <section id="hero" ref={heroRef} className="min-h-screen flex items-center justify-center pt-24 pb-20 relative overflow-hidden">
+          {/* Subtle background elements */}
+          <div 
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: `radial-gradient(circle at 50% 50%, hsl(var(--foreground)) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px',
+              transform: `translateY(${scrollY * 0.1}px)`
+            }}
+          />
+          
+          <div className="container mx-auto px-6 lg:px-12 text-center relative z-10">
             
-            <p className="text-sm tracking-[0.4em] text-muted-foreground mb-8 uppercase">
-              Business Solutions & AI Agency
-            </p>
+            <div className="reveal-up">
+              <p className="text-xs md:text-sm tracking-[0.5em] text-muted-foreground mb-10 uppercase">
+                Business Solutions & AI Agency
+              </p>
+            </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight tracking-tight mb-8 leading-[1.1]">
+            <h1 
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extralight tracking-tight mb-10 leading-[0.95] reveal-up delay-100"
+              style={{ transform: `translateY(${scrollY * -0.05}px)` }}
+            >
               Elevation<br />
               <span className="text-muted-foreground">made effortless.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto mb-16 font-light leading-relaxed reveal-up delay-200">
               We remove complexity from growth. Premium systems, intelligent automation, and strategic clarity for business owners who value their time.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20 reveal-up delay-300">
               <Button 
                 variant="default" 
                 size="xl" 
                 onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}
+                className="group min-w-[240px]"
               >
-                Start a Conversation
-                <ArrowRight className="w-4 h-4" />
+                Start Your Upgrade
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
               <Button 
                 variant="outline" 
                 size="xl" 
                 onClick={() => setServiceModalOpen(true)}
+                className="min-w-[240px]"
               >
-                View Solutions
+                Explore Solutions
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-accent" />
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 text-sm text-muted-foreground reveal-up delay-400">
+              <span className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-accent" />
                 No long-term contracts
               </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-accent" />
+              <span className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-accent" />
                 Results in 30 days
               </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-accent" />
+              <span className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-accent" />
                 Satisfaction guaranteed
               </span>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 reveal-up delay-500">
+            <div className="w-px h-16 bg-border relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-8 bg-foreground/30 animate-[slide-down_2s_ease-in-out_infinite]" />
             </div>
           </div>
         </section>
 
         {/* Stats Section */}
-        <section id="results" className="py-24 border-t border-border">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 reveal-up">
-              <p className="text-sm tracking-[0.3em] text-muted-foreground mb-4 uppercase">Results</p>
-              <h2 className="text-3xl md:text-4xl font-extralight">
+        <section id="results" className="py-32 md:py-40 border-t border-border">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="text-center mb-20 md:mb-28">
+              <p className="text-xs tracking-[0.5em] text-muted-foreground mb-6 uppercase reveal-up">Results</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight reveal-up delay-100">
                 Numbers that matter.
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-16 md:gap-20 max-w-5xl mx-auto">
               <div className="text-center reveal-up">
                 <AnimatedCounter end={1500} duration={2500} label="Monthly Visitors Gained" />
               </div>
-              <div className="text-center reveal-up">
+              <div className="text-center reveal-up delay-100">
                 <AnimatedCounter end={345} duration={2500} label="New Bookings Created" />
               </div>
-              <div className="text-center reveal-up">
+              <div className="text-center reveal-up delay-200">
                 <AnimatedCounter end={52} duration={2500} label="Automations Deployed" />
               </div>
             </div>
           </div>
         </section>
 
+        {/* CTA Banner */}
+        <section className="py-20 md:py-24 bg-foreground text-background">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left reveal-left">
+                <h3 className="text-2xl md:text-3xl font-extralight mb-3">Ready to elevate your business?</h3>
+                <p className="text-background/60">Book a free strategy call. No pressure, just clarity.</p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="xl"
+                onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}
+                className="border-background/20 text-background hover:bg-background hover:text-foreground reveal-right min-w-[200px]"
+              >
+                Book a Strategy Call
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* Services Section */}
-        <section id="services" className="py-24 bg-muted/30">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 reveal-up">
-              <p className="text-sm tracking-[0.3em] text-muted-foreground mb-4 uppercase">Services</p>
-              <h2 className="text-3xl md:text-4xl font-extralight mb-4">
+        <section id="services" className="py-32 md:py-40">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="text-center mb-20 md:mb-28">
+              <p className="text-xs tracking-[0.5em] text-muted-foreground mb-6 uppercase reveal-up">Services</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight mb-8 reveal-up delay-100">
                 What we do.
               </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto reveal-up delay-200">
                 Clean solutions for complex problems. Each service designed to elevate your business without adding stress.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 max-w-7xl mx-auto">
               {services.map((service, index) => (
-                <Card key={index} className="bg-card border-border hover-lift reveal-up">
-                  <CardContent className="p-8">
-                    <h3 className="text-lg font-medium tracking-wide mb-3">
+                <Card 
+                  key={index} 
+                  className="bg-card border-border hover-lift hover-glow reveal-up group"
+                  style={{ transitionDelay: `${index * 0.1}s` }}
+                >
+                  <CardContent className="p-10 md:p-12">
+                    <div className="w-10 h-px bg-accent mb-8 group-hover:w-16 transition-all duration-500" />
+                    <h3 className="text-xl md:text-2xl font-light tracking-wide mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                    <p className="text-muted-foreground text-base mb-8 leading-relaxed">
                       {service.description}
                     </p>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {service.features.map((feature, featureIndex) => (
                         <div key={featureIndex} className="flex items-center text-sm text-muted-foreground">
-                          <span className="w-1 h-1 bg-accent mr-3" />
+                          <span className="w-1.5 h-1.5 bg-accent mr-4" />
                           {feature}
                         </div>
                       ))}
@@ -321,62 +374,94 @@ const Index = () => {
               ))}
             </div>
 
-            <div className="text-center mt-12 reveal-up">
+            <div className="text-center mt-20 reveal-up">
               <Button 
                 variant="outline" 
-                size="lg"
+                size="xl"
                 onClick={() => setCustomizationModalOpen(true)}
+                className="group"
               >
-                Discuss Custom Solutions
-                <ArrowRight className="w-4 h-4" />
+                Build With LEVRA
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </div>
           </div>
         </section>
 
         {/* About Section */}
-        <section id="about" className="py-24 border-t border-border">
-          <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto text-center reveal-up">
-              <p className="text-sm tracking-[0.3em] text-muted-foreground mb-4 uppercase">About</p>
-              <h2 className="text-3xl md:text-4xl font-extralight mb-8">
-                LEVRA means elevation.
-              </h2>
-              <div className="space-y-6 text-muted-foreground leading-relaxed">
-                <p>
+        <section id="about" className="py-32 md:py-40 border-t border-border">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <p className="text-xs tracking-[0.5em] text-muted-foreground mb-6 uppercase reveal-up">About</p>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight reveal-up delay-100">
+                  LEVRA means elevation.
+                </h2>
+              </div>
+              <div className="space-y-8 text-lg md:text-xl text-muted-foreground leading-relaxed text-center">
+                <p className="reveal-up delay-200">
                   We exist to remove the friction between where you are and where you want to be. No fluff. No unnecessary complexity. Just clear, intelligent solutions that work.
                 </p>
-                <p>
+                <p className="reveal-up delay-300">
                   Our approach is simple: understand deeply, build precisely, deliver excellence. Every system we create is designed to give you back your time while growing your business.
                 </p>
-                <p className="text-foreground font-medium">
+                <p className="text-foreground font-medium text-xl md:text-2xl reveal-up delay-400">
                   Quiet confidence. Luxury-grade clarity. Growth made effortless.
                 </p>
+              </div>
+              
+              {/* Values */}
+              <div className="grid md:grid-cols-3 gap-12 mt-24">
+                <div className="text-center reveal-up">
+                  <div className="w-12 h-px bg-accent mx-auto mb-6" />
+                  <h4 className="text-lg font-medium mb-3">Precision</h4>
+                  <p className="text-muted-foreground text-sm">Every detail considered. Every element purposeful.</p>
+                </div>
+                <div className="text-center reveal-up delay-100">
+                  <div className="w-12 h-px bg-accent mx-auto mb-6" />
+                  <h4 className="text-lg font-medium mb-3">Simplicity</h4>
+                  <p className="text-muted-foreground text-sm">Complexity removed. Clarity delivered.</p>
+                </div>
+                <div className="text-center reveal-up delay-200">
+                  <div className="w-12 h-px bg-accent mx-auto mb-6" />
+                  <h4 className="text-lg font-medium mb-3">Excellence</h4>
+                  <p className="text-muted-foreground text-sm">Premium standards. Consistent results.</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" className="py-24 bg-muted/30">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 reveal-up">
-              <p className="text-sm tracking-[0.3em] text-muted-foreground mb-4 uppercase">Testimonials</p>
-              <h2 className="text-3xl md:text-4xl font-extralight">
+        <section id="testimonials" className="py-32 md:py-40 bg-muted/20">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="text-center mb-20 md:mb-28">
+              <p className="text-xs tracking-[0.5em] text-muted-foreground mb-6 uppercase reveal-up">Testimonials</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight reveal-up delay-100">
                 Client experiences.
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-10 max-w-5xl mx-auto">
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-card border-border reveal-up">
-                  <CardContent className="p-8">
-                    <p className="text-foreground mb-6 leading-relaxed">
+                <Card 
+                  key={index} 
+                  className="bg-card border-border hover-lift reveal-up"
+                  style={{ transitionDelay: `${index * 0.1}s` }}
+                >
+                  <CardContent className="p-10 md:p-12">
+                    <Sparkles className="w-5 h-5 text-accent mb-6" />
+                    <p className="text-foreground text-lg md:text-xl mb-8 leading-relaxed font-light">
                       "{testimonial.content}"
                     </p>
-                    <div>
-                      <p className="font-medium text-foreground">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-muted flex items-center justify-center text-sm font-medium">
+                        {testimonial.name}
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">{testimonial.name}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -385,44 +470,56 @@ const Index = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 border-t border-border">
-          <div className="container mx-auto px-6">
-            <div className="max-w-2xl mx-auto text-center reveal-up">
-              <h2 className="text-3xl md:text-4xl font-extralight mb-6">
+        {/* Final CTA Section */}
+        <section className="py-32 md:py-48 border-t border-border">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-xs tracking-[0.5em] text-muted-foreground mb-6 uppercase reveal-up">Get Started</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight mb-8 reveal-up delay-100">
                 Ready to elevate?
               </h2>
-              <p className="text-muted-foreground mb-8">
+              <p className="text-lg md:text-xl text-muted-foreground mb-12 reveal-up delay-200">
                 Book a conversation. No pressure, no pitch—just a clear discussion about your goals and how we might help.
               </p>
-              <Button 
-                variant="default" 
-                size="xl"
-                onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}
-              >
-                Schedule Your Call
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 reveal-up delay-300">
+                <Button 
+                  variant="default" 
+                  size="xl"
+                  onClick={() => window.open('https://calendly.com/elevanaglobal/30min', '_blank')}
+                  className="group min-w-[240px]"
+                >
+                  Elevate My Business
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="xl"
+                  onClick={() => setContactModalOpen(true)}
+                  className="min-w-[240px]"
+                >
+                  Send a Message
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer id="contact" className="py-16 bg-foreground text-background">
-          <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-                <div className="text-3xl font-light tracking-[0.3em] mb-8 md:mb-0">
+        <footer id="contact" className="py-24 md:py-32 bg-foreground text-background">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="max-w-5xl mx-auto">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-16">
+                <div className="text-4xl md:text-5xl font-light tracking-[0.4em] mb-10 md:mb-0">
                   LEVRA
                 </div>
-                <div className="flex items-center space-x-8">
+                <div className="flex items-center space-x-10">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button 
                         onClick={handleEmailClick}
-                        className="text-background/70 hover:text-background transition-smooth"
+                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
                       >
-                        <Mail className="w-5 h-5" />
+                        <Mail className="w-6 h-6" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -437,9 +534,9 @@ const Index = () => {
                     <TooltipTrigger asChild>
                       <button 
                         onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
-                        className="text-background/70 hover:text-background transition-smooth"
+                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
                       >
-                        <Phone className="w-5 h-5" />
+                        <Phone className="w-6 h-6" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -451,9 +548,9 @@ const Index = () => {
                     <TooltipTrigger asChild>
                       <button 
                         onClick={() => window.open(contactInfo.instagram, '_blank')}
-                        className="text-background/70 hover:text-background transition-smooth"
+                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
                       >
-                        <Instagram className="w-5 h-5" />
+                        <Instagram className="w-6 h-6" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -463,10 +560,14 @@ const Index = () => {
                 </div>
               </div>
               
-              <div className="border-t border-background/20 pt-8 text-center">
-                <p className="text-sm text-background/60">
+              <div className="border-t border-background/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p className="text-sm text-background/40">
                   © 2024 LEVRA. Elevation made effortless.
                 </p>
+                <div className="flex items-center space-x-8 text-sm text-background/40">
+                  <a href="#" className="hover:text-background transition-colors duration-300">Privacy</a>
+                  <a href="#" className="hover:text-background transition-colors duration-300">Terms</a>
+                </div>
               </div>
             </div>
           </div>
