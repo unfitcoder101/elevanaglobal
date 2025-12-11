@@ -505,69 +505,93 @@ const Index = () => {
         </section>
 
         {/* Footer */}
-        <footer id="contact" className="py-24 md:py-32 bg-foreground text-background">
+        <footer id="contact" className="py-16 md:py-20 bg-foreground text-background">
           <div className="container mx-auto px-6 lg:px-12">
-            <div className="max-w-5xl mx-auto">
-              <div className="flex flex-col md:flex-row justify-between items-center mb-16">
-                <div className="text-4xl md:text-5xl font-light tracking-[0.4em] mb-10 md:mb-0">
+            <div className="max-w-4xl mx-auto">
+              {/* Brand Name */}
+              <div className="text-center mb-10">
+                <span className="text-2xl md:text-3xl font-light tracking-[0.5em] text-background">
                   LEVRA
-                </div>
-                <div className="flex items-center space-x-10">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button 
-                        onClick={handleEmailClick}
-                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
-                      >
-                        <Mail className="w-6 h-6" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="flex items-center space-x-2">
-                        <span>{contactInfo.email}</span>
-                        {copiedEmail && <CheckCircle className="w-4 h-4" />}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button 
-                        onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
-                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
-                      >
-                        <Phone className="w-6 h-6" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{contactInfo.phone}</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button 
-                        onClick={() => window.open(contactInfo.instagram, '_blank')}
-                        className="text-background/50 hover:text-background transition-colors duration-300 p-2"
-                      >
-                        <Instagram className="w-6 h-6" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>@levra.co</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
+                </span>
               </div>
               
-              <div className="border-t border-background/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p className="text-sm text-background/40">
-                  © 2024 LEVRA. Elevation made effortless.
-                </p>
-                <div className="flex items-center space-x-8 text-sm text-background/40">
-                  <a href="#" className="hover:text-background transition-colors duration-300">Privacy</a>
-                  <a href="#" className="hover:text-background transition-colors duration-300">Terms</a>
+              {/* Navigation Links */}
+              <nav className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3 mb-10">
+                <a href="#services" className="text-xs tracking-[0.2em] uppercase text-background/50 hover:text-background transition-colors duration-300">
+                  Services
+                </a>
+                <a href="#process" className="text-xs tracking-[0.2em] uppercase text-background/50 hover:text-background transition-colors duration-300">
+                  Process
+                </a>
+                <a href="#testimonials" className="text-xs tracking-[0.2em] uppercase text-background/50 hover:text-background transition-colors duration-300">
+                  Results
+                </a>
+                <a href="#cta" className="text-xs tracking-[0.2em] uppercase text-background/50 hover:text-background transition-colors duration-300">
+                  Contact
+                </a>
+              </nav>
+              
+              {/* Social Icons */}
+              <div className="flex justify-center items-center gap-6 mb-10">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={handleEmailClick}
+                      className="text-background/40 hover:text-accent transition-colors duration-300"
+                    >
+                      <Mail className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="flex items-center space-x-2">
+                      <span>{contactInfo.email}</span>
+                      {copiedEmail && <CheckCircle className="w-3 h-3" />}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={() => window.open(`tel:${contactInfo.phone}`, '_self')}
+                      className="text-background/40 hover:text-accent transition-colors duration-300"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{contactInfo.phone}</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button 
+                      onClick={() => window.open(contactInfo.instagram, '_blank')}
+                      className="text-background/40 hover:text-accent transition-colors duration-300"
+                    >
+                      <Instagram className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>@levra.co</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              
+              {/* Divider */}
+              <div className="w-16 h-px bg-background/10 mx-auto mb-8"></div>
+              
+              {/* Bottom Section */}
+              <div className="text-center space-y-3">
+                <div className="flex justify-center items-center gap-6 text-[10px] tracking-[0.15em] uppercase text-background/30">
+                  <a href="#" className="hover:text-background/50 transition-colors duration-300">Privacy</a>
+                  <span className="text-background/20">·</span>
+                  <a href="#" className="hover:text-background/50 transition-colors duration-300">Terms</a>
                 </div>
+                <p className="text-[10px] tracking-wider text-background/25">
+                  © 2024 LEVRA · Crafted with intention
+                </p>
               </div>
             </div>
           </div>
