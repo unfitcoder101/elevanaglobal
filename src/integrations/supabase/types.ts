@@ -31,7 +31,7 @@ export type Database = {
           name: string
           phone: string | null
           status: string
-          submission_ip: unknown | null
+          submission_ip: unknown
           timeline: string | null
           updated_at: string
           user_agent: string | null
@@ -53,7 +53,7 @@ export type Database = {
           name: string
           phone?: string | null
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           timeline?: string | null
           updated_at?: string
           user_agent?: string | null
@@ -75,7 +75,7 @@ export type Database = {
           name?: string
           phone?: string | null
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           timeline?: string | null
           updated_at?: string
           user_agent?: string | null
@@ -97,7 +97,7 @@ export type Database = {
           phone: string | null
           request_type: string
           status: string
-          submission_ip: unknown | null
+          submission_ip: unknown
           updated_at: string
           user_agent: string | null
         }
@@ -114,7 +114,7 @@ export type Database = {
           phone?: string | null
           request_type?: string
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
         }
@@ -131,7 +131,7 @@ export type Database = {
           phone?: string | null
           request_type?: string
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
         }
@@ -151,7 +151,7 @@ export type Database = {
           name: string
           phone: string | null
           status: string | null
-          submission_ip: unknown | null
+          submission_ip: unknown
           updated_at: string
           user_agent: string | null
           website_instagram: string | null
@@ -169,7 +169,7 @@ export type Database = {
           name: string
           phone?: string | null
           status?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
           website_instagram?: string | null
@@ -187,7 +187,7 @@ export type Database = {
           name?: string
           phone?: string | null
           status?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
           website_instagram?: string | null
@@ -207,7 +207,7 @@ export type Database = {
           phone: string | null
           problem_description: string | null
           status: string | null
-          submission_ip: unknown | null
+          submission_ip: unknown
           updated_at: string
           user_agent: string | null
         }
@@ -223,7 +223,7 @@ export type Database = {
           phone?: string | null
           problem_description?: string | null
           status?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
         }
@@ -239,7 +239,7 @@ export type Database = {
           phone?: string | null
           problem_description?: string | null
           status?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
         }
@@ -261,7 +261,7 @@ export type Database = {
           service: string | null
           status: string
           subject: string | null
-          submission_ip: unknown | null
+          submission_ip: unknown
           updated_at: string
           user_agent: string | null
           user_id: string | null
@@ -281,7 +281,7 @@ export type Database = {
           service?: string | null
           status?: string
           subject?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
           user_id?: string | null
@@ -301,7 +301,7 @@ export type Database = {
           service?: string | null
           status?: string
           subject?: string | null
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           updated_at?: string
           user_agent?: string | null
           user_id?: string | null
