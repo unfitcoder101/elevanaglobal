@@ -105,7 +105,7 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-primary mb-2">ELEVANA</h1>
+          <h1 className="text-3xl font-bold text-primary mb-2">LEVRA</h1>
           <p className="text-muted-foreground">Set your new password</p>
         </div>
 

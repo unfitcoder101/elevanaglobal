@@ -342,7 +342,7 @@ const AdminDashboard = () => {
 
   const generateReceipt = (customization: BusinessCustomization) => {
     const receipt = `
-ELEVANA - SERVICE ESTIMATE
+LEVRA - SERVICE ESTIMATE
 
 Customer Details:
 Name: ${customization.name}
@@ -365,8 +365,8 @@ Date: ${new Date(customization.created_at).toLocaleDateString()}
 Reference: REF-${customization.id.slice(0, 8).toUpperCase()}
 
 ---
-ELEVANA - Your Digital Growth Partner
-www.elevana.com | support@elevana.com
+LEVRA - Your Digital Growth Partner
+www.levra.co | support@levra.co
     `;
 
     // Download as text file
@@ -374,7 +374,7 @@ www.elevana.com | support@elevana.com
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ELEVANA-Receipt-${customization.business_name}-${customization.id.slice(0, 8)}.txt`;
+    a.download = `LEVRA-Receipt-${customization.business_name}-${customization.id.slice(0, 8)}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -398,7 +398,7 @@ www.elevana.com | support@elevana.com
         <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-primary">ELEVANA Admin Dashboard</h1>
+                <h1 className="text-2xl font-bold text-primary">LEVRA Admin Dashboard</h1>
                 <p className="text-muted-foreground">Manage customer requests and send payment requests</p>
               </div>
               <div className="flex gap-2">

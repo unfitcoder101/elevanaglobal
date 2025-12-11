@@ -1,4 +1,4 @@
-# ELEVANA - Digital Marketing Agency
+# LEVRA - Digital Marketing Agency
 
 A modern digital marketing agency website built with React, TypeScript, and Supabase.
 
@@ -27,7 +27,7 @@ A modern digital marketing agency website built with React, TypeScript, and Supa
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd elevana-agency
+   cd levra-agency
    ```
 
 2. **Install dependencies**
